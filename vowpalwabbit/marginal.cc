@@ -33,13 +33,13 @@ void predict_or_learn(data& sm, LEARNER::base_learner& base, example& ec)
 	    { float first_value = j.value();
 	      uint64_t first_index = j.index() & mask;
 	      if (++j == sm.temp[n].end())
-		{ cout << "warning: id feature namespace has " << sm.temp[n].size() << " features. Should be a multiple of 2" << endl;
+		{ sm.all->trace_message << "warning: id feature namespace has " << sm.temp[n].size() << " features. Should be a multiple of 2" << endl;
 		  break;
 		}
 	      float second_value = j.value();
 	      uint64_t second_index = j.index() & mask;
 	      if (first_value != 1. || second_value != 1.)
-		{ cout << "warning: bad id features, must have value 1." << endl;
+		{ sm.all->trace_message << "warning: bad id features, must have value 1." << endl;
 		  continue;
 		}
 	      uint64_t key = second_index + ec.ft_offset;
@@ -67,8 +67,7 @@ void predict_or_learn(data& sm, LEARNER::base_learner& base, example& ec)
           uint64_t second_index = j.index() & mask;
           uint64_t key = second_index + ec.ft_offset;
           marginal& m = sm.marginals[key];
-          m.first = m.first * (1. - sm.decay) + ec.l.simple.label * ec.weight;
-          m.second = m.second * (1. - sm.decay) + ec.weight;
+
         }
       std::swap(sm.temp[n],*i);
     }
@@ -134,7 +133,7 @@ LEARNER::base_learner* marginal_setup(vw& all)
   ("decay", po::value<float>()->default_value(0.f), "decay multiplier per event (1e-3 for example)");
   add_options(all);
 
-  data& d = calloc_or_throw<data>();
+  MARGINAL::data& d = calloc_or_throw<MARGINAL::data>();
   d.initial_numerator = all.vm["initial_numerator"].as<float>();
   d.initial_denominator = all.vm["initial_denominator"].as<float>();
   d.decay = all.vm["decay"].as<float>();
@@ -146,7 +145,7 @@ LEARNER::base_learner* marginal_setup(vw& all)
       d.id_features[u] = true;
   new(&d.marginals)unordered_map<uint64_t,marginal>();
 
-  LEARNER::learner<data>& ret =
+  LEARNER::learner<MARGINAL::data>& ret =
     init_learner(&d, setup_base(all), predict_or_learn<true>, predict_or_learn<false>);
   ret.set_finish(finish);
   ret.set_save_load(save_load);
