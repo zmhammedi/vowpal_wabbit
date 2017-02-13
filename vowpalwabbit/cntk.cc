@@ -54,6 +54,25 @@ namespace VW_CNTK {
 			// TODO: DeviceDescriptor::GPUDevice(0));
 			auto model = Function::LoadModel(L"c:\\temp\\cntk\\model.1", DeviceDescriptor::CPUDevice());
 			auto inputs = model->Inputs();
+			auto& input = inputs.front();
+			auto& inputUid = input.Uid();
+
+			auto& input2 = inputs[1];
+			auto& inputUid2 = input2.Uid();
+
+			auto& input3 = inputs[2];
+			auto& inputUid3 = input3.Uid();
+
+			for (auto inputVar : inputs)
+			{
+				auto uid = inputVar.Uid();
+				auto name = inputVar.Name();
+
+				int y = 9;
+
+				// look for features...
+				// TODO: what is parameters*
+			}
 
 			//for (auto inputVarInfo : inputVarUids)
 			//{
@@ -64,6 +83,12 @@ namespace VW_CNTK {
 			//}
 
 			auto outputs = model->Outputs();
+
+			if (outputs.size() == 0)
+				THROW("Need at least 1 output");
+
+			auto& prediction = outputs.front();
+
 			// Variable& 
 			//for (auto outputVarInfo : outputVarNames)
 			//{
@@ -75,9 +100,12 @@ namespace VW_CNTK {
 
 			// auto classifierOutput = LSTMSequenceClassiferNet(features, numOutputClasses, embeddingDim, hiddenDim, cellDim, device, L"classifierOutput");
 
-			// auto labels = InputVariable({ numOutputClasses }, useSparseLabels, DataType::Float, labelsName, { Axis::DefaultBatchAxis() });
+			// TODO: is numOutputClasses == outputs.size()
+			// isSparse?
+			auto labels = InputVariable({ outputs.size() }, DataType::Float, L"Label"); // , { Axis::DefaultDynamicAxis() });
 
-			// USE THIS! CNTK::SquaredError(predictionVar, labels, L"squaredError");
+			// TODO: support different losses
+			auto trainingLoss = SquaredError(prediction, labels, L"squaredError");
 
 			// TODO: -1,1 vs 0,1
 			// logistic -> CNTK::BinaryCrossEntropy()
@@ -87,15 +115,25 @@ namespace VW_CNTK {
 			// ranking  ->  CNTK::LambdaRank
 			// cosine distance -> CNTK::CosineDistance
 
-
+			//CNTK::SquaredError(predictionVar, labels, L"squaredError");
 
 			//auto trainingLoss = CNTK::CrossEntropyWithSoftmax(classifierOutput, labels, L"lossFunction");
 			//auto prediction = CNTK::ClassificationError(classifierOutput, labels, L"classificationError");
 
-			//auto trainer = CreateTrainer(classifierOutput, trainingLoss, prediction,
-			//		{ MomentumSGDLearner(classifierOutput->Parameters(), learningRatePerSample,
+			// TODO: support more learners
+			AdditionalLearningOptions opts;
+			opts.l1RegularizationWeight = dat.all->l1_lambda;
+			opts.l2RegularizationWeight = dat.all->l2_lambda;
 
-			//			momentumTimeConstant, /*unitGainMomentum = */true) });
+			auto trainer = CreateTrainer(model, trainingLoss, prediction,
+				{ SGDLearner(model->Parameters(), LearningRateSchedule(dat.all->eta, LearningRateSchedule::UnitType::Minibatch), opts) });
+
+			int x = 0;
+		}
+		catch (const std::logic_error& ex)
+		{
+			std::cerr << "cntk error: " << ex.what() << std::endl;
+			throw ex;
 		}
 		catch (const std::runtime_error& ex)
 		{

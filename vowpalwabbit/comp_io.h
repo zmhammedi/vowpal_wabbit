@@ -32,7 +32,7 @@ class comp_io_buf : public io_buf
 	private:
 		boost::iostreams::filtering_streambuf<boost::iostreams::output> buf;
 		std::unique_ptr<std::ostream> output;
-		
+
 	public:
 		comp_io_output(std::ostream* output);
 		std::ostream out;

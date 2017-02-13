@@ -15,6 +15,7 @@
     <RootNamespace>python</RootNamespace>
     <Keyword>Win32Proj</Keyword>
     <ProjectName>python36</ProjectName>
+    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
@@ -45,12 +46,12 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>pyvw36</TargetName>
     <OutDir>$(SolutionDir)..\python\bin\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\py36\</IntDir>
+    <IntDir>$(Platform)\$(Configuration)\python36\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>pyvw36</TargetName>
     <OutDir>$(SolutionDir)..\python\bin\</OutDir>
-    <IntDir>$(Platform)\$(Configuration)\py36\</IntDir>
+    <IntDir>$(Platform)\$(Configuration)\python36\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
