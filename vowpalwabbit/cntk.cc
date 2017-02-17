@@ -28,8 +28,25 @@ namespace VW_CNTK {
 		TrainerPtr trainer;
 		string input_filename;
 		string output_filename;
+
 		bool last_prediction_valid = false;
 		float last_prediction;
+
+		unordered_map<Variable, ValuePtr> outputs;
+		ValuePtr labelValue;
+		DeviceDescriptor device;
+
+		cntk2() 
+			// : device(DeviceDescriptor::CPUDevice())
+			// : device(DeviceDescriptor::GPUDevice(0))
+			: device(DeviceDescriptor::BestDevice())
+		{ 
+			for (auto& d : DeviceDescriptor::AllDevices())
+			{
+				cout << "Id: " << d.Id() << "  " << (d.Type() == DeviceKind::GPU ? "GPU" : "CPU") << endl;
+			}
+				
+		}
 	};
 
 	struct cntk
@@ -38,7 +55,12 @@ namespace VW_CNTK {
 		v_array<int> row_indicies[256];
 		// v_array<int> col_indicies[256];
 		int col_starts[256][2];
-		cntk2 d;
+		cntk2* d;
+		uint64_t length;
+		uint64_t weight_mask;
+
+		float output;
+		float label;
 	};
 
 	void predict(cntk& dat, base_learner&, example& ex)
@@ -51,21 +73,15 @@ namespace VW_CNTK {
 		// TODO: create quadratics and map to -q ab Input(a1_b2), given a...a1, b...b2
 		// If input has dynamic axis()  -> 1 feature per row to support "This is a boat. This is a fish" (note that "This" occurs twice)
 		// If input !has dynamic aixs() -> all features into a single row
-
-		//dat.row_indicies.erase();
-
-		uint64_t length = UINT64_ONE << dat.all->num_bits;
-		uint64_t weight_mask = length - 1; //(length << stride_shift) - 1; dat.all->weights.mask();
-
 		unordered_map<Variable, ValuePtr> arguments;
-		NDShape inputShape({ (size_t)(length) });
+		NDShape inputShape({ (size_t)(dat.length) });
 
 		for (auto ns_iter = ex.begin();ns_iter != ex.end();++ns_iter)
 		{
 			auto size = (*ns_iter).indicies.size();
 			auto ns = ns_iter.index();
 
-			Variable* input = dat.d.namespace_to_inputs[ns_iter.index()];
+			Variable* input = dat.d->namespace_to_inputs[ns_iter.index()];
 			if (input == nullptr)
 			{
 				// TODO: output once
@@ -79,7 +95,7 @@ namespace VW_CNTK {
 			v_array<int>& row_indicies = dat.row_indicies[ns];
 
 			// size correctly
-			row_indicies.erase();
+			// TODO: row_indicies.erase(); shrink again?
 			if ((size_t)(row_indicies.end_array - row_indicies._begin) < size)
 				row_indicies.resize(size);
 			else
@@ -87,9 +103,9 @@ namespace VW_CNTK {
 
 			// TODO: needs sorting
 			// This semantically transposes from column sparse to row sparse
-			int i = 0;
+			auto rp = row_indicies._begin;
 			for (auto& f : (*ns_iter).indicies)
-				row_indicies.push_back_unchecked((int)(f & weight_mask));
+				*(rp++) = (int)(f & dat.weight_mask);
 
 			// in single row mode all rowIndices are 0
 			// {0, size}
@@ -107,7 +123,7 @@ namespace VW_CNTK {
 				row_indicies.begin(), // rowIndicies
 				nonZeroValues, // nonZeroValues,
 				size,
-				DeviceDescriptor::CPUDevice(), 
+				dat.d->device, 
 				true)); // readOnly, TODO: not sure if we care if things are modified except for data.row_indicies (do I still own the array?)
 
 			arguments.insert(make_pair(*input, inputValue));
@@ -128,30 +144,25 @@ namespace VW_CNTK {
 		//ValuePtr outputValue, predictionErrorValue;
 		//std::unordered_map<Variable, ValuePtr> outputs = { { classifierOutputFunction->Output(), outputValue },{ predictionFunction->Output(), predictionErrorValue } };
 		//ffNet->Forward({ { inputVar, inputValue },{ labelsVar, labelValue } }, outputs, computeDevice);
-		NDShape labelShape = { 1, 1, 1 };
 
-		float output = 0;
-		ValuePtr outputValue = MakeSharedObject<Value>(MakeSharedObject<NDArrayView>(labelShape, &output, 1, DeviceDescriptor::CPUDevice(), false /* readOnly */));
-		unordered_map<Variable, ValuePtr> outputs = { { dat.d.prediction, outputValue } };
-
-		if (!dat.d.last_prediction_valid)
+		if (!dat.d->last_prediction_valid)
 		{
 			// only needed for the very first example
-			dat.d.trainer->Model()->Forward(arguments, outputs, DeviceDescriptor::CPUDevice());
-			dat.d.last_prediction_valid = true;
+			dat.d->trainer->Model()->Forward(arguments, dat.d->outputs, dat.d->device);
+			dat.d->last_prediction_valid = true;
 
-			ex.pred.scalar = output;
+			ex.pred.scalar = dat.output;
 		}
 		else
-			ex.pred.scalar = dat.d.last_prediction;
+			ex.pred.scalar = dat.d->last_prediction;
 
-		ValuePtr labelValue = MakeSharedObject<Value>(MakeSharedObject<NDArrayView>(labelShape, &ex.l.simple.label, 1, DeviceDescriptor::CPUDevice(), true /* readOnly */));
-		arguments.insert(make_pair(dat.d.label, labelValue));
+		dat.label = ex.l.simple.label;
+		arguments.insert(make_pair(dat.d->label, dat.d->labelValue));
 
-		output = 0;
-		dat.d.trainer->TrainMinibatch(arguments, outputs, DeviceDescriptor::CPUDevice());
+		dat.output = 0;
+		dat.d->trainer->TrainMinibatch(arguments, dat.d->outputs, dat.d->device);
 		// keep around for next time
-		dat.d.last_prediction = output;
+		dat.d->last_prediction = dat.output;
 	}
 
 	void update(cntk& dat, base_learner&, example& ex)
@@ -179,22 +190,22 @@ namespace VW_CNTK {
 		{
 			// TODO: check if input_filename is set.
 			wstring wfilename;
-			std::copy(dat.d.input_filename.begin(), dat.d.input_filename.end(), std::back_inserter(wfilename));
+			std::copy(dat.d->input_filename.begin(), dat.d->input_filename.end(), std::back_inserter(wfilename));
 
 			// load model
-			auto model = Function::LoadModel(wfilename, DeviceDescriptor::CPUDevice());
+			auto model = Function::LoadModel(wfilename, dat.d->device);
 
 			// get inputs
 			auto inputs = model->Inputs();
-			copy_if(inputs.begin(), inputs.end(), back_inserter(dat.d.inputs), [](auto& var) { return var.IsInput(); });
+			copy_if(inputs.begin(), inputs.end(), back_inserter(dat.d->inputs), [](auto& var) { return var.IsInput(); });
 
 			// establish mapping from namespaces to inputs
-			memset(dat.d.namespace_to_inputs, 0, sizeof(dat.d.namespace_to_inputs));
-			for (auto& var : dat.d.inputs)
+			memset(dat.d->namespace_to_inputs, 0, sizeof(dat.d->namespace_to_inputs));
+			for (auto& var : dat.d->inputs)
 			{
 				wchar_t ns = var.Name()[0];
 				assert(ns >= 0 && ns < 256);
-				dat.d.namespace_to_inputs[static_cast<char>(ns)] = &var;
+				dat.d->namespace_to_inputs[static_cast<char>(ns)] = &var;
 			}
 
 			// get output
@@ -203,14 +214,20 @@ namespace VW_CNTK {
 				THROW("Need at least 1 output");
 
 			cout << "num outputs: " << outputs.size() << endl;
-			dat.d.prediction = outputs.front();
+			dat.d->prediction = outputs.front();
+
+			NDShape labelShape = { 1, 1, 1 };
+
+			ValuePtr outputValue = MakeSharedObject<Value>(MakeSharedObject<NDArrayView>(labelShape, &dat.output, 1, dat.d->device, false /* readOnly */));
+			dat.d->outputs = { { dat.d->prediction, outputValue } };
 
 			// TODO: is numOutputClasses == outputs.size()
 			// isSparse?
-			dat.d.label = InputVariable({ outputs.size() }, DataType::Float, L"Label");
+			dat.d->label = InputVariable({ outputs.size() }, DataType::Float, L"Label");
+			dat.d->labelValue = MakeSharedObject<Value>(MakeSharedObject<NDArrayView>(labelShape, &dat.label, 1, dat.d->device, true /* readOnly */));
 
 			// TODO: support different losses
-			auto trainingLoss = SquaredError(dat.d.prediction, dat.d.label, L"squaredError");
+			auto trainingLoss = SquaredError(dat.d->prediction, dat.d->label, L"squaredError");
 
 			// TODO: -1,1 vs 0,1
 			// logistic -> CNTK::BinaryCrossEntropy()
@@ -227,16 +244,16 @@ namespace VW_CNTK {
 			opts.l1RegularizationWeight = dat.all->l1_lambda;
 			opts.l2RegularizationWeight = dat.all->l2_lambda;
 
-			dat.d.trainer = CreateTrainer(model, trainingLoss, dat.d.prediction,
+			dat.d->trainer = CreateTrainer(model, trainingLoss, dat.d->prediction,
 			{ SGDLearner(model->Parameters(), LearningRateSchedule(dat.all->eta, LearningRateSchedule::UnitType::Minibatch), opts) });
 		}
 		else
 		{
 			wstring wfilename;
-			std::copy(dat.d.output_filename.begin(), dat.d.output_filename.end(), std::back_inserter(wfilename));
+			std::copy(dat.d->output_filename.begin(), dat.d->output_filename.end(), std::back_inserter(wfilename));
 
 			// load model
-			dat.d.trainer->Model()->SaveModel(wfilename);
+			dat.d->trainer->Model()->SaveModel(wfilename);
 		}
 	}
 
@@ -245,7 +262,7 @@ namespace VW_CNTK {
 		//o.row_indicies.delete_v();
 		for (int i=0;i<256;i++)
 			o.row_indicies[i].delete_v();
-		o.d.~cntk2();
+		delete o.d;
 	}
 
 	base_learner* setup(vw& all)
@@ -255,12 +272,15 @@ namespace VW_CNTK {
 
 		cntk& g = calloc_or_throw<cntk>();
 		g.all = &all;
-		g.d = cntk2();
+		g.d = new cntk2();		
+
+		g.length = UINT64_ONE << all.num_bits;
+		g.weight_mask = g.length - 1; // TODO: is this right?
 
 		new_options(all, "CNTK options")
 			// TODO make it optional and load from embedded model
-			("input", po::value<string>(&g.d.input_filename), "Input model filename.")
-			("output", po::value<string>(&g.d.output_filename), "Output model filename.");
+			("input", po::value<string>(&g.d->input_filename), "Input model filename.")
+			("output", po::value<string>(&g.d->output_filename), "Output model filename.");
 
 		//("sparse_l2", po::value<float>()->default_value(0.f), "use per feature normalized updates");
 		add_options(all);
