@@ -37,9 +37,9 @@ namespace VW_CNTK {
 		DeviceDescriptor device;
 
 		cntk2() 
-			// : device(DeviceDescriptor::CPUDevice())
+			 : device(DeviceDescriptor::CPUDevice())
 			// : device(DeviceDescriptor::GPUDevice(0))
-			: device(DeviceDescriptor::BestDevice())
+			// : device(DeviceDescriptor::BestDevice())
 		{ 
 			for (auto& d : DeviceDescriptor::AllDevices())
 			{
