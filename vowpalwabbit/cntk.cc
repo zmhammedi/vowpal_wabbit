@@ -76,6 +76,7 @@ namespace VW_CNTK {
 		unordered_map<Variable, ValuePtr> arguments;
 		NDShape inputShape({ (size_t)(dat.length) });
 
+		for (size_t j = 0; j < 10; ++j)
 		for (auto ns_iter = ex.begin();ns_iter != ex.end();++ns_iter)
 		{
 			auto size = (*ns_iter).indicies.size();
@@ -145,24 +146,14 @@ namespace VW_CNTK {
 		//std::unordered_map<Variable, ValuePtr> outputs = { { classifierOutputFunction->Output(), outputValue },{ predictionFunction->Output(), predictionErrorValue } };
 		//ffNet->Forward({ { inputVar, inputValue },{ labelsVar, labelValue } }, outputs, computeDevice);
 
-		if (!dat.d->last_prediction_valid)
-		{
-			// only needed for the very first example
-			dat.d->trainer->Model()->Forward(arguments, dat.d->outputs, dat.d->device);
-			dat.d->last_prediction_valid = true;
-
-			ex.pred.scalar = dat.output;
-		}
-		else
-			ex.pred.scalar = dat.d->last_prediction;
-
 		dat.label = ex.l.simple.label;
 		arguments.insert(make_pair(dat.d->label, dat.d->labelValue));
 
 		dat.output = 0;
 		dat.d->trainer->TrainMinibatch(arguments, dat.d->outputs, dat.d->device);
 		// keep around for next time
-		dat.d->last_prediction = dat.output;
+		// dat.d->last_prediction = dat.output;
+		ex.pred.scalar = dat.output;
 	}
 
 	void update(cntk& dat, base_learner&, example& ex)
@@ -273,6 +264,8 @@ namespace VW_CNTK {
 		cntk& g = calloc_or_throw<cntk>();
 		g.all = &all;
 		g.d = new cntk2();		
+
+		SetMaxNumCPUThreads(1);
 
 		g.length = UINT64_ONE << all.num_bits;
 		g.weight_mask = g.length - 1; // TODO: is this right?
