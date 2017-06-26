@@ -21,7 +21,7 @@ comp_io_buf::comp_io_input::~comp_io_input()
 		delete input;
 }
 
-comp_io_buf::comp_io_output::comp_io_output(std::ostream* poutput) : out(&buf), output(poutput)
+comp_io_buf::comp_io_output::comp_io_output(std::ostream* poutput) : output(poutput), out(&buf)
 {
 	buf.push(gzip_decompressor());
 	buf.push(*poutput);
@@ -35,9 +35,9 @@ int comp_io_buf::open_file(const char* name, bool stdin_off, int flag)
 	{
 		unique_ptr<comp_io_input> f;
 		if (*name != '\0')
-			f = make_unique<comp_io_input>(new ifstream(name, ios_base::in | ios_base::binary));
+		  f = unique_ptr<comp_io_input>(new comp_io_input(new ifstream(name, ios_base::in | ios_base::binary)));
 		else if (!stdin_off)
-			f = make_unique<comp_io_input>(&cin, /* own */ false);
+		  f = unique_ptr<comp_io_input>(new comp_io_input(&cin, false));
 
 		if (f)
 		{
@@ -73,7 +73,7 @@ int comp_io_buf::open_file(const char* name, bool stdin_off, int flag)
 
 void comp_io_buf::reset_file(int f)
 {
-	if (f < gz_input.size())
+  if ((size_t)f < gz_input.size())
 		gz_input[f]->in.seekg(0, ios_base::beg);
 	else
 		gz_output[f]->out.seekp(0, ios_base::beg);

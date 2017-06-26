@@ -34,8 +34,8 @@ class comp_io_buf : public io_buf
 		std::unique_ptr<std::ostream> output;
 
 	public:
-		comp_io_output(std::ostream* output);
 		std::ostream out;
+		comp_io_output(std::ostream* output);
 	};
 
 public:
