@@ -1,2 +1,9 @@
 add_subdirectory(zlib)
+target_include_directories(zlib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/zlib ${CMAKE_CURRENT_BINARY_DIR}/zlib)
+add_library(ZLIB::ZLIB ALIAS zlib)
+
+
+set(Boost_POPULATED True)
+set(boost_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/boost)
+set(BOOST_SOURCE ${boost_SOURCE_DIR})
 add_subdirectory(boost-cmake)
