@@ -10,4 +10,4 @@
 	url = https://github.com/madler/zlib.git
 [submodule "external/boost"]
 	path = external/boost
-	url = https://github.com/boostorg/boost.git
+	url = https://github.com/jackgerrits/boost.git
