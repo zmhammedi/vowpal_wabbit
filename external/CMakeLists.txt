@@ -1,3 +1,4 @@
+cmake_policy(SET CMP0048 NEW)
 add_subdirectory(zlib)
 target_include_directories(zlib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/zlib ${CMAKE_CURRENT_BINARY_DIR}/zlib)
 add_library(ZLIB::ZLIB ALIAS zlib)
