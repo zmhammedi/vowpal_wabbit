@@ -7,7 +7,7 @@
 
 [submodule "external/zlib"]
 	path = external/zlib
-	url = https://github.com/madler/zlib.git
+	url = https://github.com/jackgerrits/zlib.git
 [submodule "external/boost"]
 	path = external/boost
 	url = https://github.com/jackgerrits/boost.git
