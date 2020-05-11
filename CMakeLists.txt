@@ -31,7 +31,7 @@ if(WIN32)
   set(CMAKE_SYSTEM_VERSION "10.0.16299.0" CACHE INTERNAL "Windows SDK version to target.")
 endif()
 
-project(vowpal_wabbit VERSION ${PACKAGE_VERSION} LANGUAGES CXX)
+project(vowpal_wabbit VERSION ${PACKAGE_VERSION} LANGUAGES C CXX)
 set(VW_PROJECT_DESCRIPTION "Vowpal Wabbit Machine Learning System")
 set(VW_PROJECT_URL "https://vowpalwabbit.org")
 
@@ -228,6 +228,7 @@ endif()
 
 add_subdirectory(explore)
 add_subdirectory(cluster)
+add_subdirectory(bindings)
 add_subdirectory(library)
 add_subdirectory(vowpalwabbit)
 
@@ -260,23 +261,6 @@ if(BUILD_TESTS)
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/big_tests)
   endif()
 endif()
-
-
-set(vw_c_headers
-  include/vw/example.h
-  include/vw/exports.h
-  include/vw/label.h
-  include/vw/prediction.h
-  include/vw/types.h
-  include/vw/workspace.h
-)
-set(vw_c_sources
-  c_api/example.cc
-)
-add_library(vw_c_api ${vw_c_headers} ${vw_c_sources})
-target_include_directories(vw_c_api PUBLIC include/)
-target_link_libraries(vw_c_api VowpalWabbit::vw)
-
 
 # TODO convert cs directory to cmake
 # TODO convert c_test directory to cmake

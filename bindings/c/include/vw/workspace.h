@@ -25,6 +25,10 @@ extern "C"
 // void delete_vw(vw* all);
 // void sync_stats(vw* all);    // This is only used with allreduce. Should we move this up the tech stack into its own wrapper?
 
+vw_status vw_get_pred_type(vw_workspace* vw, int );
+vw_status vw_get_label_type(vw_workspace* vw, int);
+
+
 vw_status learn(vw_workspace* vw, vw_label* label, vw_example* example);
 vw_status learn(vw_workspace* vw, vw_label* labels, vw_example* example, int len);
 
