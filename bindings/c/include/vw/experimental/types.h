@@ -97,6 +97,9 @@ typedef struct vw_multilabels_label_tag vw_multilabels_label;
 struct vw_weight_iter_tag;
 typedef struct vw_weight_iter_tag vw_weight_iter;
 
+struct vw_options_tag;
+typedef struct vw_options_tag vw_options;
+
 typedef vw_status (read_func)(void*, char*, size_t, ssize_t*);
 typedef vw_status (write_func)(void*, const char*, size_t, ssize_t*);
 
