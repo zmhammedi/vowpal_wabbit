@@ -32,6 +32,7 @@ uint64_t vw_hash_string(const char* data, size_t length, uint64_t seed);
 uint64_t apply_parse_mask(const vw_workspace* all, uint64_t hash);
 
 // Weights
+uint32_t get_num_weights(const vw_workspace*);
 uint32_t get_parameter_width(const vw_workspace*);
 vw_status get_model_parameter(const vw_workspace* all, size_t index, float** weight, size_t* width);
 vw_status set_weight(const vw_workspace* all, size_t index, const float* weight, size_t width);
