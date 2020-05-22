@@ -2,7 +2,6 @@ set(vw_c_headers
   include/vw/experimental/example.h
   include/vw/experimental/exports.h
   include/vw/experimental/label.h
-  include/vw/experimental/io.h
   include/vw/experimental/prediction.h
   include/vw/experimental/types.h
   include/vw/experimental/workspace.h
@@ -10,7 +9,7 @@ set(vw_c_headers
 
 set(vw_c_sources
   src/example.cc
-  src/io.cc
+  src/c_io_adapter.h
 )
 
 add_library(vw_c_api ${vw_c_headers} ${vw_c_sources})

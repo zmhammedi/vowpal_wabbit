@@ -1,13 +1,12 @@
 #include <stdio.h>
 
 #include "vw/experimental/example.h"
-#include "vw/experimental/io.h"
 
 int main()
 {
   vw_feature_space* fs;
   allocate_feature_space(&fs);
-  feature_space_push_feature(fs, 10, 5.f);
+  feature_space_push_feature(fs, 10, 5.f, NULL);
   uint64_t* indices;
   float* vals;
   int len;

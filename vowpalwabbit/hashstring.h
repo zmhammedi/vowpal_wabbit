@@ -12,6 +12,8 @@ VW_STD14_CONSTEXPR inline uint64_t hashall(const char * s, size_t len, uint64_t 
   return uniform_hash(s, len, h);
 }
 
+// This will strip characters less than 32 from the start and end and then try and parse an integer from the string.
+// If that fails it simply hashes the input string minus the stripped characters.
 VW_STD14_CONSTEXPR inline uint64_t hashstring(const char* s, size_t len, uint64_t h)
 {
   const char* front = s;

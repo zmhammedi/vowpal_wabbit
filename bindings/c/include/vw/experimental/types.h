@@ -5,6 +5,8 @@
 #pragma once
 
 #include <stdint.h>
+// ssize_t
+#include <sys/types.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -36,6 +38,10 @@ static const vw_prediction_type multilabels = 5;
 static const vw_prediction_type prob = 6;
 static const vw_prediction_type multiclassprobs = 7;
 static const vw_prediction_type decision_probs = 8;
+
+typedef uint32_t vw_hash_type;
+static const vw_hash_type all = 0;
+static const vw_hash_type text = 1;
 
 struct vw_workspace_tag;
 typedef struct vw_workspace_tag vw_workspace;
@@ -87,6 +93,12 @@ typedef struct vw_cb_eval_label_tag vw_cb_eval_label;
 
 struct vw_multilabels_label_tag;
 typedef struct vw_multilabels_label_tag vw_multilabels_label;
+
+struct vw_weight_iter_tag;
+typedef struct vw_weight_iter_tag vw_weight_iter;
+
+typedef vw_status (read_func)(void*, char*, size_t, ssize_t*);
+typedef vw_status (write_func)(void*, const char*, size_t, ssize_t*);
 
 #ifdef __cplusplus
 }
