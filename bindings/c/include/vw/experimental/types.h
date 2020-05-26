@@ -46,6 +46,9 @@ static const vw_hash_type text = 1;
 struct vw_workspace_tag;
 typedef struct vw_workspace_tag vw_workspace;
 
+struct vw_err_str_tag;
+typedef struct vw_err_str_tag vw_err_str;
+
 struct vw_label_tag;
 typedef struct vw_label_tag vw_label;
 

@@ -12,6 +12,9 @@ extern "C"
 #endif
   vw_status allocate_label(void**, vw_label_type);
   vw_status deallocate_label(void*, vw_label_type);
+  vw_status default_label(void*, vw_label_type);
+  // dest must already be allocated.
+  vw_status copy_label(void*, void*, vw_label_type);
   vw_status parse_label(void* label, const char* label_string, vw_label_type);
 
   vw_status simple_label_get_label(vw_simple_label*, float*);
@@ -51,20 +54,18 @@ extern "C"
   vw_status ccb_label_get_explicit_included_actions(const vw_ccb_label*, uint32_t** indices, int* length);
   vw_status ccb_label_push_explicit_included_actions(vw_example*, uint32_t value);
   vw_status ccb_label_remove_explicit_included_actions(vw_example*, int index);
-
-  vw_status allocate_ccb_outcome(vw_ccb_outcome**);
-  vw_status deallocate_ccb_outcome(vw_ccb_outcome*);
-  // may be nullptr
-  vw_status ccb_label_get_outcome(vw_ccb_label*, vw_ccb_outcome** outcome);
-  // may be nullptr
-  vw_status ccb_label_set_outcome(vw_ccb_label*, vw_ccb_outcome* outcome);
-  vw_status ccb_outcome_get_cost(vw_ccb_outcome*, float* cost);
-  vw_status ccb_outcome_set_cost(vw_ccb_outcome*, float cost);
-  vw_status ccb_outcome_get_length(vw_ccb_outcome*, int*);
-  vw_status ccb_outcome_get_item(vw_ccb_outcome*, int index, uint32_t* action, float* score);
-  vw_status ccb_outcome_set_item(vw_ccb_outcome*, int index, uint32_t action, float score);
-  vw_status ccb_outcome_push_item(vw_ccb_outcome*, uint32_t action, float score);
-  vw_status ccb_outcome_remove_item(vw_ccb_outcome*, int index);
+  vw_status ccb_label_get_labeled(vw_slates_label*, bool* labeled);
+  vw_status ccb_label_set_labeled(vw_slates_label*, bool labeled);
+  // Because of the way CCB labels are structured, using the get following APIs
+  // when labeled is false will result in an error and using set will implicitly
+  // turn labeled to true
+  vw_status ccb_label_get_cost(vw_slates_label*, float* cost);
+  vw_status ccb_label_set_cost(vw_slates_label*, float cost);
+  vw_status ccb_label_get_length(vw_slates_label*, int*);
+  vw_status ccb_label_get_item(vw_slates_label*, int index, uint32_t* action, float* score);
+  vw_status ccb_label_set_item(vw_slates_label*, int index, uint32_t action, float score);
+  vw_status ccb_label_push_item(vw_slates_label*, uint32_t action, float score);
+  vw_status ccb_label_remove_item(vw_slates_label*, int index);
 
   vw_status slates_label_get_type(vw_slates_label*, uint8_t* type);
   vw_status slates_label_set_type(vw_slates_label*, uint8_t type);

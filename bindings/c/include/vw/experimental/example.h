@@ -11,6 +11,13 @@ extern "C"
 {
 #endif
 
+// Maybe deprecate this. Seems to be doing stuff that should be done in read/import_example
+vw_status setup_example(vw_workspace*, vw_example*);
+
+// block if pool is used and there are no free examples
+vw_status get_pooled_example(vw_workspace*, vw_example**);
+vw_status return_pooled_example(vw_workspace*, vw_example**);
+
 VW_DLL_PUBLIC vw_status example_get_feature_space_indices(const vw_example*, const unsigned char** indices, int* length);
 // invalidates pointers
 VW_DLL_PUBLIC vw_status example_push_feature_space_index(vw_example*, int value);
