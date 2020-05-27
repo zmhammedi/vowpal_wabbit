@@ -59,6 +59,10 @@ VW_DLL_PUBLIC vw_status example_set_label(vw_example*, void* label, vw_label_typ
 VW_DLL_PUBLIC vw_status example_get_prediction(const vw_example*, void** prediction, vw_prediction_type);
 VW_DLL_PUBLIC vw_status example_set_prediction(vw_example*, void* prediction, vw_prediction_type);
 
+VW_DLL_PUBLIC vw_status get_partial_prediction(const vw_example*, float*);
+VW_DLL_PUBLIC vw_status get_updated_prediction(const vw_example*, float*);
+VW_DLL_PUBLIC vw_status get_loss(const vw_example*, float*);
+
 #ifdef __cplusplus
 }
 #endif
