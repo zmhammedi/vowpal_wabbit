@@ -12,7 +12,7 @@ extern "C"
 #endif
 
   // might return a multiline example in the case of the json parser
-  vw_status read_example(vw_workspace*, const char* line, vw_example**, size_t*);
+  VW_DLL_PUBLIC vw_status read_example_parser(vw_workspace*, const char* line, vw_example**, size_t*, vw_err_str*);
 
 #ifdef __cplusplus
 }
