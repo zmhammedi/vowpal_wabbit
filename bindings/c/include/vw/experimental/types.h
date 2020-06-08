@@ -45,8 +45,8 @@ extern "C"
   static const vw_hash_type all = 0;
   static const vw_hash_type text = 1;
 
-  struct vw_workspace_tag;
-  typedef struct vw_workspace_tag vw_workspace;
+  struct VWWorkspace_tag;
+  typedef struct VWWorkspace_tag VWWorkspace;
 
   struct VWErrorString_tag;
   typedef struct VWErrorString_tag VWErrorString;

@@ -16,10 +16,10 @@ extern "C"
 #endif
 
   // Maybe deprecate this. Seems to be doing stuff that should be done in read/import_example
-  VW_DLL_PUBLIC VWStatus setup_example(vw_workspace*, vw_example*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus setup_example(VWWorkspace*, vw_example*, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus get_pooled_example(vw_workspace*, vw_example**, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus return_pooled_example(vw_workspace*, vw_example**, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus get_pooled_example(VWWorkspace*, vw_example**, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus return_pooled_example(VWWorkspace*, vw_example**, VWErrorString*);
 
   VW_DLL_PUBLIC VWStatus example_get_feature_space_indices(
       const vw_example*, const unsigned char** indices, size_t* length, VWErrorString*);
