@@ -13,44 +13,46 @@ extern "C"
 {
 #endif
 
-  // TODO use destroy naming
-
-  // TODO create_workspace
-  VW_DLL_PUBLIC VWStatus create_workspace(VWOptions*, bool skipModelLoad, VWTraceMessageFunc trace_listener,
+  VW_DLL_PUBLIC VWStatus VWCreateWorkspace(VWOptions*, bool skipModelLoad, VWTraceMessageFunc trace_listener,
       void* trace_context, VWWorkspace** output, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus create_workspace_with_model(VWOptions*, void* context, VWReadFunc reader, bool skipModelLoad,
+  VW_DLL_PUBLIC VWStatus VWCreateWorkspaceWithModel(VWOptions*, void* context, VWReadFunc reader, bool skipModelLoad,
       VWTraceMessageFunc trace_listener, void* trace_context, VWWorkspace** output, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus seed_workspace(const VWWorkspace*, VWOptions* opts, VWTraceMessageFunc trace_listener,
+  VW_DLL_PUBLIC VWStatus VWSeedWorkspace(const VWWorkspace*, VWOptions* opts, VWTraceMessageFunc trace_listener,
       void* trace_context, VWWorkspace**, VWErrorString*);
 
   // Returns name of first incompatible feature.
   // TODO deprecate this...
-  VWStatus are_features_compatible(const VWWorkspace*, const VWWorkspace*, VWString*,
+  VWStatus VWWorkspaceAreFeaturesCompatible(const VWWorkspace*, const VWWorkspace*, VWString*,
       VWErrorString*);  // Probably better to return an enum with enum->string mappings available?
 
-  VW_DLL_PUBLIC VWStatus get_model_id(VWWorkspace* all, const char**, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus set_model_id(VWWorkspace* all, const char*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus get_command_line(VWWorkspace* all, const char**, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceGetModelID(VWWorkspace* all, const char**, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceSetModelID(VWWorkspace* all, const char*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceGetCommandLine(VWWorkspace* all, VWString*, VWErrorString*);
 
   // finish is now broken up into finish() and destroy_workspace().
-  VW_DLL_PUBLIC VWStatus finish(VWWorkspace* all, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus destroy_workspace(VWWorkspace* all, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceFinish(VWWorkspace* all, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWDestroyWorkspace(VWWorkspace* all, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus vw_get_pred_type(VWWorkspace* vw, VWPredictionType*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus vw_get_label_type(VWWorkspace* vw, VWLabelType*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceGetPredictionType(VWWorkspace* vw, VWPredictionType*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceGetLabelType(VWWorkspace* vw, VWLabelType*, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus learn(VWWorkspace* vw, VWExample* example, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus learn_multiline(VWWorkspace* vw, VWExample* example, size_t len, VWErrorString*);
+  // TODO add multipredict
 
-  VW_DLL_PUBLIC VWStatus predict(VWWorkspace* vw, VWExample* example, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus predict_multiline(VWWorkspace* vw, VWExample* example, size_t len, VWErrorString*);
+  // These are "Legacy" variants because predictions and labels are in the example object
+  VW_DLL_PUBLIC VWStatus VWWorkspaceLearnLegacy(VWWorkspace* vw, VWExample* example, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceLearnMultilineLegacy(
+      VWWorkspace* vw, VWExample* example, size_t len, VWErrorString*);
+
+  VW_DLL_PUBLIC VWStatus VWWorkspacePredictLegacy(VWWorkspace* vw, VWExample* example, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspacePredictMultilineLegacy(
+      VWWorkspace* vw, VWExample* example, size_t len, VWErrorString*);
 
   // finish one or more examples? How do we handle multi_ex?
-  VW_DLL_PUBLIC VWStatus finish_example(VWWorkspace*, VWExample*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus finish_example_multiline(VWWorkspace*, VWExample*, size_t, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceFinishExample(VWWorkspace*, VWExample*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceFinishExampleMultiline(VWWorkspace*, VWExample*, size_t, VWErrorString*);
 
   // End pass -> all.passes_complete++, in_pass_counter = 0; (something?)
-  VW_DLL_PUBLIC VWStatus end_pass(VWWorkspace* vw, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceEndPass(VWWorkspace* vw, VWErrorString*);
 
 #ifdef __cplusplus
 }
