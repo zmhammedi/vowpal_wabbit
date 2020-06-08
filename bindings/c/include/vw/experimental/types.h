@@ -20,30 +20,30 @@ extern "C"
   static const VWStatus vw_fail = 1;
   static const VWStatus vw_not_implemented = 2;
 
-  typedef uint32_t vw_label_type;
-  static const vw_label_type simple = 0;
-  static const vw_label_type cb = 1;
-  static const vw_label_type cb_eval = 2;
-  static const vw_label_type cs = 3;
-  static const vw_label_type multi = 4;
-  static const vw_label_type mc = 5;
-  static const vw_label_type ccb = 6;
-  static const vw_label_type slates = 7;
+  typedef uint32_t VWLabelType;
+  static const VWLabelType simple = 0;
+  static const VWLabelType cb = 1;
+  static const VWLabelType cb_eval = 2;
+  static const VWLabelType cs = 3;
+  static const VWLabelType multi = 4;
+  static const VWLabelType mc = 5;
+  static const VWLabelType ccb = 6;
+  static const VWLabelType slates = 7;
 
-  typedef uint32_t vw_prediction_type;
-  static const vw_prediction_type scalar = 0;
-  static const vw_prediction_type scalars = 1;
-  static const vw_prediction_type action_scores = 2;
-  static const vw_prediction_type action_probs = 3;
-  static const vw_prediction_type multiclass = 4;
-  static const vw_prediction_type multilabels = 5;
-  static const vw_prediction_type prob = 6;
-  static const vw_prediction_type multiclassprobs = 7;
-  static const vw_prediction_type decision_probs = 8;
+  typedef uint32_t VWPredictionType;
+  static const VWPredictionType scalar = 0;
+  static const VWPredictionType scalars = 1;
+  static const VWPredictionType action_scores = 2;
+  static const VWPredictionType action_probs = 3;
+  static const VWPredictionType multiclass = 4;
+  static const VWPredictionType multilabels = 5;
+  static const VWPredictionType prob = 6;
+  static const VWPredictionType multiclassprobs = 7;
+  static const VWPredictionType decision_probs = 8;
 
-  typedef uint32_t vw_hash_type;
-  static const vw_hash_type all = 0;
-  static const vw_hash_type text = 1;
+  typedef uint32_t VWHashType;
+  static const VWHashType all = 0;
+  static const VWHashType text = 1;
 
   struct VWWorkspace_tag;
   typedef struct VWWorkspace_tag VWWorkspace;
@@ -51,73 +51,64 @@ extern "C"
   struct VWErrorString_tag;
   typedef struct VWErrorString_tag VWErrorString;
 
-  struct vw_str_tag;
-  typedef struct vw_str_tag vw_str;
+  struct VWString_tag;
+  typedef struct VWString_tag VWString;
 
-  struct vw_label_tag;
-  typedef struct vw_label_tag vw_label;
+  struct VWLabel_tag;
+  typedef struct VWLabel_tag VWLabel;
 
-  struct vw_prediction_tag;
-  typedef struct vw_prediction_tag vw_prediction;
+  struct VWPrediction_tag;
+  typedef struct VWPrediction_tag VWPrediction;
 
-  struct vw_example_tag;
-  typedef struct vw_example_tag vw_example;
+  struct VWExample_tag;
+  typedef struct VWExample_tag VWExample;
 
-  struct vw_interactions_tag;
-  typedef struct vw_interactions_tag vw_interactions;
+  struct VWFeatureSpace_tag;
+  typedef struct VWFeatureSpace_tag VWFeatureSpace;
 
-  struct vw_feature_space_tag;
-  typedef struct vw_feature_space_tag vw_feature_space;
+  struct VWDecisionScores_tag;
+  typedef struct VWDecisionScores_tag VWDecisionScores;
 
-  struct vw_feature_space_ref_tag;
-  typedef struct vw_feature_space_ref_tag vw_feature_space_ref;
+  struct VWSimpleLabel_tag;
+  typedef struct VWSimpleLabel_tag VWSimpleLabel;
 
-  struct vw_decision_scores_tag;
-  typedef struct vw_decision_scores_tag vw_decision_scores;
+  struct VWMulticlassLabel_tag;
+  typedef struct VWMulticlassLabel_tag VWMulticlassLabel;
 
-  struct vw_simple_label_tag;
-  typedef struct vw_simple_label_tag vw_simple_label;
+  struct VWCostSensitiveLabel_tag;
+  typedef struct VWCostSensitiveLabel_tag VWCostSensitiveLabel;
 
-  struct vw_multiclass_label_tag;
-  typedef struct vw_multiclass_label_tag vw_multiclass_label;
+  struct VWContextualBanditLabel_tag;
+  typedef struct VWContextualBanditLabel_tag VWContextualBanditLabel;
 
-  struct vw_cs_label_tag;
-  typedef struct vw_cs_label_tag vw_cs_label;
+  struct VWConditionalContextualBanditLabel_tag;
+  typedef struct VWConditionalContextualBanditLabel_tag VWConditionalContextualBanditLabel;
 
-  struct vw_cb_label_tag;
-  typedef struct vw_cb_label_tag vw_cb_label;
+  struct VWSlatesLabel_tag;
+  typedef struct VWSlatesLabel_tag VWSlatesLabel;
 
-  struct vw_ccb_label_tag;
-  typedef struct vw_ccb_label_tag vw_ccb_label;
+  struct VWContexualBanditEvalLabel_tag;
+  typedef struct VWContexualBanditEvalLabel_tag VWContexualBanditEvalLabel;
 
-  struct vw_ccb_outcome_tag;
-  typedef struct vw_ccb_outcome_tag vw_ccb_outcome;
+  struct VWMultilabelsLabel_tag;
+  typedef struct VWMultilabelsLabel_tag VWMultilabelsLabel;
 
-  struct vw_slates_label_tag;
-  typedef struct vw_slates_label_tag vw_slates_label;
+  struct VWWeightIterator_tag;
+  typedef struct VWWeightIterator_tag VWWeightIterator;
 
-  struct vw_cb_eval_label_tag;
-  typedef struct vw_cb_eval_label_tag vw_cb_eval_label;
+  struct VWOptions_tag;
+  typedef struct VWOptions_tag VWOptions;
 
-  struct vw_multilabels_label_tag;
-  typedef struct vw_multilabels_label_tag vw_multilabels_label;
+  typedef VWStatus(VWReadFunc)(void*, char*, size_t, ssize_t*);
+  typedef VWStatus(VWWriteFunc)(void*, const char*, size_t, ssize_t*);
+  typedef VWStatus (*VWTraceMessageFunc)(void*, int trace_level, const char*, size_t);
 
-  struct vw_weight_iter_tag;
-  typedef struct vw_weight_iter_tag vw_weight_iter;
-
-  struct vw_options_tag;
-  typedef struct vw_options_tag vw_options;
-
-  typedef VWStatus(read_func)(void*, char*, size_t, ssize_t*);
-  typedef VWStatus(write_func)(void*, const char*, size_t, ssize_t*);
-  typedef VWStatus (*trace_message_func)(void*, int trace_level, const char*, size_t);
-
-  struct c_action_score_tag
+  struct VWActionScore_tag
   {
     uint32_t action;
     float score;
   };
-  typedef struct c_action_score_tag c_action_score;
+  typedef struct VWActionScore_tag VWActionScore;
 
 #ifdef __cplusplus
 }

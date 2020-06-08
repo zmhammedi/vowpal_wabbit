@@ -5,7 +5,7 @@
 #include "c_io_adapter.h"
 #include "vw/experimental/types.h"
 
-c_reader::c_reader(void* context, read_func* read)
+c_reader::c_reader(void* context, VWReadFunc* read)
     : VW::io::reader(false /* is_resettable */), _context(context), _read_func(read)
 {
 }
@@ -26,7 +26,7 @@ ssize_t c_reader::read(char* buffer, size_t num_bytes)
   return bytes_read;
 }
 
-c_writer::c_writer(void* context, write_func* write) : _context(context), _write_func(write) {}
+c_writer::c_writer(void* context, VWWriteFunc* write) : _context(context), _write_func(write) {}
 
 ssize_t c_writer::write(const char* buffer, size_t num_bytes)
 {

@@ -7,20 +7,20 @@
 
 struct c_reader : public VW::io::reader
 {
-  c_reader(void* context, read_func* read);
+  c_reader(void* context, VWReadFunc* read);
   ssize_t read(char* buffer, size_t num_bytes) override;
 
 private:
   void* _context = nullptr;
-  read_func* _read_func = nullptr;
+  VWReadFunc* _read_func = nullptr;
 };
 
 struct c_writer : public VW::io::writer
 {
-  c_writer(void* context, write_func* write);
+  c_writer(void* context, VWWriteFunc* write);
   ssize_t write(const char* buffer, size_t num_bytes) override;
 
 private:
   void* _context = nullptr;
-  write_func* _write_func = nullptr;
+  VWWriteFunc* _write_func = nullptr;
 };

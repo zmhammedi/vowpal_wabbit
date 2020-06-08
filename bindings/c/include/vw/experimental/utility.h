@@ -15,20 +15,20 @@ extern "C"
   const char* err_to_c_str(VWErrorString*);
   void destroy_err_str(VWErrorString*);
 
-  VWErrorString* create_vw_str();
-  const char* strto_c_str(vw_str*);
-  void destroy_vw_str(vw_str*);
+  VWErrorString* create_VWString();
+  const char* strto_c_str(VWString*);
+  void destroy_VWString(VWString*);
 
   // Saving
-  VW_DLL_PUBLIC VWStatus save_predictor(const VWWorkspace* all, void* context, write_func writer, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus save_predictor(const VWWorkspace* all, void* context, VWWriteFunc writer, VWErrorString*);
 
   // Hashing
   // The one passed in options
-  VW_DLL_PUBLIC VWStatus vw_get_default_hash_type(const VWWorkspace*, vw_hash_type*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus vw_get_default_hash_type(const VWWorkspace*, VWHashType*, VWErrorString*);
   VW_DLL_PUBLIC VWStatus vw_get_default_hash_seed(const VWWorkspace*, uint64_t*, VWErrorString*);
   VW_DLL_PUBLIC VWStatus vw_get_num_bits(const VWWorkspace*, uint64_t*, VWErrorString*);
   VW_DLL_PUBLIC VWStatus vw_hash(
-      const uint8_t* data, size_t length, uint64_t seed, vw_hash_type type, uint64_t*, VWErrorString*);
+      const uint8_t* data, size_t length, uint64_t seed, VWHashType type, uint64_t*, VWErrorString*);
 
   // SPEEDY overloads for direct hashing against the type
   VW_DLL_PUBLIC VWStatus vw_hash_all(const uint8_t* data, size_t length, uint64_t seed, uint64_t*, VWErrorString*);
@@ -45,12 +45,12 @@ extern "C"
   VW_DLL_PUBLIC VWStatus set_weight(
       const VWWorkspace* all, size_t index, const float* weight, size_t width, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus get_weight_iterator_begin(const VWWorkspace* all, vw_weight_iter** iter, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus get_weight_iterator_begin(const VWWorkspace* all, VWWeightIterator** iter, VWErrorString*);
   // Will fail if you're already at the end.
-  VW_DLL_PUBLIC VWStatus weight_iterator_advance(vw_weight_iter* iter, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus weight_iterator_can_advance(const vw_weight_iter* iter, bool*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus weight_iterator_advance(VWWeightIterator* iter, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus weight_iterator_can_advance(const VWWeightIterator* iter, bool*, VWErrorString*);
   VW_DLL_PUBLIC VWStatus weight_iterator_deref(
-      const vw_weight_iter* iter, size_t* index, float** weight, size_t* width, VWErrorString*);
+      const VWWeightIterator* iter, size_t* index, float** weight, size_t* width, VWErrorString*);
 
 #ifdef __cplusplus
 }
