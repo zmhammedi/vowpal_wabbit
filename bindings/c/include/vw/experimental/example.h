@@ -16,43 +16,43 @@ extern "C"
 #endif
 
   // Maybe deprecate this. Seems to be doing stuff that should be done in read/import_example
-  VW_DLL_PUBLIC VWStatus setup_example(VWWorkspace*, VWExample*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSetupExample(VWWorkspace*, VWExample*, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus get_pooled_example(VWWorkspace*, VWExample**, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus return_pooled_example(VWWorkspace*, VWExample**, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWGetPooledExample(VWWorkspace*, VWExample**, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWReturnPooledExample(VWWorkspace*, VWExample**, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus example_get_feature_space_indices(
+  VW_DLL_PUBLIC VWStatus VWExampleGetFeatureSpaceIndices(
       const VWExample*, const unsigned char** indices, size_t* length, VWErrorString*);
   // invalidates pointers
-  VW_DLL_PUBLIC VWStatus example_push_feature_space_index(VWExample*, unsigned char value, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExamplePushFeatureSpaceIndex(VWExample*, unsigned char value, VWErrorString*);
   // invalidates pointers
-  VW_DLL_PUBLIC VWStatus example_remove_feature_space_index(VWExample*, size_t index, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleRemoveFeatureSpaceIndex(VWExample*, size_t index, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus example_get_feature_space(const VWExample*, size_t index, VWFeatureSpace**, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus example_set_feature_space(VWExample*, size_t index, const VWFeatureSpace*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleGetFeatureSpace(const VWExample*, size_t index, VWFeatureSpace**, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleSetFeatureSpace(VWExample*, size_t index, const VWFeatureSpace*, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus example_get_feature_offset(const VWExample*, int* feature_offset, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus example_set_feature_offset(VWExample*, int feature_offset, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleGetFeatureOffset(const VWExample*, int* feature_offset, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleSetFeatureOffset(VWExample*, int feature_offset, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus example_get_tag(const VWExample*, const char** tag, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus example_set_tag(VWExample*, const char* tag, int length, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleGetTag(const VWExample*, const char** tag, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleSetTag(VWExample*, const char* tag, int length, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus example_get_weight(const VWExample*, float* weight, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus example_set_weight(VWExample*, float weight, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleGetWeight(const VWExample*, float* weight, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleSetWeight(VWExample*, float weight, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus example_get_label(const VWExample*, void** label, VWLabelType, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus example_set_label(VWExample*, void* label, VWLabelType, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleGetLabel(const VWExample*, void** label, VWLabelType, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleSetLabel(VWExample*, void* label, VWLabelType, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus example_get_prediction(const VWExample*, void** prediction, VWPredictionType, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus example_set_prediction(VWExample*, void* prediction, VWPredictionType, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleGetPrediction(const VWExample*, void** prediction, VWPredictionType, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleSetPrediction(VWExample*, void* prediction, VWPredictionType, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus get_partial_prediction(const VWExample*, float*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus get_updated_prediction(const VWExample*, float*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus get_loss(const VWExample*, float*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus get_total_sum_feat_sq(const VWExample*, float*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleGetPartialPrediction(const VWExample*, float*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleGetUpdatedPrediction(const VWExample*, float*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleGetLoss(const VWExample*, float*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleGetTotalSumFeatSq(const VWExample*, float*, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus example_get_test_only(const VWExample*, bool* test_only, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus example_set_test_only(VWExample*, bool test_only, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleGetTestOnly(const VWExample*, bool* test_only, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleSetTestOnly(VWExample*, bool test_only, VWErrorString*);
 
 #ifdef __cplusplus
 }
