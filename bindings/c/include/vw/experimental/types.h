@@ -15,10 +15,10 @@ extern "C"
 {
 #endif
 
-  typedef uint32_t vw_status;
-  static const vw_status vw_success = 0;
-  static const vw_status vw_fail = 1;
-  static const vw_status vw_not_implemented = 2;
+  typedef uint32_t VWStatus;
+  static const VWStatus vw_success = 0;
+  static const VWStatus vw_fail = 1;
+  static const VWStatus vw_not_implemented = 2;
 
   typedef uint32_t vw_label_type;
   static const vw_label_type simple = 0;
@@ -108,9 +108,9 @@ extern "C"
   struct vw_options_tag;
   typedef struct vw_options_tag vw_options;
 
-  typedef vw_status(read_func)(void*, char*, size_t, ssize_t*);
-  typedef vw_status(write_func)(void*, const char*, size_t, ssize_t*);
-  typedef vw_status (*trace_message_func)(void*, int trace_level, const char*, size_t);
+  typedef VWStatus(read_func)(void*, char*, size_t, ssize_t*);
+  typedef VWStatus(write_func)(void*, const char*, size_t, ssize_t*);
+  typedef VWStatus (*trace_message_func)(void*, int trace_level, const char*, size_t);
 
   struct c_action_score_tag
   {
