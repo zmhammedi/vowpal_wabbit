@@ -1,10 +1,13 @@
 set(vw_c_public_headers
   include/vw/experimental/example.h
   include/vw/experimental/exports.h
+  include/vw/experimental/feature_space.h
   include/vw/experimental/label.h
+  include/vw/experimental/options.h
   include/vw/experimental/prediction.h
   include/vw/experimental/types.h
   include/vw/experimental/utility.h
+  include/vw/experimental/vw.h
   include/vw/experimental/workspace.h
 )
 
@@ -12,7 +15,9 @@ set(vw_c_impl_files
   src/c_io_adapter.cc
   src/c_io_adapter.h
   src/example.cc
+  src/feature_space.cc
   src/label.cc
+  src/options.cc
   src/parser.cc
   src/prediction.cc
   src/utility.cc

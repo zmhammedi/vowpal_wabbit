@@ -7,6 +7,8 @@
 #include <stdint.h>
 // ssize_t
 #include <sys/types.h>
+// bool
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C"
@@ -48,6 +50,9 @@ extern "C"
 
   struct vw_err_str_tag;
   typedef struct vw_err_str_tag vw_err_str;
+
+  struct vw_str_tag;
+  typedef struct vw_str_tag vw_str;
 
   struct vw_label_tag;
   typedef struct vw_label_tag vw_label;

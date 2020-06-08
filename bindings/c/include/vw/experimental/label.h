@@ -6,15 +6,13 @@
 #include "exports.h"
 #include "types.h"
 
-#include <stdbool.h>
-
 #ifdef __cplusplus
 extern "C"
 {
 #endif
 
-  VW_DLL_PUBLIC vw_status allocate_label(void**, vw_label_type, vw_err_str*);
-  VW_DLL_PUBLIC vw_status deallocate_label(void*, vw_label_type, vw_err_str*);
+  VW_DLL_PUBLIC vw_status create_label(void**, vw_label_type, vw_err_str*);
+  VW_DLL_PUBLIC vw_status destroy_label(void*, vw_label_type, vw_err_str*);
   VW_DLL_PUBLIC vw_status default_label(void*, vw_label_type, vw_err_str*);
   // dest must already be allocated.
   VW_DLL_PUBLIC vw_status copy_label(void*, void*, vw_label_type, vw_err_str*);

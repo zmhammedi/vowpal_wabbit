@@ -1,8 +1,6 @@
 #include <stdio.h>
 
-#include "vw/experimental/example.h"
-#include "vw/experimental/utility.h"
-#include "vw/experimental/parser.h"
+#include "vw/experimental/vw.h"
 
 int main()
 {

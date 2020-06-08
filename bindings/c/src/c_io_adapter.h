@@ -8,7 +8,7 @@
 struct c_reader : public VW::io::reader
 {
   c_reader(void* context, read_func* read);
-  virtual ssize_t read(char* buffer, size_t num_bytes) override;
+  ssize_t read(char* buffer, size_t num_bytes) override;
 
 private:
   void* _context = nullptr;

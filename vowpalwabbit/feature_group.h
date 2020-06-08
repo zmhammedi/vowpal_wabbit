@@ -17,7 +17,7 @@
 #else
 #define ssize_t int64_t
 #endif
- 
+
 typedef float feature_value;
 typedef uint64_t feature_index;
 typedef std::pair<std::string, std::string> audit_strings;
@@ -281,15 +281,15 @@ struct features
     sum_feat_sq = 0.f;
   }
 
-  ~features() { 
+  ~features() {
      values.delete_v();
      indicies.delete_v();
      space_names.delete_v();
    }
    features(const features&) = delete;
    features & operator=( const features& ) = delete;
-   
-   
+
+
    // custom move operators required since we need to leave the old value in
    // a null state to prevent freeing of shallow copied v_arrays
    features(features&& other) :
