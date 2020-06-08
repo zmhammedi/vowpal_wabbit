@@ -29,7 +29,7 @@ extern "C"
   VW_DLL_PUBLIC vw_status example_remove_feature_space_index(vw_example*, size_t index, vw_err_str*);
 
   VW_DLL_PUBLIC vw_status example_get_feature_space(const vw_example*, size_t index, vw_feature_space**, vw_err_str*);
-  VW_DLL_PUBLIC vw_status example_set_feature_space(vw_example*, size_t index, const vw_feature_space*, vw_err_str*);=
+  VW_DLL_PUBLIC vw_status example_set_feature_space(vw_example*, size_t index, const vw_feature_space*, vw_err_str*);
 
   VW_DLL_PUBLIC vw_status example_get_feature_offset(const vw_example*, int* feature_offset, vw_err_str*);
   VW_DLL_PUBLIC vw_status example_set_feature_offset(vw_example*, int feature_offset, vw_err_str*);
