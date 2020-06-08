@@ -18,85 +18,88 @@ extern "C"
   VW_DLL_PUBLIC VWStatus VWCopyLabel(void*, void*, VWLabelType, VWErrorString*);
   VW_DLL_PUBLIC VWStatus VWParseLabel(void* label, const char* label_string, VWLabelType, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus simple_label_get_label(VWSimpleLabel*, float*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus simple_label_set_label(VWSimpleLabel*, float, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus simple_label_get_weight(VWSimpleLabel*, float*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus simple_label_set_weight(VWSimpleLabel*, float, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus simple_label_get_initial(VWSimpleLabel*, float*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus simple_label_set_initial(VWSimpleLabel*, float, VWErrorString*);
+  // TODO once initial and weight become part of example this should change.
+  VW_DLL_PUBLIC VWStatus VWSimpleLabelGetLabel(VWSimpleLabel*, float*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSimpleLabelSetLabel(VWSimpleLabel*, float, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSimpleLabelGetWeight(VWSimpleLabel*, float*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSimpleLabelSetWeight(VWSimpleLabel*, float, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSimpleLabelGetInitial(VWSimpleLabel*, float*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSimpleLabelSetInitial(VWSimpleLabel*, float, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus multiclass_label_get_label(VWMulticlassLabel*, uint32_t*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus multiclass_label_set_label(VWMulticlassLabel*, uint32_t, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus multiclass_label_get_weight(VWMulticlassLabel*, float*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus multiclass_label_set_weight(VWMulticlassLabel*, float, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWMulticlassLabelGetLabel(VWMulticlassLabel*, uint32_t*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWMulticlassLabelSetLabel(VWMulticlassLabel*, uint32_t, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWMulticlassLabelGetWeight(VWMulticlassLabel*, float*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWMulticlassLabelSetWeight(VWMulticlassLabel*, float, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus cs_label_get_length(VWCostSensitiveLabel*, int*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus cs_label_get_item(VWCostSensitiveLabel*, int index, float* x, uint32_t* class_index,
+  VW_DLL_PUBLIC VWStatus VWCSLabelGetLength(VWCSLabel*, size_t*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCSLabelGetItem(VWCSLabel*, size_t index, float* x, uint32_t* class_index,
       float* partial_prediction, float* wap_value, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus cs_label_set_item(
-      VWCostSensitiveLabel*, int index, float x, uint32_t class_index, float partial_prediction, float wap_value, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus cs_label_push_item(
-      VWCostSensitiveLabel*, float x, uint32_t class_index, float partial_prediction, float wap_value, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus cs_label_remove_item(VWCostSensitiveLabel*, int index, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCSLabelSetItem(VWCSLabel*, size_t index, float x, uint32_t class_index,
+      float partial_prediction, float wap_value, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCSLabelPushItem(
+      VWCSLabel*, float x, uint32_t class_index, float partial_prediction, float wap_value, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCSLabelRemoveItem(VWCSLabel*, size_t index, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus cb_label_get_length(VWContextualBanditLabel*, int*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus cb_label_get_weight(VWContextualBanditLabel*, float*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus cb_label_set_weight(VWContextualBanditLabel*, float, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus cb_label_get_item(VWContextualBanditLabel*, int index, float* cost, uint32_t* action, float* probability,
+  VW_DLL_PUBLIC VWStatus VWCBLabelGetWeight(VWCBLabel*, float*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCBLabelSetWeight(VWCBLabel*, float, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCBLabelGetLength(VWCBLabel*, size_t*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCBLabelGetItem(VWCBLabel*, size_t index, float* cost, uint32_t* action, float* probability,
       float* partial_prediction, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus cb_label_set_item(
-      VWContextualBanditLabel*, int index, float cost, uint32_t action, float probability, float partial_prediction, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus cb_label_push_item(
-      VWContextualBanditLabel*, float cost, uint32_t action, float probability, float partial_prediction, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus cb_label_remove_item(VWContextualBanditLabel*, int index, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCBLabelSetItem(VWCBLabel*, size_t index, float cost, uint32_t action, float probability,
+      float partial_prediction, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCBLabelPushItem(
+      VWCBLabel*, float cost, uint32_t action, float probability, float partial_prediction, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCBLabelRemoveItem(VWCBLabel*, size_t index, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus ccb_label_get_type(VWConditionalContextualBanditLabel*, uint8_t* type, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus ccb_label_set_type(VWConditionalContextualBanditLabel*, uint8_t type, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus ccb_label_get_weight(VWConditionalContextualBanditLabel*, float* weight, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus ccb_label_set_weight(VWConditionalContextualBanditLabel*, float weight, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus ccb_label_get_explicit_included_actions(
-      const VWConditionalContextualBanditLabel*, uint32_t** indices, int* length, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus ccb_label_push_explicit_included_actions(VWExample*, uint32_t value, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus ccb_label_remove_explicit_included_actions(VWExample*, int index, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus ccb_label_get_labeled(VWSlatesLabel*, bool* labeled, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus ccb_label_set_labeled(VWSlatesLabel*, bool labeled, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCCBLabelGetType(VWCCBLabel*, uint8_t* type, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCCBLabelSetType(VWCCBLabel*, uint8_t type, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCCBLabelGetWeight(VWCCBLabel*, float* weight, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCCBLabelSetWeight(VWCCBLabel*, float weight, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCCBLabelGetExplicitIncludedActions(
+      const VWCCBLabel*, uint32_t** indices, int* length, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCCBLabelPushExplicitIncludedAction(VWExample*, uint32_t value, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCCBLabelRemoveExplicitIncludedAction(VWExample*, size_t index, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCCBLabelGetLabeled(VWSlatesLabel*, bool* labeled, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCCBLabelSetLabeled(VWSlatesLabel*, bool labeled, VWErrorString*);
   // Because of the way CCB labels are structured, using the get following APIs
   // when labeled is false will result in an error and using set will implicitly
   // turn labeled to true
-  VW_DLL_PUBLIC VWStatus ccb_label_get_cost(VWSlatesLabel*, float* cost, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus ccb_label_set_cost(VWSlatesLabel*, float cost, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus ccb_label_get_length(VWSlatesLabel*, int*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus ccb_label_get_item(VWSlatesLabel*, int index, uint32_t* action, float* score, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus ccb_label_set_item(VWSlatesLabel*, int index, uint32_t action, float score, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus ccb_label_push_item(VWSlatesLabel*, uint32_t action, float score, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus ccb_label_remove_item(VWSlatesLabel*, int index, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCCBLabelGetCost(VWSlatesLabel*, float* cost, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCCBLabelSetCost(VWSlatesLabel*, float cost, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCCBLabelGetLength(VWSlatesLabel*, size_t*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCCBLabelGetItem(
+      VWSlatesLabel*, size_t index, uint32_t* action, float* score, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCCBLabelSetItem(VWSlatesLabel*, size_t index, uint32_t action, float score, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCCBLabelPushItem(VWSlatesLabel*, uint32_t action, float score, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCCBLabelRemoveItem(VWSlatesLabel*, size_t index, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus slates_label_get_type(VWSlatesLabel*, uint8_t* type, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus slates_label_set_type(VWSlatesLabel*, uint8_t type, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus slates_label_get_weight(VWSlatesLabel*, float* weight, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus slates_label_set_weight(VWSlatesLabel*, float weight, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus slates_label_get_cost(VWSlatesLabel*, float* cost, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus slates_label_set_cost(VWSlatesLabel*, float cost, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus slates_label_get_labeled(VWSlatesLabel*, bool* labeled, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus slates_label_set_labeled(VWSlatesLabel*, bool labeled, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus slates_label_get_slot_id(VWSlatesLabel*, uint32_t* slot_id, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus slates_label_set_slot_id(VWSlatesLabel*, uint32_t slot_id, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus slates_label_get_length(VWSlatesLabel*, int*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus slates_label_get_item(
-      VWSlatesLabel*, int index, uint32_t* action, float* score, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus slates_label_set_item(VWSlatesLabel*, int index, uint32_t action, float score, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus slates_label_push_item(VWSlatesLabel*, uint32_t action, float score, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus slates_label_remove_item(VWSlatesLabel*, int index, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSlatesLabelGetType(VWSlatesLabel*, uint8_t* type, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSlatesLabelSetType(VWSlatesLabel*, uint8_t type, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSlatesLabelGetWeight(VWSlatesLabel*, float* weight, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSlatesLabelSetWeight(VWSlatesLabel*, float weight, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSlatesLabelGetCost(VWSlatesLabel*, float* cost, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSlatesLabelSetCost(VWSlatesLabel*, float cost, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSlatesLabelGetLabeled(VWSlatesLabel*, bool* labeled, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSlatesLabelSetLabeled(VWSlatesLabel*, bool labeled, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSlatesLabelGetSlotID(VWSlatesLabel*, uint32_t* slot_id, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSlatesLabelSetSlotID(VWSlatesLabel*, uint32_t slot_id, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSlatesLabelGetLength(VWSlatesLabel*, size_t*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSlatesLabelGetItem(
+      VWSlatesLabel*, size_t index, uint32_t* action, float* score, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSlatesLabelSetItem(
+      VWSlatesLabel*, size_t index, uint32_t action, float score, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSlatesLabelPushItem(VWSlatesLabel*, uint32_t action, float score, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWSlatesLabelRemoveItem(VWSlatesLabel*, size_t index, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus cb_eval_label_get_cb_label(VWContexualBanditEvalLabel*, VWContextualBanditLabel* cb_label, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus cb_eval_label_set_cb_label(VWContexualBanditEvalLabel*, VWContextualBanditLabel cb_label, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus cb_eval_label_get_action(VWContexualBanditEvalLabel*, uint32_t* action, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus cb_eval_label_set_action(VWContexualBanditEvalLabel*, uint32_t action, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCBEvalLabelGetVWCBLabel(VWCBEvalLabel*, VWCBLabel* cb_label, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCBEvalLabelSetVWCBLabel(VWCBEvalLabel*, VWCBLabel cb_label, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCBEvalLabelGetAction(VWCBEvalLabel*, uint32_t* action, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCBEvalLabelSetAction(VWCBEvalLabel*, uint32_t action, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus multilabels_label_get(
-      VWMultilabelsLabel*, uint32_t** multilabels, int* length, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus multilabels_label_push(VWMultilabelsLabel*, uint32_t value, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus multilabels_label_remove(VWMultilabelsLabel*, int index, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWMultilabelsGetItems(
+      VWMultilabelsLabel*, uint32_t** multilabels, size_t* length, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWMultilabelsPushItem(VWMultilabelsLabel*, uint32_t value, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWMultilabelsRemoveItem(VWMultilabelsLabel*, size_t index, VWErrorString*);
 
 #ifdef __cplusplus
 }

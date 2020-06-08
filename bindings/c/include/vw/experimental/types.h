@@ -75,20 +75,20 @@ extern "C"
   struct VWMulticlassLabel_tag;
   typedef struct VWMulticlassLabel_tag VWMulticlassLabel;
 
-  struct VWCostSensitiveLabel_tag;
-  typedef struct VWCostSensitiveLabel_tag VWCostSensitiveLabel;
+  struct VWCSLabel_tag;
+  typedef struct VWCSLabel_tag VWCSLabel;
 
-  struct VWContextualBanditLabel_tag;
-  typedef struct VWContextualBanditLabel_tag VWContextualBanditLabel;
+  struct VWCBLabel_tag;
+  typedef struct VWCBLabel_tag VWCBLabel;
 
-  struct VWConditionalContextualBanditLabel_tag;
-  typedef struct VWConditionalContextualBanditLabel_tag VWConditionalContextualBanditLabel;
+  struct VWCCBLabel_tag;
+  typedef struct VWCCBLabel_tag VWCCBLabel;
 
   struct VWSlatesLabel_tag;
   typedef struct VWSlatesLabel_tag VWSlatesLabel;
 
-  struct VWContexualBanditEvalLabel_tag;
-  typedef struct VWContexualBanditEvalLabel_tag VWContexualBanditEvalLabel;
+  struct VWCBEvalLabel_tag;
+  typedef struct VWCBEvalLabel_tag VWCBEvalLabel;
 
   struct VWMultilabelsLabel_tag;
   typedef struct VWMultilabelsLabel_tag VWMultilabelsLabel;
