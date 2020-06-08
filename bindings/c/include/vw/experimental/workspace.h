@@ -6,8 +6,6 @@
 #include "exports.h"
 #include "types.h"
 
-#include "options.h"
-
 #ifdef __cplusplus
 extern "C"
 {

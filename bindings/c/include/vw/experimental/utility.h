@@ -11,45 +11,45 @@ extern "C"
 {
 #endif
 
-  VWErrorString* create_err_str();
-  const char* err_to_c_str(VWErrorString*);
-  void destroy_err_str(VWErrorString*);
+  VWErrorString* VWCreateErrorString();
+  void VWDestroyErrorString(VWErrorString*);
+  const char* VWErrorStringToCString(VWErrorString*);
 
-  VWErrorString* create_VWString();
-  const char* strto_c_str(VWString*);
-  void destroy_VWString(VWString*);
+  VWString* VWCreateString();
+  void VWDestroyString(VWString*);
+  const char* VWStringToCString(VWString*);
 
   // Saving
-  VW_DLL_PUBLIC VWStatus save_predictor(const VWWorkspace* all, void* context, VWWriteFunc writer, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceSaveModel(const VWWorkspace* all, void* context, VWWriteFunc writer, VWErrorString*);
 
   // Hashing
   // The one passed in options
-  VW_DLL_PUBLIC VWStatus vw_get_default_hash_type(const VWWorkspace*, VWHashType*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus vw_get_default_hash_seed(const VWWorkspace*, uint64_t*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus vw_get_num_bits(const VWWorkspace*, uint64_t*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus vw_hash(
+  VW_DLL_PUBLIC VWStatus VWWorkspaceGetDefaultHashType(const VWWorkspace*, VWHashType*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceGetDefaultHashSeed(const VWWorkspace*, uint64_t*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceGetNumBits(const VWWorkspace*, uint64_t*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWHash(
       const uint8_t* data, size_t length, uint64_t seed, VWHashType type, uint64_t*, VWErrorString*);
 
   // SPEEDY overloads for direct hashing against the type
-  VW_DLL_PUBLIC VWStatus vw_hash_all(const uint8_t* data, size_t length, uint64_t seed, uint64_t*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus vw_hash_string(const char* data, size_t length, uint64_t seed, uint64_t*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWHashAll(const uint8_t* data, size_t length, uint64_t seed, uint64_t*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWHashString(const char* data, size_t length, uint64_t seed, uint64_t*, VWErrorString*);
 
   // Can also be done as: HASH & ((1 << num_bits) - 1)
-  VW_DLL_PUBLIC VWStatus apply_parse_mask(const VWWorkspace* all, uint64_t hash, uint64_t*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceApplyParseMask(const VWWorkspace* all, uint64_t hash, uint64_t*, VWErrorString*);
 
   // Weights
-  VW_DLL_PUBLIC VWStatus get_num_weights(const VWWorkspace*, uint32_t*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus get_parameter_width(const VWWorkspace*, uint32_t*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus get_model_parameter(
+  VW_DLL_PUBLIC VWStatus VWWorkspaceGetNumWeights(const VWWorkspace*, uint32_t*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceGetParameterWidth(const VWWorkspace*, uint32_t*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceGetModelParameter(
       const VWWorkspace* all, size_t index, float** weight, size_t* width, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus set_weight(
+  VW_DLL_PUBLIC VWStatus VWWorkspaceSetWeight(
       const VWWorkspace* all, size_t index, const float* weight, size_t width, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus get_weight_iterator_begin(const VWWorkspace* all, VWWeightIterator** iter, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceGetWeightIteratorBegin(const VWWorkspace* all, VWWeightIterator** iter, VWErrorString*);
   // Will fail if you're already at the end.
-  VW_DLL_PUBLIC VWStatus weight_iterator_advance(VWWeightIterator* iter, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus weight_iterator_can_advance(const VWWeightIterator* iter, bool*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus weight_iterator_deref(
+  VW_DLL_PUBLIC VWStatus VWWeightIteratorAdvance(VWWeightIterator* iter, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWeightIteratorCanAdvance(const VWWeightIterator* iter, bool*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWeightIteratorDereference(
       const VWWeightIterator* iter, size_t* index, float** weight, size_t* width, VWErrorString*);
 
 #ifdef __cplusplus

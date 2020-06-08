@@ -11,12 +11,12 @@ extern "C"
 {
 #endif
 
-  VW_DLL_PUBLIC VWStatus create_label(void**, VWLabelType, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus destroy_label(void*, VWLabelType, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus default_label(void*, VWLabelType, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCreateLabel(void**, VWLabelType, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWDestroyLabel(void*, VWLabelType, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWDefaultLabel(void*, VWLabelType, VWErrorString*);
   // dest must already be allocated.
-  VW_DLL_PUBLIC VWStatus copy_label(void*, void*, VWLabelType, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus parse_label(void* label, const char* label_string, VWLabelType, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCopyLabel(void*, void*, VWLabelType, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWParseLabel(void* label, const char* label_string, VWLabelType, VWErrorString*);
 
   VW_DLL_PUBLIC VWStatus simple_label_get_label(VWSimpleLabel*, float*, VWErrorString*);
   VW_DLL_PUBLIC VWStatus simple_label_set_label(VWSimpleLabel*, float, VWErrorString*);
