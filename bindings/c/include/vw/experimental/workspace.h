@@ -52,6 +52,8 @@ extern "C"
   // End pass -> all.passes_complete++, in_pass_counter = 0; (something?)
   VW_DLL_PUBLIC VWStatus VWWorkspaceEndPass(VWWorkspace* vw, VWErrorString*);
 
+  VW_DLL_PUBLIC VWStatus VWWorkspaceGetSearch(VWWorkspace* vw, VWSearch** search, VWErrorString*);
+
 #ifdef __cplusplus
 }
 #endif

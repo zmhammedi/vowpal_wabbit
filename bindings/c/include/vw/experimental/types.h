@@ -110,6 +110,12 @@ extern "C"
   };
   typedef struct VWActionScore_tag VWActionScore;
 
+  struct VWSearch_tag;
+  typedef struct VWSearch_tag VWSearch;
+
+  struct VWSearchPredictor_tag;
+  typedef struct VWSearchPredictor_tag VWSearchPredictor;
+
 #ifdef __cplusplus
 }
 #endif

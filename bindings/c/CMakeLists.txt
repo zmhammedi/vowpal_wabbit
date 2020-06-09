@@ -5,6 +5,7 @@ set(vw_c_public_headers
   include/vw/experimental/label.h
   include/vw/experimental/options.h
   include/vw/experimental/prediction.h
+  include/vw/experimental/search.h
   include/vw/experimental/types.h
   include/vw/experimental/utility.h
   include/vw/experimental/vw.h
@@ -20,6 +21,7 @@ set(vw_c_impl_files
   src/options.cc
   src/parser.cc
   src/prediction.cc
+  src/search.cc
   src/utility.cc
   src/workspace.cc
 )
