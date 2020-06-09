@@ -28,10 +28,13 @@ extern "C"
   VW_DLL_PUBLIC VWStatus VWSearchGetIsLDF(VWSearch*, bool* isLDF, VWErrorString*);
   VW_DLL_PUBLIC VWStatus VWSearchGetPredictor(VWSearch*, VWSearchPredictor** predictor, uint32_t ptag, VWErrorString*);
 
-  // TODO Implement hooks
-  // typedef VWStatus(VWSearchRunFunc)(void*, VWSearch*);
-  // void set_structured_predict_hook(search_ptr sch, py::object run_object, py::object setup_object, py::object
-  // takedown_object)
+  // This is a rough guess as to what is needed here. We will need to test and update as appropriate.
+  typedef VWStatus(VWSearchRunFunc)(void*);
+  typedef VWStatus(VWSearchSetupFunc)(void*);
+  typedef VWStatus(VWSearchTeardownFunc)(void*);
+  VW_DLL_PUBLIC VWStatus VWSearchPredictorSetPredictHooks(VWSearch*, VWSearchRunFunc* runFunc, void* runContext,
+      VWSearchSetupFunc* setupFunc, void* setupContext, VWSearchTeardownFunc* teardownFunc, void* teardownContext,
+      VWErrorString*);
 
   VW_DLL_PUBLIC VWStatus VWSearchPredictorSetInput(VWSearch*, VWExample* input, VWErrorString*);
   VW_DLL_PUBLIC VWStatus VWSearchPredictorSetInputLength(VWSearch*, size_t inputLength, VWErrorString*);
