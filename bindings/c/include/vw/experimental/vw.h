@@ -10,3 +10,4 @@
 #include "prediction.h"
 #include "utility.h"
 #include "workspace.h"
+#include "search.h"
