@@ -20,7 +20,7 @@ extern "C"
 
   // Returns name of first incompatible feature.
   // TODO deprecate this...
-  VWStatus VWWorkspaceAreFeaturesCompatible(const VWWorkspace*, const VWWorkspace*, VWString*,
+  VW_DLL_PUBLIC VWStatus VWWorkspaceAreFeaturesCompatibleLegacy(const VWWorkspace*, const VWWorkspace*, const char**,
       VWErrorString*);  // Probably better to return an enum with enum->string mappings available?
 
   VW_DLL_PUBLIC VWStatus VWWorkspaceGetModelID(VWWorkspace* all, const char**, VWErrorString*);
@@ -49,7 +49,6 @@ extern "C"
   VW_DLL_PUBLIC VWStatus VWWorkspaceFinishExample(VWWorkspace*, VWExample*, VWErrorString*);
   VW_DLL_PUBLIC VWStatus VWWorkspaceFinishExampleMultiline(VWWorkspace*, VWExample*, size_t, VWErrorString*);
 
-  // End pass -> all.passes_complete++, in_pass_counter = 0; (something?)
   VW_DLL_PUBLIC VWStatus VWWorkspaceEndPass(VWWorkspace* vw, VWErrorString*);
 
   VW_DLL_PUBLIC VWStatus VWWorkspaceGetSearch(VWWorkspace* vw, VWSearch** search, VWErrorString*);

@@ -24,9 +24,12 @@ extern "C"
 
   // Hashing
   // The one passed in options
-  VW_DLL_PUBLIC VWStatus VWWorkspaceGetDefaultHashType(const VWWorkspace*, VWHashType*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus VWWorkspaceGetDefaultHashSeed(const VWWorkspace*, uint64_t*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus VWWorkspaceGetNumBits(const VWWorkspace*, uint64_t*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceGetConfiguredAudit(const VWWorkspace*, bool*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceGetConfiguredHashType(const VWWorkspace*, VWHashType*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceGetConfiguredHashSeed(const VWWorkspace*, uint64_t*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceGetConfiguredNumBits(const VWWorkspace*, uint64_t*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceGetConfiguredHasher(const VWWorkspace*, VWHasher** hasher);
+
   VW_DLL_PUBLIC VWStatus VWHash(
       const uint8_t* data, size_t length, uint64_t seed, VWHashType type, uint64_t*, VWErrorString*);
 

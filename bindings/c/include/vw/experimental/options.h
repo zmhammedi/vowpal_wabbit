@@ -15,7 +15,7 @@ extern "C"
 
   VW_DLL_PUBLIC VWStatus VWCreateOptions(VWOptions**, VWErrorString* err_string);
   VW_DLL_PUBLIC VWStatus VWCreateOptionsFromCommandLine(int argc, char** argv, VWOptions**, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus VWCreateOptionFfromCommandLineCString(const char*, VWOptions**, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCreateOptionsFromCommandLineCString(const char*, VWOptions**, VWErrorString*);
   VW_DLL_PUBLIC VWStatus VWDestroyOptions(VWOptions*, VWErrorString*);
   VW_DLL_PUBLIC VWStatus VWOptionsSetString(VWOptions*, const char* opt_name, const char*, VWErrorString*);
   VW_DLL_PUBLIC VWStatus VWOptionsSetInteger(VWOptions*, const char* opt_name, int32_t, VWErrorString*);

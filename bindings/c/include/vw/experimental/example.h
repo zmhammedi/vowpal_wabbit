@@ -15,11 +15,11 @@ extern "C"
 {
 #endif
 
-  // Maybe deprecate this. Seems to be doing stuff that should be done in read/import_example
-  VW_DLL_PUBLIC VWStatus VWSetupExample(VWWorkspace*, VWExample*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceGetPooledExample(VWWorkspace*, VWExample**, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceReturnPooledExample(VWWorkspace*, VWExample**, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus VWGetPooledExample(VWWorkspace*, VWExample**, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus VWReturnPooledExample(VWWorkspace*, VWExample**, VWErrorString*);
+  // Maybe deprecate this. Seems to be doing stuff that should be done in read/import_example
+  VW_DLL_PUBLIC VWStatus VWExampleSetup(VWWorkspace*, VWExample*, VWErrorString*);
 
   VW_DLL_PUBLIC VWStatus VWExampleGetFeatureSpaceIndices(
       const VWExample*, const unsigned char** indices, size_t* length, VWErrorString*);

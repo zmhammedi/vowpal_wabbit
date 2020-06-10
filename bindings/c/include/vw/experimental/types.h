@@ -116,6 +116,9 @@ extern "C"
   struct VWSearchPredictor_tag;
   typedef struct VWSearchPredictor_tag VWSearchPredictor;
 
+  struct VWHasher_tag;
+  typedef struct VWHasher_tag VWHasher;
+
 #ifdef __cplusplus
 }
 #endif

@@ -13,7 +13,7 @@ extern "C"
 
   // Start the parser+driver loops
   VW_DLL_PUBLIC VWStatus VWRunParserAndDriver(VWWorkspace*, VWErrorString*);
-    
+
   // might return a multiline example in the case of the json parser
   VW_DLL_PUBLIC VWStatus VWParseExample(VWWorkspace*, const char* line, VWExample**, size_t*, VWErrorString*);
 
