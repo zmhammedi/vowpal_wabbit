@@ -15,6 +15,7 @@ set(vw_c_public_headers
 set(vw_c_impl_files
   src/c_io_adapter.cc
   src/c_io_adapter.h
+  src/error_handling.h
   src/example.cc
   src/feature_space.cc
   src/label.cc
@@ -23,6 +24,7 @@ set(vw_c_impl_files
   src/prediction.cc
   src/search.cc
   src/utility.cc
+  src/vw_error_string.h
   src/workspace.cc
 )
 

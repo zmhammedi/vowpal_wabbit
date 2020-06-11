@@ -27,3 +27,9 @@
     #define VW_DLL_LOCAL
   #endif
 #endif
+
+#ifdef __cplusplus
+#define API_NOEXCEPT noexcept
+#else
+#define API_NOEXCEPT
+#endif
