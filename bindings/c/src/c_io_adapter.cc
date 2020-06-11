@@ -19,7 +19,7 @@ ssize_t c_reader::read(char* buffer, size_t num_bytes)
 
   ssize_t bytes_read = 0;
   auto result = _read_func(_context, buffer, num_bytes, &bytes_read);
-  if (result != vw_success)
+  if (result != VW_SUCCESS)
   {
     THROW("Read failed with code: " << result);
   }
@@ -36,7 +36,7 @@ ssize_t c_writer::write(const char* buffer, size_t num_bytes)
   }
   ssize_t bytes_written = 0;
   auto result = _write_func(_context, buffer, num_bytes, &bytes_written);
-  if (result != vw_success)
+  if (result != VW_SUCCESS)
   {
     THROW("Write failed with code: " << result);
   }

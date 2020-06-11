@@ -16,9 +16,9 @@ extern "C"
 #endif
 
   typedef uint32_t VWStatus;
-  static const VWStatus vw_success = 0;
-  static const VWStatus vw_fail = 1;
-  static const VWStatus vw_not_implemented = 2;
+  static const VWStatus VW_SUCCESS = 0;
+  static const VWStatus VW_FAIL = 1;
+  static const VWStatus VW_NOT_IMPLEMENTED = 2;
 
   typedef uint32_t VWLabelType;
   static const VWLabelType simple = 0;
