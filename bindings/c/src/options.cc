@@ -17,6 +17,7 @@
 VW_DLL_PUBLIC VWStatus VWCreateOptions(VWOptions** options, VWErrorString* errorString) noexcept
 try
 {
+  ARG_NOT_NULL(options, errorString);
   *options = reinterpret_cast<VWOptions*>(new VW::config::options_boost_po(std::vector<std::string>{}));
   return VW_SUCCESS;
 }
@@ -26,6 +27,8 @@ VW_DLL_PUBLIC VWStatus VWCreateOptionsFromCommandLine(
     int argc, char** argv, VWOptions** options, VWErrorString* errorString) noexcept
 try
 {
+  ARG_NOT_NULL(options, errorString);
+  ARG_NOT_NULL(argv, errorString);
   *options = reinterpret_cast<VWOptions*>(new VW::config::options_boost_po(argc, argv));
   return VW_SUCCESS;
 }
@@ -35,6 +38,8 @@ VW_DLL_PUBLIC VWStatus VWCreateOptionsFromCommandLineCString(
     const char* commandLine, VWOptions** options, VWErrorString* errorString) noexcept
 try
 {
+  ARG_NOT_NULL(options, errorString);
+  ARG_NOT_NULL(commandLine, errorString);
   std::string tempString(commandLine);
   int argc = 0;
   char** argv = VW::to_argv_escaped(tempString, argc);
@@ -56,6 +61,9 @@ VW_DLL_PUBLIC VWStatus VWOptionsSetString(
     VWOptions* options, const char* option_name, const char* option_value, VWErrorString* errorString) noexcept
 try
 {
+  ARG_NOT_NULL(option_name, errorString);
+  ARG_NOT_NULL(option_value, errorString);
+
   auto* options_i = reinterpret_cast<VW::config::options_i*>(options);
   options_i->replace(option_name, option_value);
   return VW_SUCCESS;
@@ -66,6 +74,8 @@ VW_DLL_PUBLIC VWStatus VWOptionsSetInteger(
     VWOptions* options, const char* option_name, int32_t option_value, VWErrorString* errorString) noexcept
 try
 {
+  ARG_NOT_NULL(option_name, errorString);
+
   auto* options_i = reinterpret_cast<VW::config::options_i*>(options);
   options_i->replace(option_name, std::to_string(option_value));
   return VW_SUCCESS;
@@ -76,6 +86,8 @@ VW_DLL_PUBLIC VWStatus VWOptionsSetFloat(
     VWOptions* options, const char* option_name, float option_value, VWErrorString* errorString) noexcept
 try
 {
+  ARG_NOT_NULL(option_name, errorString);
+
   auto* options_i = reinterpret_cast<VW::config::options_i*>(options);
   options_i->replace(option_name, std::to_string(option_value));
   return VW_SUCCESS;
@@ -86,6 +98,8 @@ VW_DLL_PUBLIC VWStatus VWOptionsSetBool(
     VWOptions* options, const char* option_name, bool option_value, VWErrorString* errorString) noexcept
 try
 {
+  ARG_NOT_NULL(option_name, errorString);
+
   auto* options_i = reinterpret_cast<VW::config::options_i*>(options);
   // TODO - check if passing true or false works
   options_i->replace(option_name, option_value ? "true" : "false");
@@ -97,6 +111,8 @@ VW_DLL_PUBLIC VWStatus VWOptionsListPushString(
     VWOptions* options, const char* option_name, const char* option_value, VWErrorString* errorString) noexcept
 try
 {
+  ARG_NOT_NULL(option_name, errorString);
+  ARG_NOT_NULL(option_value, errorString);
   auto* options_i = reinterpret_cast<VW::config::options_i*>(options);
   options_i->insert(option_name, option_value);
   return VW_SUCCESS;
@@ -107,6 +123,8 @@ VW_DLL_PUBLIC VWStatus VWOptionsListPushInteger(
     VWOptions* options, const char* option_name, int32_t option_value, VWErrorString* errorString) noexcept
 try
 {
+  ARG_NOT_NULL(option_name, errorString);
+
   auto* options_i = reinterpret_cast<VW::config::options_i*>(options);
   options_i->insert(option_name, std::to_string(option_value));
   return VW_SUCCESS;
@@ -117,6 +135,8 @@ VW_DLL_PUBLIC VWStatus VWOptionsListPushFloat(
     VWOptions* options, const char* option_name, float option_value, VWErrorString* errorString) noexcept
 try
 {
+  ARG_NOT_NULL(option_name, errorString);
+
   auto* options_i = reinterpret_cast<VW::config::options_i*>(options);
   options_i->insert(option_name, std::to_string(option_value));
   return VW_SUCCESS;

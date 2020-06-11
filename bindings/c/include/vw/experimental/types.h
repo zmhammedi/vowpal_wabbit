@@ -19,6 +19,7 @@ extern "C"
   static const VWStatus VW_SUCCESS = 0;
   static const VWStatus VW_FAIL = 1;
   static const VWStatus VW_NOT_IMPLEMENTED = 2;
+  static const VWStatus VW_INVALID_ARGUMENT = 3;
 
   typedef uint32_t VWLabelType;
   static const VWLabelType simple = 0;

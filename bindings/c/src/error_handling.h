@@ -30,3 +30,13 @@
     SET_IF_EXISTS(errorStringContainer, "unknown failure");  \
     return VW_FAIL;                                          \
   }
+
+#define ARG_NOT_NULL(arg, errorStringContainer)                           \
+do                                                                                      \
+  {                                                                                       \
+    if (arg == nullptr)                                                  \
+    {                                                                                     \
+      SET_IF_EXISTS(errorStringContainer, #arg " was null" ); \
+      return VW_INVALID_ARGUMENT;                              \
+    }                                                                                     \
+  } while (0)
