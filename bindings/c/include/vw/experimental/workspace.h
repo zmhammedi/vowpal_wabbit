@@ -14,10 +14,10 @@ extern "C"
   VW_DLL_PUBLIC VWStatus VWCreateWorkspace(VWOptions* options_handle, bool skip_model_load,
       VWTraceMessageFunc* trace_listener, void* trace_context, VWWorkspace** output_handle,
       VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWCreateWorkspaceWithModel(VWOptions*, void* context, VWReadFunc* reader, bool skip_model_load,
+  VW_DLL_PUBLIC VWStatus VWCreateWorkspaceWithModel(VWOptions* options_handle, void* context, VWReadFunc* reader, bool skip_model_load,
       VWTraceMessageFunc* trace_listener, void* trace_context, VWWorkspace** output_handle,
       VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWCreateSeededWorkspace(const VWWorkspace* existing_workspace_handle, VWOptions* extra_options,
+  VW_DLL_PUBLIC VWStatus VWCreateSeededWorkspace(const VWWorkspace* existing_workspace_handle, VWOptions* extra_options_handle,
       VWTraceMessageFunc* trace_listener, void* trace_context, VWWorkspace** output_handle,
       VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
@@ -29,11 +29,11 @@ extern "C"
       VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   VW_DLL_PUBLIC VWStatus VWWorkspaceGetModelID(
-      const VWWorkspace* workspace_handle, const char** modelID, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+      const VWWorkspace* workspace_handle, const char** model_id, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus VWWorkspaceSetModelID(
-      VWWorkspace* workspace_handle, const char*, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+      VWWorkspace* workspace_handle, const char* model_id, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus VWWorkspaceGetCommandLine(
-      const VWWorkspace* workspace_handle, VWString*, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+      const VWWorkspace* workspace_handle, VWString* command_line, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   // finish is now broken up into finish() and destroy_workspace().
   VW_DLL_PUBLIC VWStatus VWWorkspaceFinish(
@@ -42,9 +42,9 @@ extern "C"
       VWWorkspace* workspace_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   VW_DLL_PUBLIC VWStatus VWWorkspaceGetPredictionType(
-      const VWWorkspace* workspace_handle, VWPredictionType*, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+      const VWWorkspace* workspace_handle, VWPredictionType* prediction_type, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus VWWorkspaceGetLabelType(
-      const VWWorkspace* workspace_handle, VWLabelType*, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+      const VWWorkspace* workspace_handle, VWLabelType* label_type, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   // TODO add multipredict
 

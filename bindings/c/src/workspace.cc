@@ -29,216 +29,227 @@ std::string get_command_line(const VW::config::options_i* options)
   return serializer.str();
 }
 
-VW_DLL_PUBLIC VWStatus VWCreateWorkspace(VWOptions* options, bool skipModelLoad, VWTraceMessageFunc trace_listener,
-    void* trace_context, VWWorkspace** output, VWErrorString* errorStringContainer) noexcept
+VW_DLL_PUBLIC VWStatus VWCreateWorkspace(VWOptions* options_handle, bool skip_model_load,
+    VWTraceMessageFunc trace_listener, void* trace_context, VWWorkspace** output_handle,
+    VWErrorString* err_str_container) noexcept
 try
 {
-  ARG_NOT_NULL(options, errorStringContainer);
-  ARG_NOT_NULL(output, errorStringContainer);
+  ARG_NOT_NULL(options_handle, err_str_container);
+  ARG_NOT_NULL(output_handle, err_str_container);
 
-  auto* options_i = from_opaque(options);
+  auto* options = from_opaque(options_handle);
 
   // TODO let workspace understand error code based message tracer
-  *output = to_opaque(VW::initialize(*options_i, nullptr, skipModelLoad, nullptr, nullptr));
+  *output_handle = to_opaque(VW::initialize(*options, nullptr, skip_model_load, nullptr, nullptr));
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorStringContainer)
+CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus VWCreateWorkspaceWithModel(VWOptions* options, void* context, VWReadFunc* readFunc,
-    bool skipModelLoad, VWTraceMessageFunc* trace_listener, void* trace_context, VWWorkspace** output,
-    VWErrorString* errorStringContainer) noexcept
+VW_DLL_PUBLIC VWStatus VWCreateWorkspaceWithModel(VWOptions* options_handle, void* context, VWReadFunc* read_func,
+    bool skip_model_load, VWTraceMessageFunc* trace_listener, void* trace_context, VWWorkspace** output_handle,
+    VWErrorString* err_str_container) noexcept
 try
 {
-  ARG_NOT_NULL(options, errorStringContainer);
-  ARG_NOT_NULL(readFunc, errorStringContainer);
-  ARG_NOT_NULL(output, errorStringContainer);
+  ARG_NOT_NULL(options_handle, err_str_container);
+  ARG_NOT_NULL(read_func, err_str_container);
+  ARG_NOT_NULL(output_handle, err_str_container);
 
-  auto* options_i = from_opaque(options);
+  auto* options = from_opaque(options_handle);
 
   io_buf model_buffer;
-  model_buffer.add_file(VW::make_unique<c_reader>(context, readFunc));
+  model_buffer.add_file(VW::make_unique<c_reader>(context, read_func));
 
   // TODO let workspace understand error code based message tracer
-  *output = to_opaque(VW::initialize(*options_i, &model_buffer, skipModelLoad, nullptr, nullptr));
+  *output_handle = to_opaque(VW::initialize(*options, &model_buffer, skip_model_load, nullptr, nullptr));
 
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorStringContainer)
+CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus VWCreateSeededWorkspace(const VWWorkspace* existing_workspace, VWOptions* opts,
-    VWTraceMessageFunc* trace_listener, void* trace_context, VWWorkspace** output,
-    VWErrorString* errorStringContainer) noexcept
+VW_DLL_PUBLIC VWStatus VWCreateSeededWorkspace(const VWWorkspace* existing_workspace_hadnle,
+    VWOptions* extra_options_handle, VWTraceMessageFunc* trace_listener, void* trace_context,
+    VWWorkspace** output_handle, VWErrorString* err_str_container) noexcept
 try
 {
-  ARG_NOT_NULL(existing_workspace, errorStringContainer);
-  ARG_NOT_NULL(output, errorStringContainer);
+  ARG_NOT_NULL(existing_workspace_hadnle, err_str_container);
+  ARG_NOT_NULL(output_handle, err_str_container);
   // TODO seed_vw_model can take a const version but it needs to be implemented
-  auto* existing_vw = from_opaque(const_cast<VWWorkspace*>(existing_workspace));
+  auto* existing_vw = from_opaque(const_cast<VWWorkspace*>(existing_workspace_hadnle));
 
-  std::string extraCommandLine = "";
-  if(opts != nullptr)
+  std::string extra_command_line = "";
+  if (extra_options_handle != nullptr)
   {
-    const auto* options = from_opaque(opts);
-    extraCommandLine = get_command_line(options);
+    const auto* options = from_opaque(extra_options_handle);
+    extra_command_line = get_command_line(options);
   }
 
   // TODO let workspace understand error code based message tracer
-  *output = to_opaque(VW::seed_vw_model(existing_vw, extraCommandLine, nullptr, nullptr));
+  *output_handle = to_opaque(VW::seed_vw_model(existing_vw, extra_command_line, nullptr, nullptr));
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorStringContainer)
+CATCH_RETURN(err_str_container)
 
 // Returns name of first incompatible feature.
 // TODO deprecate this...
 // Probably better to return an enum with enum->string mappings available?
-VW_DLL_PUBLIC VWStatus VWWorkspaceAreFeaturesCompatibleLegacy(const VWWorkspace* workspaceOne,
-    const VWWorkspace* workspaceTwo, const char** incompatibility, VWErrorString* errorStringContainer) noexcept
+VW_DLL_PUBLIC VWStatus VWWorkspaceAreFeaturesCompatibleLegacy(const VWWorkspace* workspace_handle_one,
+    const VWWorkspace* workspace_handle_two, const char** incompatible_feature,
+    VWErrorString* err_str_container) noexcept
 try
 {
-  ARG_NOT_NULL(workspaceOne, errorStringContainer);
-  ARG_NOT_NULL(workspaceTwo, errorStringContainer);
+  ARG_NOT_NULL(workspace_handle_one, err_str_container);
+  ARG_NOT_NULL(workspace_handle_two, err_str_container);
 
-  const auto* w1 = from_opaque(workspaceOne);
-  const auto* w2 = from_opaque(workspaceTwo);
+  const auto* w1 = from_opaque(workspace_handle_one);
+  const auto* w2 = from_opaque(workspace_handle_two);
 
   // TODO are_features_compatible should take const parameters
-  *incompatibility = VW::are_features_compatible(*const_cast<vw*>(w1), *const_cast<vw*>(w2));
+  *incompatible_feature = VW::are_features_compatible(*const_cast<vw*>(w1), *const_cast<vw*>(w2));
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorStringContainer)
+CATCH_RETURN(err_str_container)
 
 VW_DLL_PUBLIC VWStatus VWWorkspaceGetModelID(
-    const VWWorkspace* workspace, const char** modelID, VWErrorString* errorStringContainer) noexcept
+    const VWWorkspace* workspace_handle, const char** model_id, VWErrorString* err_str_container) noexcept
 try
 {
-  ARG_NOT_NULL(workspace, errorStringContainer);
-  ARG_NOT_NULL(modelID, errorStringContainer);
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(model_id, err_str_container);
 
-  const auto* castedWorkspace = from_opaque(workspace);
-  *modelID = castedWorkspace->id.c_str();
+  const auto* workspace = from_opaque(workspace_handle);
+  *model_id = workspace->id.c_str();
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorStringContainer)
+CATCH_RETURN(err_str_container)
 
 VW_DLL_PUBLIC VWStatus VWWorkspaceSetModelID(
-    VWWorkspace* workspace, const char* modelID, VWErrorString* errorStringContainer) noexcept
+    VWWorkspace* workspace_handle, const char* model_id, VWErrorString* err_str_container) noexcept
 try
 {
-  ARG_NOT_NULL(workspace, errorStringContainer);
-  ARG_NOT_NULL(modelID, errorStringContainer);
-  auto* castedWorkspace = from_opaque(workspace);
-  castedWorkspace->id = modelID;
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(model_id, err_str_container);
+  auto* workspace = from_opaque(workspace_handle);
+  workspace->id = model_id;
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorStringContainer)
+CATCH_RETURN(err_str_container)
 
 VW_DLL_PUBLIC VWStatus VWWorkspaceGetCommandLine(
-    const VWWorkspace* workspace, VWString* commandLine, VWErrorString* errorStringContainer) noexcept
+    const VWWorkspace* workspace_handle, VWString* command_line, VWErrorString* err_str_container) noexcept
 try
 {
-  ARG_NOT_NULL(workspace, errorStringContainer);
-  ARG_NOT_NULL(commandLine, errorStringContainer);
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(command_line, err_str_container);
 
-  const auto* vwObject = from_opaque(workspace);
-  auto* ownedCommandLine = from_opaque(commandLine);
-  ownedCommandLine->string_data = get_command_line(vwObject->options);
+  const auto* workspace = from_opaque(workspace_handle);
+  auto* owned_command_line = from_opaque(command_line);
+  owned_command_line->string_data = get_command_line(workspace->options);
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorStringContainer)
+CATCH_RETURN(err_str_container)
 
 // finish is now broken up into finish() and destroy_workspace().
-VW_DLL_PUBLIC VWStatus VWWorkspaceFinish(VWWorkspace* workspace, VWErrorString* errorStringContainer) noexcept
+VW_DLL_PUBLIC VWStatus VWWorkspaceFinish(VWWorkspace* workspace_handle, VWErrorString* err_str_container) noexcept
 try
 {
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  auto* workspace = from_opaque(workspace_handle);
+  VW::finish(*workspace, false /*delete_all*/);
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorStringContainer)
+CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus VWDestroyWorkspace(VWWorkspace* workspace, VWErrorString* errorStringContainer) noexcept
+VW_DLL_PUBLIC VWStatus VWDestroyWorkspace(VWWorkspace* workspace_handle, VWErrorString* err_str_container) noexcept
 try
 {
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  auto* workspace = from_opaque(workspace_handle);
+  delete workspace;
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorStringContainer)
+CATCH_RETURN(err_str_container)
 
 VW_DLL_PUBLIC VWStatus VWWorkspaceGetPredictionType(
-    const VWWorkspace* vw, VWPredictionType* predictiontype, VWErrorString* errorStringContainer) noexcept
+    const VWWorkspace* workspace_handle, VWPredictionType* prediction_type, VWErrorString* err_str_container) noexcept
 try
 {
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  auto* vwObject = from_opaque(workspace_handle);
+
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorStringContainer)
+CATCH_RETURN(err_str_container)
 
 VW_DLL_PUBLIC VWStatus VWWorkspaceGetLabelType(
-    const VWWorkspace* vw, VWLabelType* labelType, VWErrorString* errorStringContainer) noexcept
+    const VWWorkspace* workspace_handle, VWLabelType* label_type, VWErrorString* err_str_container) noexcept
 try
 {
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorStringContainer)
+CATCH_RETURN(err_str_container)
 
 // These are "Legacy" variants because predictions and labels are in the example object
 VW_DLL_PUBLIC VWStatus VWWorkspaceLearnLegacy(
-    VWWorkspace* vw, VWExample* example, VWErrorString* errorStringContainer) noexcept
+    VWWorkspace* workspace_handle, VWExample* example_handle, VWErrorString* err_str_container) noexcept
 try
 {
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorStringContainer)
+CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus VWWorkspaceLearnMultilineLegacy(
-    VWWorkspace* vw, VWExample* example, size_t len, VWErrorString* errorStringContainer) noexcept
+VW_DLL_PUBLIC VWStatus VWWorkspaceLearnMultilineLegacy(VWWorkspace* workspace_handle, VWExample* example_handle_list,
+    size_t example_handle_list_length, VWErrorString* err_str_container) noexcept
 try
 {
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorStringContainer)
+CATCH_RETURN(err_str_container)
 
 VW_DLL_PUBLIC VWStatus VWWorkspacePredictLegacy(
-    VWWorkspace* vw, VWExample* example, VWErrorString* errorStringContainer) noexcept
+    VWWorkspace* workspace_handle, VWExample* example_handle, VWErrorString* err_str_container) noexcept
 try
 {
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorStringContainer)
+CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus VWWorkspacePredictMultilineLegacy(
-    VWWorkspace* vw, VWExample* example, size_t len, VWErrorString* errorStringContainer) noexcept
+VW_DLL_PUBLIC VWStatus VWWorkspacePredictMultilineLegacy(VWWorkspace* workspace_handle, VWExample* example_handle_list,
+    size_t example_handle_list_length, VWErrorString* err_str_container) noexcept
 try
 {
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorStringContainer)
+CATCH_RETURN(err_str_container)
 
 // finish one or more examples? How do we handle multi_ex?
 VW_DLL_PUBLIC VWStatus VWWorkspaceFinishExample(
-    VWWorkspace* workspace, VWExample* example, VWErrorString* errorStringContainer) noexcept
+    VWWorkspace* workspace_handle, VWExample* example_handle, VWErrorString* err_str_container) noexcept
 try
 {
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorStringContainer)
+CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus VWWorkspaceFinishExampleMultiline(
-    VWWorkspace* workspace, VWExample* examplePtr, size_t length, VWErrorString* errorStringContainer) noexcept
+VW_DLL_PUBLIC VWStatus VWWorkspaceFinishExampleMultiline(VWWorkspace* workspace_handle, VWExample* example_handle_list,
+    size_t example_handle_list_length, VWErrorString* err_str_container) noexcept
 try
 {
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorStringContainer)
+CATCH_RETURN(err_str_container)
 
 // End pass -> workspace.passes_complete++, in_pass_counter = 0; (something?)
-VW_DLL_PUBLIC VWStatus VWWorkspaceEndPass(VWWorkspace* vw, VWErrorString* errorStringContainer) noexcept
+VW_DLL_PUBLIC VWStatus VWWorkspaceEndPass(VWWorkspace* workspace_handle, VWErrorString* err_str_container) noexcept
 try
 {
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorStringContainer)
+CATCH_RETURN(err_str_container)
 
 VW_DLL_PUBLIC VWStatus VWWorkspaceGetSearch(
-    const VWWorkspace* vw, VWSearch** search, VWErrorString* errorStringContainer) noexcept
+    const VWWorkspace* workspace_handle, VWSearch** search_handle, VWErrorString* err_str_container) noexcept
 try
 {
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorStringContainer)
+CATCH_RETURN(err_str_container)
