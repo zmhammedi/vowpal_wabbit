@@ -121,6 +121,9 @@ extern "C"
   struct VWHasher_tag;
   typedef struct VWHasher_tag VWHasher;
 
+  struct VWExampleArray_tag;
+  typedef struct VWExampleArray_tag VWExampleArray;
+
 #ifdef __cplusplus
 }
 #endif
