@@ -3,7 +3,6 @@
 // license as described in the file LICENSE.
 #pragma once
 
-#include <stddef.h>
 #include "exports.h"
 #include "types.h"
 

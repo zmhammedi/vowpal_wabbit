@@ -3,12 +3,8 @@
 // license as described in the file LICENSE.
 #pragma once
 
-#include <cstddef>
-
 #include "exports.h"
 #include "types.h"
-
-#include "feature_space.h"
 
 #ifdef __cplusplus
 extern "C"

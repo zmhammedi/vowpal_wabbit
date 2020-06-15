@@ -5,6 +5,7 @@
 #pragma once
 
 #include <stdint.h>
+#include <stddef.h>
 // ssize_t
 #include <sys/types.h>
 // bool
