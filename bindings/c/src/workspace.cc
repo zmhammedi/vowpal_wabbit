@@ -12,6 +12,7 @@
 #include "options.h"
 #include "vw.h"
 #include "options_serializer_boost_po.h"
+#include "vw/experimental/types.h"
 #include "vw/experimental/utility.h"
 
 std::string get_command_line(const VW::config::options_i* options)
@@ -174,8 +175,9 @@ VW_DLL_PUBLIC VWStatus VWWorkspaceGetPredictionType(
 try
 {
   ARG_NOT_NULL(workspace_handle, err_str_container);
-  auto* vwObject = from_opaque(workspace_handle);
-
+  ARG_NOT_NULL(prediction_type, err_str_container);
+  auto* workspace = from_opaque(workspace_handle);
+  *prediction_type = internal_to_c_enum(workspace->l->pred_type);
   return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
@@ -184,6 +186,10 @@ VW_DLL_PUBLIC VWStatus VWWorkspaceGetLabelType(
     const VWWorkspace* workspace_handle, VWLabelType* label_type, VWErrorString* err_str_container) noexcept
 try
 {
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(label_type, err_str_container);
+  auto* workspace = from_opaque(workspace_handle);
+  *label_type = internal_to_c_enum(workspace->label_type);
   return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
@@ -193,14 +199,25 @@ VW_DLL_PUBLIC VWStatus VWWorkspaceLearnLegacy(
     VWWorkspace* workspace_handle, VWExample* example_handle, VWErrorString* err_str_container) noexcept
 try
 {
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(example_handle, err_str_container);
+  auto* workspace = from_opaque(workspace_handle);
+  auto* example = from_opaque(example_handle);
+  workspace->learn(*example);
   return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus VWWorkspaceLearnMultilineLegacy(VWWorkspace* workspace_handle, VWExample* example_handle_list,
+VW_DLL_PUBLIC VWStatus VWWorkspaceLearnMultilineLegacy(VWWorkspace* workspace_handle, VWExample** example_handle_list,
     size_t example_handle_list_length, VWErrorString* err_str_container) noexcept
 try
 {
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(example_handle_list, err_str_container);
+  auto* workspace = from_opaque(workspace_handle);
+  auto* example_list = reinterpret_cast<example**>(example_handle_list);
+  std::vector<example*> example_vec(example_list, example_list + example_handle_list_length);
+  workspace->learn(example_vec);
   return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
@@ -209,6 +226,11 @@ VW_DLL_PUBLIC VWStatus VWWorkspacePredictLegacy(
     VWWorkspace* workspace_handle, VWExample* example_handle, VWErrorString* err_str_container) noexcept
 try
 {
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(example_handle, err_str_container);
+  auto* workspace = from_opaque(workspace_handle);
+  auto* example = from_opaque(example_handle);
+  workspace->predict(*example);
   return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
@@ -217,6 +239,13 @@ VW_DLL_PUBLIC VWStatus VWWorkspacePredictMultilineLegacy(VWWorkspace* workspace_
     size_t example_handle_list_length, VWErrorString* err_str_container) noexcept
 try
 {
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(example_handle_list, err_str_container);
+  auto* workspace = from_opaque(workspace_handle);
+  auto* example_list = reinterpret_cast<example**>(example_handle_list);
+  std::vector<example*> example_vec(example_list, example_list + example_handle_list_length);
+  workspace->predict(example_vec);
+
   return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
@@ -226,6 +255,11 @@ VW_DLL_PUBLIC VWStatus VWWorkspaceFinishExample(
     VWWorkspace* workspace_handle, VWExample* example_handle, VWErrorString* err_str_container) noexcept
 try
 {
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(example_handle, err_str_container);
+  auto* workspace = from_opaque(workspace_handle);
+  auto* example = from_opaque(example_handle);
+  workspace->finish_example(*example);
   return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
@@ -234,6 +268,12 @@ VW_DLL_PUBLIC VWStatus VWWorkspaceFinishExampleMultiline(VWWorkspace* workspace_
     size_t example_handle_list_length, VWErrorString* err_str_container) noexcept
 try
 {
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(example_handle_list, err_str_container);
+  auto* workspace = from_opaque(workspace_handle);
+  auto* example_list = reinterpret_cast<example**>(example_handle_list);
+  std::vector<example*> example_vec(example_list, example_list + example_handle_list_length);
+  workspace->finish_example(example_vec);
   return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
@@ -242,6 +282,11 @@ CATCH_RETURN(err_str_container)
 VW_DLL_PUBLIC VWStatus VWWorkspaceEndPass(VWWorkspace* workspace_handle, VWErrorString* err_str_container) noexcept
 try
 {
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  auto* workspace = from_opaque(workspace_handle);
+  workspace->passes_complete++;
+  workspace->p->in_pass_counter = 0;
+  workspace->l->end_pass();
   return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
@@ -250,6 +295,10 @@ VW_DLL_PUBLIC VWStatus VWWorkspaceGetSearch(
     const VWWorkspace* workspace_handle, VWSearch** search_handle, VWErrorString* err_str_container) noexcept
 try
 {
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(search_handle, err_str_container);
+  auto* workspace = from_opaque(workspace_handle);
+  *search_handle = reinterpret_cast<VWSearch*>(workspace->searchstr);
   return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
