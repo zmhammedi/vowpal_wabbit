@@ -34,9 +34,9 @@ extern "C"
       VWSearch* search_handle, VWSearchPredictor** predictor, uint32_t ptag, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   // This is a rough guess as to what is needed here. We will need to test and update as appropriate.
-  typedef VWStatus(VWSearchRunFunc)(void*) VW_API_NOEXCEPT;
-  typedef VWStatus(VWSearchSetupFunc)(void*) VW_API_NOEXCEPT;
-  typedef VWStatus(VWSearchTeardownFunc)(void*) VW_API_NOEXCEPT;
+  typedef VWStatus(VWSearchRunFunc)(void*);
+  typedef VWStatus(VWSearchSetupFunc)(void*);
+  typedef VWStatus(VWSearchTeardownFunc)(void*);
   VW_DLL_PUBLIC VWStatus VWSearchPredictorSetPredictHooks(VWSearch* search_handle, VWSearchRunFunc* runFunc,
       void* runContext, VWSearchSetupFunc* setupFunc, void* setupContext, VWSearchTeardownFunc* teardownFunc,
       void* teardownContext, VWErrorString* err_str_container) VW_API_NOEXCEPT;
