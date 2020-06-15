@@ -66,7 +66,7 @@ extern "C"
   VW_DLL_PUBLIC VWStatus VWExampleGetLoss(
       const VWExample* example_handle, float* loss, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus VWExampleGetTotalSumFeatSq(
-      const VWExample* example_handle, float total_sum_feat_sq*, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+      const VWExample* example_handle, float* total_sum_feat_sq, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   VW_DLL_PUBLIC VWStatus VWExampleGetTestOnly(
       const VWExample* example_handle, bool* test_only, VWErrorString* err_str_container) VW_API_NOEXCEPT;
