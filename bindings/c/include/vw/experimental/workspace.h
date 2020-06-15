@@ -51,20 +51,20 @@ extern "C"
   // These are "Legacy" variants because predictions and labels are in the example object
   VW_DLL_PUBLIC VWStatus VWWorkspaceLearnLegacy(
       VWWorkspace* workspace_handle, VWExample* example_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWWorkspaceLearnMultilineLegacy(VWWorkspace* workspace_handle, VWExample* example_handle_list,
+  VW_DLL_PUBLIC VWStatus VWWorkspaceLearnMultilineLegacy(VWWorkspace* workspace_handle, VWExample** example_handle_list,
       size_t example_handle_list_length, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   VW_DLL_PUBLIC VWStatus VWWorkspacePredictLegacy(
       VWWorkspace* workspace_handle, VWExample* example_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus VWWorkspacePredictMultilineLegacy(VWWorkspace* workspace_handle,
-      VWExample* example_handle_list, size_t example_handle_list_length,
+      VWExample** example_handle_list, size_t example_handle_list_length,
       VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   // finish one or more examples? How do we handle multi_ex?
   VW_DLL_PUBLIC VWStatus VWWorkspaceFinishExample(
       VWWorkspace* workspace_handle, VWExample* example_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus VWWorkspaceFinishExampleMultiline(VWWorkspace* workspace_handle,
-      VWExample* example_handle_list, size_t example_handle_list_length,
+      VWExample** example_handle_list, size_t example_handle_list_length,
       VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   VW_DLL_PUBLIC VWStatus VWWorkspaceEndPass(
