@@ -4,10 +4,10 @@
 // license as described in the file LICENSE.
 #pragma once
 
+// uint32_t, uint64_t, etc
 #include <stdint.h>
+// size_t
 #include <stddef.h>
-// ssize_t
-#include <sys/types.h>
 // bool
 #include <stdbool.h>
 
@@ -101,8 +101,8 @@ extern "C"
   struct VWOptions_tag;
   typedef struct VWOptions_tag VWOptions;
 
-  typedef VWStatus(VWReadFunc)(void*, char*, size_t, ssize_t*);
-  typedef VWStatus(VWWriteFunc)(void*, const char*, size_t, ssize_t*);
+  typedef VWStatus(VWReadFunc)(void*, char*, size_t, size_t*);
+  typedef VWStatus(VWWriteFunc)(void*, const char*, size_t, size_t*);
   typedef VWStatus(VWTraceMessageFunc)(void*, int trace_level, const char*, size_t);
 
   struct VWActionScore_tag
