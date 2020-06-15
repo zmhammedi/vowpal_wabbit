@@ -52,7 +52,7 @@ VWPredictionType internal_to_c_enum(prediction_type_t internal_type)
   }
 }
 
-prediction_type_t c_to_internal_enum(VWPredictionType c_type)
+prediction_type_t c_to_internal_enum_pred(VWPredictionType c_type)
 {
   switch (c_type)
   {
@@ -78,8 +78,8 @@ VWLabelType internal_to_c_enum(label_type_t internal_type)
     PRED_CASE(label_type_t::cb, VW_LABEL_CB);
     PRED_CASE(label_type_t::cb_eval, VW_LABEL_CB_EVAL);
     PRED_CASE(label_type_t::cs, VW_LABEL_CS);
-    PRED_CASE(label_type_t::multi, VW_LABEL_MULTI);
-    PRED_CASE(label_type_t::mc, VW_LABEL_MC);
+    PRED_CASE(label_type_t::multi, VW_LABEL_MULTILABELS);
+    PRED_CASE(label_type_t::mc, VW_LABEL_MULTICLASS);
     PRED_CASE(label_type_t::ccb, VW_LABEL_CCB);
     PRED_CASE(label_type_t::slates, VW_LABEL_SLATES);
     default:
@@ -87,7 +87,7 @@ VWLabelType internal_to_c_enum(label_type_t internal_type)
   }
 }
 
-label_type_t c_to_internal_enum(VWLabelType c_type)
+label_type_t c_to_internal_enum_label(VWLabelType c_type)
 {
   switch (c_type)
   {
@@ -95,8 +95,8 @@ label_type_t c_to_internal_enum(VWLabelType c_type)
     PRED_CASE(VW_LABEL_CB, label_type_t::cb);
     PRED_CASE(VW_LABEL_CB_EVAL, label_type_t::cb_eval);
     PRED_CASE(VW_LABEL_CS, label_type_t::cs);
-    PRED_CASE(VW_LABEL_MULTI, label_type_t::multi);
-    PRED_CASE(VW_LABEL_MC, label_type_t::mc);
+    PRED_CASE(VW_LABEL_MULTILABELS, label_type_t::multi);
+    PRED_CASE(VW_LABEL_MULTICLASS, label_type_t::mc);
     PRED_CASE(VW_LABEL_CCB, label_type_t::ccb);
     PRED_CASE(VW_LABEL_SLATES, label_type_t::slates);
     default:
