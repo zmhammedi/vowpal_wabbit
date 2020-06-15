@@ -40,11 +40,11 @@ extern "C"
   VW_DLL_PUBLIC VWStatus VWExampleGetWeight(const VWExample*, float* weight, VWErrorString*);
   VW_DLL_PUBLIC VWStatus VWExampleSetWeight(VWExample*, float weight, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus VWExampleGetLabel(const VWExample*, void** label, VWLabelType, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus VWExampleSetLabel(VWExample*, void* label, VWLabelType, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleGetLabel(const VWExample*, VWLabel** label, VWLabelType, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleSetLabel(VWExample*, VWLabel* label, VWLabelType, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus VWExampleGetPrediction(const VWExample*, void** prediction, VWPredictionType, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus VWExampleSetPrediction(VWExample*, void* prediction, VWPredictionType, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleGetPrediction(const VWExample*, VWPrediction** prediction, VWPredictionType, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleSetPrediction(VWExample*, VWPrediction* prediction, VWPredictionType, VWErrorString*);
 
   VW_DLL_PUBLIC VWStatus VWExampleGetPartialPrediction(const VWExample*, float*, VWErrorString*);
   VW_DLL_PUBLIC VWStatus VWExampleGetUpdatedPrediction(const VWExample*, float*, VWErrorString*);

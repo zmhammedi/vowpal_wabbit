@@ -11,14 +11,14 @@ extern "C"
 {
 #endif
 
-  VW_DLL_PUBLIC VWStatus VWPredictionAsScalar(void* prediction, float*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus VWPredictionAsProb(void* prediction, float*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus VWPredictionAsScalars(void* scalars, float*, int* length, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus VWPredictionAsActionScores(void* prediction, const VWActionScore**, int length, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus VWPredictionAsActionProbs(void* prediction, const VWActionScore**, int length, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus VWPredictionAsMulticlass(void* prediction, uint32_t*, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus VWPredictionAsMultilabels(void* prediction, const uint32_t**, int length, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus VWPredictionAsDecisionScores(void* prediction, const VWDecisionScores**, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWPredictionAsScalar(VWPrediction* prediction, float*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWPredictionAsProb(VWPrediction* prediction, float*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWPredictionAsScalars(VWPrediction* scalars, float*, int* length, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWPredictionAsActionScores(VWPrediction* prediction, const VWActionScore**, int length, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWPredictionAsActionProbs(VWPrediction* prediction, const VWActionScore**, int length, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWPredictionAsMulticlass(VWPrediction* prediction, uint32_t*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWPredictionAsMultilabels(VWPrediction* prediction, const uint32_t**, int length, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWPredictionAsDecisionScores(VWPrediction* prediction, const VWDecisionScores**, VWErrorString*);
 
   VW_DLL_PUBLIC VWStatus VWDecisionScoresGetLength(const VWDecisionScores* prediction, int* length, VWErrorString*);
   VW_DLL_PUBLIC VWStatus VWDecisionScoresGetAt(VWDecisionScores* prediction, int index, const VWActionScore**, int length, VWErrorString*);

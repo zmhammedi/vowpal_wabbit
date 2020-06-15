@@ -11,12 +11,12 @@ extern "C"
 {
 #endif
 
-  VW_DLL_PUBLIC VWStatus VWCreateLabel(void**, VWLabelType, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus VWDestroyLabel(void*, VWLabelType, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus VWDefaultLabel(void*, VWLabelType, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCreateLabel(VWLabel**, VWLabelType, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWDestroyLabel(VWLabel*, VWLabelType, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWDefaultLabel(VWLabel*, VWLabelType, VWErrorString*);
   // dest must already be allocated.
-  VW_DLL_PUBLIC VWStatus VWCopyLabel(void*, void*, VWLabelType, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus VWParseLabel(void* label, const char* label_string, VWLabelType, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCopyLabel(VWLabel*, VWLabel*, VWLabelType, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWParseLabel(VWLabel* label, const char* label_string, VWLabelType, VWErrorString*);
 
   // TODO once initial and weight become part of example this should change.
   VW_DLL_PUBLIC VWStatus VWSimpleLabelGetLabel(VWSimpleLabel*, float*, VWErrorString*);
