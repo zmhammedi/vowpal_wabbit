@@ -11,32 +11,38 @@ extern "C"
 {
 #endif
 
-  VW_DLL_PUBLIC VWStatus VWCreateFeatureSpace(VWFeatureSpace**, bool audit, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus VWDestroyFeatureSpace(VWFeatureSpace*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWCreateFeatureSpace(
+      VWFeatureSpace** feature_space_handle, bool audit, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus VWDestroyFeatureSpace(
+      VWFeatureSpace* feature_space_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
-  VW_DLL_PUBLIC VWStatus VWFeatureSpaceCopy(const VWFeatureSpace*, VWFeatureSpace*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWFeatureSpaceCopy(const VWFeatureSpace* dest_feature_space_handle,
+      VWFeatureSpace* src_feature_space_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
-  VW_DLL_PUBLIC VWStatus VWFeatureSpaceGetFeatures(
-      VWFeatureSpace*, const uint64_t** ft_indices, const float** ft_values, int* length, VWErrorString*);
-
-  // invalidates pointers
-  VW_DLL_PUBLIC VWStatus VWFeatureSpacePushAnonymousFeatureFloat(
-      VWFeatureSpace*, float ft_value, const char* namespace_name, VWHasher* hasher, VWErrorString*);
-
-  // invalidates pointers
-  VW_DLL_PUBLIC VWStatus VWFeatureSpacePushFeatureFloat(VWFeatureSpace*, float ft_value, const char* namespace_name,
-      const char* feature_name, VWHasher* hasher, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWFeatureSpaceGetFeatures(VWFeatureSpace* feature_space_handle, const uint64_t** ft_indices,
+      const float** ft_values, int* length, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   // invalidates pointers
-  VW_DLL_PUBLIC VWStatus VWFeatureSpacePushFeatureString(VWFeatureSpace*, const char* ft_value,
-      const char* namespace_name, const char* feature_name, VWHasher* hasher, bool chain_hash, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWFeatureSpacePushAnonymousFeatureFloat(VWFeatureSpace* feature_space_handle, float ft_value,
+      const char* namespace_name, VWHasher* hasher, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   // invalidates pointers
-  VW_DLL_PUBLIC VWStatus VWFeatureSpaceRemoveFeature(VWFeatureSpace*, int index, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWFeatureSpacePushFeatureFloat(VWFeatureSpace* feature_space_handle, float ft_value,
+      const char* namespace_name, const char* feature_name, VWHasher* hasher,
+      VWErrorString* err_str_container) VW_API_NOEXCEPT;
+
+  // invalidates pointers
+  VW_DLL_PUBLIC VWStatus VWFeatureSpacePushFeatureString(VWFeatureSpace* feature_space_handle, const char* ft_value,
+      const char* namespace_name, const char* feature_name, VWHasher* hasher, bool chain_hash,
+      VWErrorString* err_str_container) VW_API_NOEXCEPT;
+
+  // invalidates pointers
+  VW_DLL_PUBLIC VWStatus VWFeatureSpaceRemoveFeature(
+      VWFeatureSpace* feature_space_handle, int index, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   // Will return nullptr if not in audit mode.
-  VW_DLL_PUBLIC VWStatus VWFeatureSpaceGetAuditString(
-      VWFeatureSpace*, size_t index, const char** namespace_name, const char** feature_name, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWFeatureSpaceGetAuditString(VWFeatureSpace* feature_space_handle, size_t index,
+      const char** namespace_name, const char** feature_name, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
 #ifdef __cplusplus
 }
