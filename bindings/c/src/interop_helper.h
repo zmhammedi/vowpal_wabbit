@@ -11,12 +11,12 @@
 #include "vw.h"
 
 #define FROM_OPAQUE_FUNCS(C_TYPE, CPP_TYPE)                                       \
-  CPP_TYPE* from_opaque(C_TYPE* ptr) { return reinterpret_cast<CPP_TYPE*>(ptr); } \
-  const CPP_TYPE* from_opaque(const C_TYPE* ptr) { return reinterpret_cast<const CPP_TYPE*>(ptr); }
+  inline CPP_TYPE* from_opaque(C_TYPE* ptr) { return reinterpret_cast<CPP_TYPE*>(ptr); } \
+  inline const CPP_TYPE* from_opaque(const C_TYPE* ptr) { return reinterpret_cast<const CPP_TYPE*>(ptr); }
 
 #define TO_OPAQUE_FUNCS(C_TYPE, CPP_TYPE)                                     \
-  C_TYPE* to_opaque(CPP_TYPE* ptr) { return reinterpret_cast<C_TYPE*>(ptr); } \
-  const C_TYPE* to_opaque(const CPP_TYPE* ptr) { return reinterpret_cast<const C_TYPE*>(ptr); }
+  inline C_TYPE* to_opaque(CPP_TYPE* ptr) { return reinterpret_cast<C_TYPE*>(ptr); } \
+  inline const C_TYPE* to_opaque(const CPP_TYPE* ptr) { return reinterpret_cast<const C_TYPE*>(ptr); }
 
 #define TO_FROM_OPAQUE_FUNCS(C_TYPE, CPP_TYPE) \
   FROM_OPAQUE_FUNCS(C_TYPE, CPP_TYPE)          \
@@ -34,7 +34,7 @@ TO_FROM_OPAQUE_FUNCS(VWExample, example);
   case internal_type:                    \
     return c_type;
 
-VWPredictionType internal_to_c_enum(prediction_type_t internal_type)
+inline VWPredictionType internal_to_c_enum(prediction_type_t internal_type)
 {
   switch (internal_type)
   {
@@ -52,7 +52,7 @@ VWPredictionType internal_to_c_enum(prediction_type_t internal_type)
   }
 }
 
-prediction_type_t c_to_internal_enum_pred(VWPredictionType c_type)
+inline prediction_type_t c_to_internal_enum_pred(VWPredictionType c_type)
 {
   switch (c_type)
   {
@@ -70,7 +70,7 @@ prediction_type_t c_to_internal_enum_pred(VWPredictionType c_type)
   }
 }
 
-VWLabelType internal_to_c_enum(label_type_t internal_type)
+inline VWLabelType internal_to_c_enum(label_type_t internal_type)
 {
   switch (internal_type)
   {
@@ -87,7 +87,7 @@ VWLabelType internal_to_c_enum(label_type_t internal_type)
   }
 }
 
-label_type_t c_to_internal_enum_label(VWLabelType c_type)
+inline label_type_t c_to_internal_enum_label(VWLabelType c_type)
 {
   switch (c_type)
   {
