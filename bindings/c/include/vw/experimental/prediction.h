@@ -12,25 +12,25 @@ extern "C"
 #endif
 
   VW_DLL_PUBLIC VWStatus VWPredictionAsScalar(
-      VWPrediction* prediction, float* scalar, VWErrorString* err_str_container);
-  VW_DLL_PUBLIC VWStatus VWPredictionAsProb(VWPrediction* prediction, float* prob, VWErrorString* err_str_container);
+      VWPrediction* prediction, float* scalar, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus VWPredictionAsProb(VWPrediction* prediction, float* prob, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus VWPredictionAsScalars(
-      VWPrediction* prediction, float* scalars, int* length, VWErrorString* err_str_container);
+      VWPrediction* prediction, float* scalars, int* length, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus VWPredictionAsActionScores(
-      VWPrediction* prediction, const VWActionScore** action_scores, int length, VWErrorString* err_str_container);
+      VWPrediction* prediction, const VWActionScore** action_scores, int length, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus VWPredictionAsActionProbs(
-      VWPrediction* prediction, const VWActionScore** action_probs, int length, VWErrorString* err_str_container);
+      VWPrediction* prediction, const VWActionScore** action_probs, int length, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus VWPredictionAsMulticlass(
-      VWPrediction* prediction, uint32_t* multiclass, VWErrorString* err_str_container);
+      VWPrediction* prediction, uint32_t* multiclass, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus VWPredictionAsMultilabels(
-      VWPrediction* prediction, const uint32_t** multilabels, int length, VWErrorString* err_str_container);
+      VWPrediction* prediction, const uint32_t** multilabels, int length, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus VWPredictionAsDecisionScores(
-      VWPrediction* prediction, const VWDecisionScores** decision_scores, VWErrorString* err_str_container);
+      VWPrediction* prediction, const VWDecisionScores** decision_scores, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   VW_DLL_PUBLIC VWStatus VWDecisionScoresGetLength(
-      const VWDecisionScores* prediction, int* length, VWErrorString* err_str_container);
+      const VWDecisionScores* prediction, int* length, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus VWDecisionScoresGetAt(const VWDecisionScores* prediction, int index,
-      const VWActionScore** action_scores, int length, VWErrorString* err_str_container);
+      const VWActionScore** action_scores, int length, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
 #ifdef __cplusplus
 }
