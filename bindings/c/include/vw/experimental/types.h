@@ -22,25 +22,25 @@ extern "C"
   static const VWStatus VW_INVALID_ARGUMENT = 3;
 
   typedef uint32_t VWLabelType;
-  static const VWLabelType simple = 0;
-  static const VWLabelType cb = 1;
-  static const VWLabelType cb_eval = 2;
-  static const VWLabelType cs = 3;
-  static const VWLabelType multi = 4;
-  static const VWLabelType mc = 5;
-  static const VWLabelType ccb = 6;
-  static const VWLabelType slates = 7;
+  static const VWLabelType VWLabelSimple = 0;
+  static const VWLabelType VWLabelCB = 1;
+  static const VWLabelType VWLabelCBEval = 2;
+  static const VWLabelType VWLabelCS = 3;
+  static const VWLabelType VWLabelMulti = 4;
+  static const VWLabelType VWLabelMC = 5;
+  static const VWLabelType VWLabelCCB = 6;
+  static const VWLabelType VWLabelSlates = 7;
 
   typedef uint32_t VWPredictionType;
-  static const VWPredictionType scalar = 0;
-  static const VWPredictionType scalars = 1;
-  static const VWPredictionType action_scores = 2;
-  static const VWPredictionType action_probs = 3;
-  static const VWPredictionType multiclass = 4;
-  static const VWPredictionType multilabels = 5;
-  static const VWPredictionType prob = 6;
-  static const VWPredictionType multiclassprobs = 7;
-  static const VWPredictionType decision_probs = 8;
+  static const VWPredictionType VWPredictionScalar = 0;
+  static const VWPredictionType VWPredictionScalars = 1;
+  static const VWPredictionType VWPredictionActionScores = 2;
+  static const VWPredictionType VWPredictionActionProbs = 3;
+  static const VWPredictionType VWPredictionMulticlass = 4;
+  static const VWPredictionType VWPredictionMultiLabels = 5;
+  static const VWPredictionType VWPredictionProb = 6;
+  static const VWPredictionType VWPredictionMulticlassProbs = 7;
+  static const VWPredictionType VWPredictionDecisionProbs = 8;
 
   typedef uint32_t VWHashType;
   static const VWHashType all = 0;
