@@ -27,8 +27,8 @@ extern "C"
   static const VWLabelType VW_LABEL_CB = 1;
   static const VWLabelType VW_LABEL_CB_EVAL = 2;
   static const VWLabelType VW_LABEL_CS = 3;
-  static const VWLabelType VW_LABEL_MULTI = 4;
-  static const VWLabelType VW_LABEL_MC = 5;
+  static const VWLabelType VW_LABEL_MULTILABELS = 4;
+  static const VWLabelType VW_LABEL_MULTICLASS = 5;
   static const VWLabelType VW_LABEL_CCB = 6;
   static const VWLabelType VW_LABEL_SLATES = 7;
 

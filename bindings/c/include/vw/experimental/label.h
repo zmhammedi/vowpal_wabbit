@@ -15,8 +15,15 @@ extern "C"
   VW_DLL_PUBLIC VWStatus VWDestroyLabel(VWLabel*, VWLabelType, VWErrorString*);
   VW_DLL_PUBLIC VWStatus VWDefaultLabel(VWLabel*, VWLabelType, VWErrorString*);
   // dest must already be allocated.
-  VW_DLL_PUBLIC VWStatus VWCopyLabel(VWLabel*, VWLabel*, VWLabelType, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus VWParseLabel(VWLabel* label, const char* label_string, VWLabelType, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWLabelAsSimple(VWLabel*, VWSimpleLabel**, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWLabelAsCB(VWLabel*, VWCBLabel**, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWLabelAsCBEval(VWLabel*, VWCBEvalLabel**, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWLabelAsCS(VWLabel*, VWCSLabel**, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWLabelAsMultilabels(VWLabel*, VWMultilabelsLabel**, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWLabelAsMulticlass(VWLabel*, VWMulticlassLabel**, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWLabelAsCCB(VWLabel*, VWCCBLabel**, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWLabelAsSlates(VWLabel*, VWSlatesLabel**, VWErrorString*);
+
 
   // TODO once initial and weight become part of example this should change.
   VW_DLL_PUBLIC VWStatus VWSimpleLabelGetLabel(VWSimpleLabel*, float*, VWErrorString*);
