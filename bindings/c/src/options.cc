@@ -4,141 +4,140 @@
 
 #include "vw/experimental/options.h"
 
-#include "vw_error_string.h"
 #include "error_handling.h"
+#include "interop_helper.h"
 
 #include "options_boost_po.h"
 #include "scope_exit.h"
 #include "vw.h"
-#include "vw_exception.h"
 
 #include <vector>
 
-VW_DLL_PUBLIC VWStatus VWCreateOptions(VWOptions** options, VWErrorString* errorString) noexcept
+VW_DLL_PUBLIC VWStatus VWCreateOptions(VWOptions** optionsHandle, VWErrorString* errStrContainer) noexcept
 try
 {
-  ARG_NOT_NULL(options, errorString);
-  *options = reinterpret_cast<VWOptions*>(new VW::config::options_boost_po(std::vector<std::string>{}));
+  ARG_NOT_NULL(optionsHandle, errStrContainer);
+  *optionsHandle = reinterpret_cast<VWOptions*>(new VW::config::options_boost_po(std::vector<std::string>{}));
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorString)
+CATCH_RETURN(errStrContainer)
 
 VW_DLL_PUBLIC VWStatus VWCreateOptionsFromCommandLine(
-    int argc, char** argv, VWOptions** options, VWErrorString* errorString) noexcept
+    int argc, char** argv, VWOptions** optionsHandle, VWErrorString* errStrContainer) noexcept
 try
 {
-  ARG_NOT_NULL(options, errorString);
-  ARG_NOT_NULL(argv, errorString);
-  *options = reinterpret_cast<VWOptions*>(new VW::config::options_boost_po(argc, argv));
+  ARG_NOT_NULL(optionsHandle, errStrContainer);
+  ARG_NOT_NULL(argv, errStrContainer);
+  *optionsHandle = reinterpret_cast<VWOptions*>(new VW::config::options_boost_po(argc, argv));
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorString)
+CATCH_RETURN(errStrContainer)
 
 VW_DLL_PUBLIC VWStatus VWCreateOptionsFromCommandLineCString(
-    const char* commandLine, VWOptions** options, VWErrorString* errorString) noexcept
+    const char* commandLine, VWOptions** optionsHandle, VWErrorString* errStrContainer) noexcept
 try
 {
-  ARG_NOT_NULL(options, errorString);
-  ARG_NOT_NULL(commandLine, errorString);
+  ARG_NOT_NULL(optionsHandle, errStrContainer);
+  ARG_NOT_NULL(commandLine, errStrContainer);
   std::string tempString(commandLine);
   int argc = 0;
   char** argv = VW::to_argv_escaped(tempString, argc);
   const auto scope_exit = VW::scope_exit([argc, argv] { VW::free_args(argc, argv); });
-  return VWCreateOptionsFromCommandLine(argc, argv, options, errorString);
+  return VWCreateOptionsFromCommandLine(argc, argv, optionsHandle, errStrContainer);
 }
-CATCH_RETURN(errorString)
+CATCH_RETURN(errStrContainer)
 
-VW_DLL_PUBLIC VWStatus VWDestroyOptions(VWOptions* options, VWErrorString* errorString) noexcept
+VW_DLL_PUBLIC VWStatus VWDestroyOptions(VWOptions* optionsHandle, VWErrorString* errStrContainer) noexcept
 try
 {
-  auto* options_i = reinterpret_cast<VW::config::options_i*>(options);
-  delete options_i;
+  auto* options = from_opaque(optionsHandle);
+  delete options;
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorString)
+CATCH_RETURN(errStrContainer)
 
 VW_DLL_PUBLIC VWStatus VWOptionsSetString(
-    VWOptions* options, const char* option_name, const char* option_value, VWErrorString* errorString) noexcept
+    VWOptions* optionsHandle, const char* optionName, const char* optionValue, VWErrorString* errStrContainer) noexcept
 try
 {
-  ARG_NOT_NULL(option_name, errorString);
-  ARG_NOT_NULL(option_value, errorString);
+  ARG_NOT_NULL(optionName, errStrContainer);
+  ARG_NOT_NULL(optionValue, errStrContainer);
 
-  auto* options_i = reinterpret_cast<VW::config::options_i*>(options);
-  options_i->replace(option_name, option_value);
+  auto* options = from_opaque(optionsHandle);
+  options->replace(optionName, optionValue);
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorString)
+CATCH_RETURN(errStrContainer)
 
 VW_DLL_PUBLIC VWStatus VWOptionsSetInteger(
-    VWOptions* options, const char* option_name, int32_t option_value, VWErrorString* errorString) noexcept
+    VWOptions* optionsHandle, const char* optionName, int32_t optionValue, VWErrorString* errStrContainer) noexcept
 try
 {
-  ARG_NOT_NULL(option_name, errorString);
+  ARG_NOT_NULL(optionName, errStrContainer);
 
-  auto* options_i = reinterpret_cast<VW::config::options_i*>(options);
-  options_i->replace(option_name, std::to_string(option_value));
+  auto* options = from_opaque(optionsHandle);
+  options->replace(optionName, std::to_string(optionValue));
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorString)
+CATCH_RETURN(errStrContainer)
 
 VW_DLL_PUBLIC VWStatus VWOptionsSetFloat(
-    VWOptions* options, const char* option_name, float option_value, VWErrorString* errorString) noexcept
+    VWOptions* optionsHandle, const char* optionName, float optionValue, VWErrorString* errStrContainer) noexcept
 try
 {
-  ARG_NOT_NULL(option_name, errorString);
+  ARG_NOT_NULL(optionName, errStrContainer);
 
-  auto* options_i = reinterpret_cast<VW::config::options_i*>(options);
-  options_i->replace(option_name, std::to_string(option_value));
+  auto* options = from_opaque(optionsHandle);
+  options->replace(optionName, std::to_string(optionValue));
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorString)
+CATCH_RETURN(errStrContainer)
 
 VW_DLL_PUBLIC VWStatus VWOptionsSetBool(
-    VWOptions* options, const char* option_name, bool option_value, VWErrorString* errorString) noexcept
+    VWOptions* optionsHandle, const char* optionName, bool optionValue, VWErrorString* errStrContainer) noexcept
 try
 {
-  ARG_NOT_NULL(option_name, errorString);
+  ARG_NOT_NULL(optionName, errStrContainer);
 
-  auto* options_i = reinterpret_cast<VW::config::options_i*>(options);
+  auto* options = from_opaque(optionsHandle);
   // TODO - check if passing true or false works
-  options_i->replace(option_name, option_value ? "true" : "false");
+  options->replace(optionName, optionValue ? "true" : "false");
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorString)
+CATCH_RETURN(errStrContainer)
 
 VW_DLL_PUBLIC VWStatus VWOptionsListPushString(
-    VWOptions* options, const char* option_name, const char* option_value, VWErrorString* errorString) noexcept
+    VWOptions* optionsHandle, const char* optionName, const char* optionValue, VWErrorString* errStrContainer) noexcept
 try
 {
-  ARG_NOT_NULL(option_name, errorString);
-  ARG_NOT_NULL(option_value, errorString);
-  auto* options_i = reinterpret_cast<VW::config::options_i*>(options);
-  options_i->insert(option_name, option_value);
+  ARG_NOT_NULL(optionName, errStrContainer);
+  ARG_NOT_NULL(optionValue, errStrContainer);
+  auto* options = from_opaque(optionsHandle);
+  options->insert(optionName, optionValue);
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorString)
+CATCH_RETURN(errStrContainer)
 
 VW_DLL_PUBLIC VWStatus VWOptionsListPushInteger(
-    VWOptions* options, const char* option_name, int32_t option_value, VWErrorString* errorString) noexcept
+    VWOptions* optionsHandle, const char* optionName, int32_t optionValue, VWErrorString* errStrContainer) noexcept
 try
 {
-  ARG_NOT_NULL(option_name, errorString);
+  ARG_NOT_NULL(optionName, errStrContainer);
 
-  auto* options_i = reinterpret_cast<VW::config::options_i*>(options);
-  options_i->insert(option_name, std::to_string(option_value));
+  auto* options = from_opaque(optionsHandle);
+  options->insert(optionName, std::to_string(optionValue));
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorString)
+CATCH_RETURN(errStrContainer)
 
 VW_DLL_PUBLIC VWStatus VWOptionsListPushFloat(
-    VWOptions* options, const char* option_name, float option_value, VWErrorString* errorString) noexcept
+    VWOptions* optionsHandle, const char* optionName, float optionValue, VWErrorString* errStrContainer) noexcept
 try
 {
-  ARG_NOT_NULL(option_name, errorString);
+  ARG_NOT_NULL(optionName, errStrContainer);
 
-  auto* options_i = reinterpret_cast<VW::config::options_i*>(options);
-  options_i->insert(option_name, std::to_string(option_value));
+  auto* options = from_opaque(optionsHandle);
+  options->insert(optionName, std::to_string(optionValue));
   return VW_SUCCESS;
 }
-CATCH_RETURN(errorString)
+CATCH_RETURN(errStrContainer)

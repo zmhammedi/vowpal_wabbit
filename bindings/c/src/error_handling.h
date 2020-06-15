@@ -4,13 +4,18 @@
 
 #pragma once
 
+#include <exception>
+
+#include "owned_string.h"
+#include "vw_exception.h"
+
 #define SET_IF_EXISTS(errorStringContainer, errorStringContent)                           \
   do                                                                                      \
   {                                                                                       \
     if (errorStringContainer != nullptr)                                                  \
     {                                                                                     \
-      auto* errString__LINE__ = reinterpret_cast<vw_error_string*>(errorStringContainer); \
-      errString__LINE__->error_message = errorStringContent;                              \
+      auto* errString__LINE__ = reinterpret_cast<owned_string*>(errorStringContainer); \
+      errString__LINE__->string_data = errorStringContent;                              \
     }                                                                                     \
   } while (0)
 

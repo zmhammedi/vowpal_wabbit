@@ -28,8 +28,8 @@ extern "C"
   // invalidates pointers
   VW_DLL_PUBLIC VWStatus VWExampleRemoveFeatureSpaceIndex(VWExample*, size_t index, VWErrorString*);
 
-  VW_DLL_PUBLIC VWStatus VWExampleGetFeatureSpace(const VWExample*, size_t index, VWFeatureSpace**, VWErrorString*);
-  VW_DLL_PUBLIC VWStatus VWExampleSetFeatureSpace(VWExample*, size_t index, const VWFeatureSpace*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleGetFeatureSpace(const VWExample*, unsigned char index, VWFeatureSpace**, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWExampleSetFeatureSpace(VWExample*, unsigned char index, const VWFeatureSpace*, VWErrorString*);
 
   VW_DLL_PUBLIC VWStatus VWExampleGetFeatureOffset(const VWExample*, int* feature_offset, VWErrorString*);
   VW_DLL_PUBLIC VWStatus VWExampleSetFeatureOffset(VWExample*, int feature_offset, VWErrorString*);

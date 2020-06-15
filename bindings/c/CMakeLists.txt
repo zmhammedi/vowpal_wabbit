@@ -18,13 +18,14 @@ set(vw_c_impl_files
   src/error_handling.h
   src/example.cc
   src/feature_space.cc
+  src/interop_helper.h
   src/label.cc
   src/options.cc
+  src/owned_string.h
   src/parser.cc
   src/prediction.cc
   src/search.cc
   src/utility.cc
-  src/vw_error_string.h
   src/workspace.cc
 )
 

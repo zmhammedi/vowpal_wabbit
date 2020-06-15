@@ -11,13 +11,13 @@ extern "C"
 {
 #endif
 
-  VWErrorString* VWCreateErrorString();
-  void VWDestroyErrorString(VWErrorString*);
-  const char* VWErrorStringToCString(VWErrorString*);
+  VWErrorString* VWCreateErrorString() VW_API_NOEXCEPT;
+  void VWDestroyErrorString(VWErrorString*) VW_API_NOEXCEPT;
+  const char* VWErrorStringToCString(VWErrorString*) VW_API_NOEXCEPT;
 
-  VWString* VWCreateString();
-  void VWDestroyString(VWString*);
-  const char* VWStringToCString(VWString*);
+  VWString* VWCreateString() VW_API_NOEXCEPT;
+  void VWDestroyString(VWString*) VW_API_NOEXCEPT;
+  const char* VWStringToCString(VWString*) VW_API_NOEXCEPT;
 
   // Saving
   VW_DLL_PUBLIC VWStatus VWWorkspaceSaveModel(const VWWorkspace* all, void* context, VWWriteFunc writer, VWErrorString*);
@@ -43,6 +43,7 @@ extern "C"
   // Weights
   VW_DLL_PUBLIC VWStatus VWWorkspaceGetNumWeights(const VWWorkspace*, uint32_t*, VWErrorString*);
   VW_DLL_PUBLIC VWStatus VWWorkspaceGetParameterWidth(const VWWorkspace*, uint32_t*, VWErrorString*);
+  VW_DLL_PUBLIC VWStatus VWWorkspaceGetWeightsPerProblem(const VWWorkspace*, uint32_t*, VWErrorString*);
   VW_DLL_PUBLIC VWStatus VWWorkspaceGetModelParameter(
       const VWWorkspace* all, size_t index, float** weight, size_t* width, VWErrorString*);
   VW_DLL_PUBLIC VWStatus VWWorkspaceSetWeight(

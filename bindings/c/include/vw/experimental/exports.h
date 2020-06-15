@@ -29,7 +29,7 @@
 #endif
 
 #ifdef __cplusplus
-#define API_NOEXCEPT noexcept
+#define VW_API_NOEXCEPT noexcept
 #else
-#define API_NOEXCEPT
+#define VW_API_NOEXCEPT
 #endif

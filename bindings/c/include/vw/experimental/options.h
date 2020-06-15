@@ -13,17 +13,26 @@ extern "C"
 {
 #endif
 
-  VW_DLL_PUBLIC VWStatus VWCreateOptions(VWOptions**, VWErrorString* err_string) API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWCreateOptionsFromCommandLine(int argc, char** argv, VWOptions**, VWErrorString*) API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWCreateOptionsFromCommandLineCString(const char*, VWOptions**, VWErrorString*) API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWDestroyOptions(VWOptions*, VWErrorString*) API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWOptionsSetString(VWOptions*, const char* opt_name, const char*, VWErrorString*) API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWOptionsSetInteger(VWOptions*, const char* opt_name, int32_t, VWErrorString*) API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWOptionsSetFloat(VWOptions*, const char* opt_name, float, VWErrorString*) API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWOptionsSetBool(VWOptions*, const char* opt_name, bool, VWErrorString*) API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWOptionsListPushString(VWOptions*, const char* opt_name, const char*, VWErrorString*) API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWOptionsListPushInteger(VWOptions*, const char* opt_name, int32_t, VWErrorString*) API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWOptionsListPushFloat(VWOptions*, const char* opt_name, float, VWErrorString*) API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus VWCreateOptions(VWOptions** optionsHandle, VWErrorString* errStrContainer) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus VWCreateOptionsFromCommandLine(
+      int argc, char** argv, VWOptions** optionsHandle, VWErrorString* errStrContainer) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus VWCreateOptionsFromCommandLineCString(
+      const char* commandLine, VWOptions** optionsHandle, VWErrorString* errStrContainer) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus VWDestroyOptions(VWOptions* optionsHandle, VWErrorString* errStrContainer) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus VWOptionsSetString(VWOptions* optionsHandle, const char* optionName, const char* optionValue,
+      VWErrorString* errStrContainer) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus VWOptionsSetInteger(VWOptions* optionsHandle, const char* optionName, int32_t optionValue,
+      VWErrorString* errStrContainer) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus VWOptionsSetFloat(VWOptions* optionsHandle, const char* optionName, float optionValue,
+      VWErrorString* errStrContainer) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus VWOptionsSetBool(VWOptions* optionsHandle, const char* optionName, bool optionValue,
+      VWErrorString* errStrContainer) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus VWOptionsListPushString(VWOptions* optionsHandle, const char* optionName,
+      const char* optionValue, VWErrorString* errStrContainer) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus VWOptionsListPushInteger(VWOptions* optionsHandle, const char* optionName, int32_t optionValue,
+      VWErrorString* errStrContainer) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus VWOptionsListPushFloat(VWOptions* optionsHandle, const char* optionName, float optionValue,
+      VWErrorString* errStrContainer) VW_API_NOEXCEPT;
 
 #ifdef __cplusplus
 }

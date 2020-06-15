@@ -102,7 +102,7 @@ extern "C"
 
   typedef VWStatus(VWReadFunc)(void*, char*, size_t, ssize_t*);
   typedef VWStatus(VWWriteFunc)(void*, const char*, size_t, ssize_t*);
-  typedef VWStatus (*VWTraceMessageFunc)(void*, int trace_level, const char*, size_t);
+  typedef VWStatus(VWTraceMessageFunc)(void*, int trace_level, const char*, size_t);
 
   struct VWActionScore_tag
   {
