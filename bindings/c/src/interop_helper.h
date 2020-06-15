@@ -38,15 +38,15 @@ VWPredictionType internal_to_c_enum(prediction_type_t internal_type)
 {
   switch (internal_type)
   {
-    PRED_CASE(prediction_type_t::scalar, VWPredictionScalar);
-    PRED_CASE(prediction_type_t::scalars, VWPredictionScalars);
-    PRED_CASE(prediction_type_t::action_scores, VWPredictionActionScores);
-    PRED_CASE(prediction_type_t::action_probs, VWPredictionActionProbs);
-    PRED_CASE(prediction_type_t::multiclass, VWPredictionMulticlass);
-    PRED_CASE(prediction_type_t::multilabels, VWPredictionMultiLabels);
-    PRED_CASE(prediction_type_t::prob, VWPredictionProb);
-    PRED_CASE(prediction_type_t::multiclassprobs, VWPredictionMulticlassProbs);
-    PRED_CASE(prediction_type_t::decision_probs, VWPredictionDecisionProbs);
+    PRED_CASE(prediction_type_t::scalar, VW_PRED_SCALAR);
+    PRED_CASE(prediction_type_t::scalars, VW_PRED_SCALARS);
+    PRED_CASE(prediction_type_t::action_scores, VW_PRED_ACTION_SCORES);
+    PRED_CASE(prediction_type_t::action_probs, VW_PRED_ACTION_PROBS);
+    PRED_CASE(prediction_type_t::multiclass, VW_PRED_ACTION_MULTICLASS);
+    PRED_CASE(prediction_type_t::multilabels, VW_PRED_ACTION_MULTILABELS);
+    PRED_CASE(prediction_type_t::prob, VW_PRED_PROB);
+    PRED_CASE(prediction_type_t::multiclassprobs, VW_PRED_MUTLICLASS_PROBS);
+    PRED_CASE(prediction_type_t::decision_probs, VW_PRED_DECISION_PROBS);
     default:
       THROW("Unknown prediction type. Cannot convert.");
   }
@@ -56,15 +56,15 @@ prediction_type_t c_to_internal_enum(VWPredictionType c_type)
 {
   switch (c_type)
   {
-    PRED_CASE(VWPredictionScalar, prediction_type_t::scalar);
-    PRED_CASE(VWPredictionScalars, prediction_type_t::scalars);
-    PRED_CASE(VWPredictionActionScores, prediction_type_t::action_scores);
-    PRED_CASE(VWPredictionActionProbs, prediction_type_t::action_probs);
-    PRED_CASE(VWPredictionMulticlass, prediction_type_t::multiclass);
-    PRED_CASE(VWPredictionMultiLabels, prediction_type_t::multilabels);
-    PRED_CASE(VWPredictionProb, prediction_type_t::prob);
-    PRED_CASE(VWPredictionMulticlassProbs, prediction_type_t::multiclassprobs);
-    PRED_CASE(VWPredictionDecisionProbs, prediction_type_t::decision_probs);
+    PRED_CASE(VW_PRED_SCALAR, prediction_type_t::scalar);
+    PRED_CASE(VW_PRED_SCALARS, prediction_type_t::scalars);
+    PRED_CASE(VW_PRED_ACTION_SCORES, prediction_type_t::action_scores);
+    PRED_CASE(VW_PRED_ACTION_PROBS, prediction_type_t::action_probs);
+    PRED_CASE(VW_PRED_ACTION_MULTICLASS, prediction_type_t::multiclass);
+    PRED_CASE(VW_PRED_ACTION_MULTILABELS, prediction_type_t::multilabels);
+    PRED_CASE(VW_PRED_PROB, prediction_type_t::prob);
+    PRED_CASE(VW_PRED_MUTLICLASS_PROBS, prediction_type_t::multiclassprobs);
+    PRED_CASE(VW_PRED_DECISION_PROBS, prediction_type_t::decision_probs);
     default:
       THROW("Unknown prediction type. Cannot convert.");
   }
@@ -74,31 +74,31 @@ VWLabelType internal_to_c_enum(label_type_t internal_type)
 {
   switch (internal_type)
   {
-    PRED_CASE(label_type_t::simple, VWLabelSimple);
-    PRED_CASE(label_type_t::cb, VWLabelCB);
-    PRED_CASE(label_type_t::cb_eval, VWLabelCBEval);
-    PRED_CASE(label_type_t::cs, VWLabelCS);
-    PRED_CASE(label_type_t::mc, VWLabelMC);
-    PRED_CASE(label_type_t::ccb, VWLabelCCB);
-    PRED_CASE(label_type_t::slates, VWLabelSlates);
+    PRED_CASE(label_type_t::simple, VW_LABEL_SIMPLE);
+    PRED_CASE(label_type_t::cb, VW_LABEL_CB);
+    PRED_CASE(label_type_t::cb_eval, VW_LABEL_CB_EVAL);
+    PRED_CASE(label_type_t::cs, VW_LABEL_CS);
+    PRED_CASE(label_type_t::multi, VW_LABEL_MULTI);
+    PRED_CASE(label_type_t::mc, VW_LABEL_MC);
+    PRED_CASE(label_type_t::ccb, VW_LABEL_CCB);
+    PRED_CASE(label_type_t::slates, VW_LABEL_SLATES);
     default:
       THROW("Unknown label type. Cannot convert.");
   }
 }
 
-VWPredictionType c_to_internal_enum(prediction_type_t c_type)
+label_type_t c_to_internal_enum(VWLabelType c_type)
 {
   switch (c_type)
   {
-    PRED_CASE(prediction_type_t::scalar, VWPredictionScalar);
-    PRED_CASE(prediction_type_t::scalars, VWPredictionScalars);
-    PRED_CASE(prediction_type_t::action_scores, VWPredictionActionScores);
-    PRED_CASE(prediction_type_t::action_probs, VWPredictionActionProbs);
-    PRED_CASE(prediction_type_t::multiclass, VWPredictionMulticlass);
-    PRED_CASE(prediction_type_t::multilabels, VWPredictionMultiLabels);
-    PRED_CASE(prediction_type_t::prob, VWPredictionProb);
-    PRED_CASE(prediction_type_t::multiclassprobs, VWPredictionMulticlassProbs);
-    PRED_CASE(prediction_type_t::decision_probs, VWPredictionDecisionProbs);
+    PRED_CASE(VW_LABEL_SIMPLE, label_type_t::simple);
+    PRED_CASE(VW_LABEL_CB, label_type_t::cb);
+    PRED_CASE(VW_LABEL_CB_EVAL, label_type_t::cb_eval);
+    PRED_CASE(VW_LABEL_CS, label_type_t::cs);
+    PRED_CASE(VW_LABEL_MULTI, label_type_t::multi);
+    PRED_CASE(VW_LABEL_MC, label_type_t::mc);
+    PRED_CASE(VW_LABEL_CCB, label_type_t::ccb);
+    PRED_CASE(VW_LABEL_SLATES, label_type_t::slates);
     default:
       THROW("Unknown prediction type. Cannot convert.");
   }
