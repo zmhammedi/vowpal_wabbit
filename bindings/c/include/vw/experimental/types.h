@@ -47,6 +47,12 @@ extern "C"
   static const VWHashType all = 0;
   static const VWHashType text = 1;
 
+  typedef uint32_t VWInputType;
+  static const VWHashType VW_TEXT_FORMAT = 0;
+  static const VWHashType VW_JSON_FORMAT = 1;
+  static const VWHashType VW_CACHE_FORMAT = 2;
+  // static const VWHashType VW_FLATBUF_FORMAT = 3;
+
   struct VWWorkspace_tag;
   typedef struct VWWorkspace_tag VWWorkspace;
 

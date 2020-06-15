@@ -23,8 +23,8 @@ extern "C"
       VWWorkspace* workspace_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   // might return a multiline example in the case of the json parser
-  VW_DLL_PUBLIC VWStatus VWParseExample(VWWorkspace* workspace_handle, const char* line, VWExampleArray* results,
-      VWErrorString* err_str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus VWParseExample(VWWorkspace* workspace_handle, uint8_t* data, size_t length, VWInputType type,
+      VWExampleArray* results, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
 #ifdef __cplusplus
 }

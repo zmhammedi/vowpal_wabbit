@@ -20,13 +20,15 @@ extern "C"
   const char* VWStringToCString(VWString* str_container) VW_API_NOEXCEPT;
 
   // Saving
-  VW_DLL_PUBLIC VWStatus VWWorkspaceSaveModel(
-      const VWWorkspace* workspace_handle, void* context, VWWriteFunc* writer, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus VWWorkspaceSaveModel(const VWWorkspace* workspace_handle, void* context, VWWriteFunc* writer,
+      VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   // Hashing
   // The one passed in options
   VW_DLL_PUBLIC VWStatus VWWorkspaceGetConfiguredAudit(
       const VWWorkspace* workspace_handle, bool* audit, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus VWWorkspaceGetConfiguredInputType(
+      const VWWorkspace* workspace_handle, VWInputType* input_type, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus VWWorkspaceGetConfiguredHashType(
       const VWWorkspace* workspace_handle, VWHashType* hash_type, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus VWWorkspaceGetConfiguredHashSeed(
@@ -36,8 +38,8 @@ extern "C"
   VW_DLL_PUBLIC VWStatus VWWorkspaceGetConfiguredHasher(
       const VWWorkspace* workspace_handle, VWHasher** hasher, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
-  VW_DLL_PUBLIC VWStatus VWHash(
-      const uint8_t* data, size_t length, uint64_t seed, VWHashType type, uint64_t*, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus VWHash(const uint8_t* data, size_t length, uint64_t seed, VWHashType type, uint64_t*,
+      VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   // SPEEDY overloads for direct hashing against the type
   VW_DLL_PUBLIC VWStatus VWHashAll(
@@ -64,11 +66,12 @@ extern "C"
   VW_DLL_PUBLIC VWStatus VWWorkspaceGetWeightIteratorBegin(
       const VWWorkspace* workspace_handle, VWWeightIterator** iter, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   // Will fail if you're already at the end.
-  VW_DLL_PUBLIC VWStatus VWWeightIteratorAdvance(VWWeightIterator* iter, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus VWWeightIteratorAdvance(
+      VWWeightIterator* iter, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus VWWeightIteratorCanAdvance(
       const VWWeightIterator* iter, bool*, VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWWeightIteratorDereference(
-      const VWWeightIterator* iter, size_t* index, float** weight, size_t* width, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus VWWeightIteratorDereference(const VWWeightIterator* iter, size_t* index, float** weight,
+      size_t* width, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
 #ifdef __cplusplus
 }
