@@ -12,12 +12,12 @@ extern "C"
 #endif
 
   VWErrorString* VWCreateErrorString() VW_API_NOEXCEPT;
-  void VWDestroyErrorString(VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  const char* VWErrorStringToCString(VWErrorString* err_str_container) VW_API_NOEXCEPT;
+  void VWDestroyErrorString(const VWErrorString* err_str_container) VW_API_NOEXCEPT;
+  const char* VWErrorStringToCString(const VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   VWString* VWCreateString() VW_API_NOEXCEPT;
-  void VWDestroyString(VWString* str_container) VW_API_NOEXCEPT;
-  const char* VWStringToCString(VWString* str_container) VW_API_NOEXCEPT;
+  void VWDestroyString(const VWString* str_container) VW_API_NOEXCEPT;
+  const char* VWStringToCString(const VWString* str_container) VW_API_NOEXCEPT;
 
   // Saving
   VW_DLL_PUBLIC VWStatus VWWorkspaceSaveModel(const VWWorkspace* workspace_handle, void* context, VWWriteFunc* writer,
