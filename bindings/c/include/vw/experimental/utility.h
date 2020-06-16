@@ -12,11 +12,11 @@ extern "C"
 #endif
 
   VW_DLL_PUBLIC VWErrorString* vw_create_error_string() VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC void vw_destroy_error_string(const VWErrorString* err_str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC void vw_destroy_error_string(VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC const char* vw_error_string_to_c_string(const VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   VW_DLL_PUBLIC VWString* vw_create_string() VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC void vw_destroy_string(const VWString* str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC void vw_destroy_string(VWString* str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC const char* vw_string_to_c_string(const VWString* str_container) VW_API_NOEXCEPT;
 
   // Saving
