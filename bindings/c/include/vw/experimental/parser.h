@@ -22,6 +22,7 @@ extern "C"
   VW_DLL_PUBLIC VWStatus vw_run_parser_and_driver(
       VWWorkspace* workspace_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
+  // TODO also take pool reference
   // might return a multiline example in the case of the json parser
   VW_DLL_PUBLIC VWStatus vw_parse_example(VWWorkspace* workspace_handle, uint8_t* data, size_t length, VWInputType type,
       VWExampleArray* results, VWErrorString* err_str_container) VW_API_NOEXCEPT;

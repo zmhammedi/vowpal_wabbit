@@ -44,6 +44,8 @@ extern "C"
   VW_DLL_PUBLIC VWStatus vw_feature_space_get_audit_string(VWFeatureSpace* feature_space_handle, size_t index,
       const char** namespace_name, const char** feature_name, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
+// TODO add power user raw api
+
 #ifdef __cplusplus
 }
 #endif

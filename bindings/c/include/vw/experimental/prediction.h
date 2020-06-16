@@ -24,7 +24,7 @@ extern "C"
       VWPrediction* prediction, uint32_t* multiclass, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_prediction_as_multilabels(
       VWPrediction* prediction, const uint32_t** multilabels, int length, VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWPredictionAsDecisionScores(
+  VW_DLL_PUBLIC VWStatus vw_prediction_as_decision_scores(
       VWPrediction* prediction, const VWDecisionScores** decision_scores, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   VW_DLL_PUBLIC VWStatus vw_decision_scores_get_length(

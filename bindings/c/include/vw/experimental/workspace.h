@@ -54,6 +54,7 @@ extern "C"
       VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   // finish one or more examples? How do we handle multi_ex?
+  // Finish does not do the release operation to allow reuse - the user must explicitly return the object.
   VW_DLL_PUBLIC VWStatus vw_workspace_finish_example(
       VWWorkspace* workspace_handle, VWExample* example_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_workspace_finish_example_multiline(VWWorkspace* workspace_handle,
