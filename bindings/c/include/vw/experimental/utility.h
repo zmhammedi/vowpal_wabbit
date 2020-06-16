@@ -63,6 +63,14 @@ extern "C"
   VW_DLL_PUBLIC VWStatus vw_workspace_set_weight(const VWWorkspace* workspace_handle, size_t index, const float* weight,
       size_t width, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
+  // This checks whether these two workspaces produce equivalent example objects
+  // in the sense that passing an example parsed by one makes sense to one
+  // parsed by the other. This does not take into account labels or the
+  // reduction stack itself. It checks things like affix features and hasher.
+  VW_DLL_PUBLIC VWStatus vw_workspace_is_example_parsing_equivalent(const VWWorkspace* workspace_handle_one,
+      const VWWorkspace* workspace_handle_two, const char** incompatible_feature,
+      VWErrorString* err_str_container) VW_API_NOEXCEPT;
+
   VW_DLL_PUBLIC VWStatus vw_workspace_get_weight_iterator_begin(
       const VWWorkspace* workspace_handle, VWWeightIterator** iter, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   // Will fail if you're already at the end.
