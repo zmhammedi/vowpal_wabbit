@@ -11,66 +11,66 @@ extern "C"
 {
 #endif
 
-  VW_DLL_PUBLIC VWStatus VWWorkspaceGetPooledExample(
+  VW_DLL_PUBLIC VWStatus vw_workspace_get_pooled_example(
       VWWorkspace* workspace_handle, VWExample** example_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWWorkspaceReturnPooledExample(
+  VW_DLL_PUBLIC VWStatus vw_workspace_return_pooled_example(
       VWWorkspace* workspace_handle, VWExample** example_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   // Maybe deprecate this. Seems to be doing stuff that should be done in read/import_example
-  VW_DLL_PUBLIC VWStatus VWExampleSetup(
+  VW_DLL_PUBLIC VWStatus vw_example_setup(
       VWWorkspace* workspace_handle, VWExample* example_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
-  VW_DLL_PUBLIC VWStatus VWExampleGetFeatureSpaceIndices(const VWExample* example_handle, const unsigned char** indices,
+  VW_DLL_PUBLIC VWStatus vw_example_get_feature_space_indices(const VWExample* example_handle, const unsigned char** indices,
       size_t* length, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   // invalidates pointers
-  VW_DLL_PUBLIC VWStatus VWExamplePushFeatureSpaceIndex(
+  VW_DLL_PUBLIC VWStatus vw_example_push_feature_space_index(
       VWExample* example_handle, unsigned char value, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   // invalidates pointers
-  VW_DLL_PUBLIC VWStatus VWExampleRemoveFeatureSpaceIndex(
+  VW_DLL_PUBLIC VWStatus vw_example_remove_feature_space_index(
       VWExample* example_handle, size_t index, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
-  VW_DLL_PUBLIC VWStatus VWExampleGetFeatureSpace(const VWExample* example_handle, unsigned char index,
+  VW_DLL_PUBLIC VWStatus vw_example_get_feature_space(const VWExample* example_handle, unsigned char index,
       VWFeatureSpace**, VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWExampleSetFeatureSpace(VWExample* example_handle, unsigned char index, const VWFeatureSpace*,
+  VW_DLL_PUBLIC VWStatus vw_example_set_feature_space(VWExample* example_handle, unsigned char index, const VWFeatureSpace*,
       VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
-  VW_DLL_PUBLIC VWStatus VWExampleGetFeatureOffset(
+  VW_DLL_PUBLIC VWStatus vw_example_get_feature_offset(
       const VWExample* example_handle, int* feature_offset, VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWExampleSetFeatureOffset(
+  VW_DLL_PUBLIC VWStatus vw_example_set_feature_offset(
       VWExample* example_handle, int feature_offset, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
-  VW_DLL_PUBLIC VWStatus VWExampleGetTag(
+  VW_DLL_PUBLIC VWStatus vw_example_get_tag(
       const VWExample* example_handle, const char** tag, VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWExampleSetTag(
+  VW_DLL_PUBLIC VWStatus vw_example_set_tag(
       VWExample* example_handle, const char* tag, int length, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
-  VW_DLL_PUBLIC VWStatus VWExampleGetWeight(
+  VW_DLL_PUBLIC VWStatus vw_example_get_weight(
       const VWExample* example_handle, float* weight, VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWExampleSetWeight(
+  VW_DLL_PUBLIC VWStatus vw_example_set_weight(
       VWExample* example_handle, float weight, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
-  VW_DLL_PUBLIC VWStatus VWExampleGetLabel(
+  VW_DLL_PUBLIC VWStatus vw_example_get_label(
       const VWExample* example_handle, VWLabel** label, VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWExampleSetLabel(VWExample* example_handle, VWLabel* label, VWLabelType label_type,
+  VW_DLL_PUBLIC VWStatus vw_example_set_label(VWExample* example_handle, VWLabel* label, VWLabelType label_type,
       VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
-  VW_DLL_PUBLIC VWStatus VWExampleGetPrediction(
+  VW_DLL_PUBLIC VWStatus vw_example_get_prediction(
       const VWExample* example_handle, VWPrediction** prediction, VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWExampleSetPrediction(VWExample* example_handle, VWPrediction* prediction,
+  VW_DLL_PUBLIC VWStatus vw_example_set_prediction(VWExample* example_handle, VWPrediction* prediction,
       VWPredictionType prediction_type, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
-  VW_DLL_PUBLIC VWStatus VWExampleGetPartialPrediction(
+  VW_DLL_PUBLIC VWStatus vw_example_get_partial_prediction(
       const VWExample* example_handle, float* partial_prediction, VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWExampleGetUpdatedPrediction(
+  VW_DLL_PUBLIC VWStatus vw_example_get_updated_prediction(
       const VWExample* example_handle, float* updated_prediction, VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWExampleGetLoss(
+  VW_DLL_PUBLIC VWStatus vw_example_get_loss(
       const VWExample* example_handle, float* loss, VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWExampleGetTotalSumFeatSq(
+  VW_DLL_PUBLIC VWStatus vw_example_get_total_sum_feat_sq(
       const VWExample* example_handle, float* total_sum_feat_sq, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
-  VW_DLL_PUBLIC VWStatus VWExampleGetTestOnly(
+  VW_DLL_PUBLIC VWStatus vw_example_get_test_only(
       const VWExample* example_handle, bool* test_only, VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus VWExampleSetTestOnly(
+  VW_DLL_PUBLIC VWStatus vw_example_set_test_only(
       VWExample* example_handle, bool test_only, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
 #ifdef __cplusplus
