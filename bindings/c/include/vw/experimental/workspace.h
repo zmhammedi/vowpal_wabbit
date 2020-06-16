@@ -21,9 +21,11 @@ extern "C"
       VWTraceMessageFunc* trace_listener, void* trace_context, VWWorkspace** output_handle,
       VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
+
   // Returns name of first incompatible feature.
   // Probably better to return an enum with enum->string mappings available?
-  // TODO deprecate this...
+  // TODO deprecate this... ?
+  // TODO rename this to "is example parsing compatible" -> potentially refactor to taking in options
   VW_DLL_PUBLIC VWStatus VWWorkspaceAreFeaturesCompatibleLegacy(const VWWorkspace* workspace_handle_one,
       const VWWorkspace* workspace_handle_two, const char** incompatible_feature,
       VWErrorString* err_str_container) VW_API_NOEXCEPT;

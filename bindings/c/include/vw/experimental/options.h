@@ -14,7 +14,7 @@ extern "C"
   VW_DLL_PUBLIC VWStatus vw_create_options(VWOptions** options_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_create_options_from_command_line(
       int argc, char** argv, VWOptions** options_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus vw_create_options_from_command_line_c_string(
+  VW_DLL_PUBLIC VWStatus vw_create_options_from_command_line_cstring(
       const char* commandLine, VWOptions** options_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_destroy_options(VWOptions* options_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_options_set_string(VWOptions* options_handle, const char* option_name,
