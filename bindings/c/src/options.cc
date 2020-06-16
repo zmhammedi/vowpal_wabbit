@@ -13,7 +13,7 @@
 
 #include <vector>
 
-VW_DLL_PUBLIC VWStatus VWCreateOptions(VWOptions** options_handle, VWErrorString* err_str_container) noexcept
+VW_DLL_PUBLIC VWStatus vw_create_options(VWOptions** options_handle, VWErrorString* err_str_container) noexcept
 try
 {
   ARG_NOT_NULL(options_handle, err_str_container);
@@ -22,7 +22,7 @@ try
 }
 CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus VWCreateOptionsFromCommandLine(
+VW_DLL_PUBLIC VWStatus vw_create_options_from_command_line(
     int argc, char** argv, VWOptions** options_handle, VWErrorString* err_str_container) noexcept
 try
 {
@@ -33,7 +33,7 @@ try
 }
 CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus VWCreateOptionsFromCommandLineCString(
+VW_DLL_PUBLIC VWStatus vw_create_options_from_command_line_cstring(
     const char* commandLine, VWOptions** options_handle, VWErrorString* err_str_container) noexcept
 try
 {
@@ -43,11 +43,11 @@ try
   int argc = 0;
   char** argv = VW::to_argv_escaped(tempString, argc);
   const auto scope_exit = VW::scope_exit([argc, argv] { VW::free_args(argc, argv); });
-  return VWCreateOptionsFromCommandLine(argc, argv, options_handle, err_str_container);
+  return vw_create_options_from_command_line(argc, argv, options_handle, err_str_container);
 }
 CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus VWDestroyOptions(VWOptions* options_handle, VWErrorString* err_str_container) noexcept
+VW_DLL_PUBLIC VWStatus vw_destroy_options(VWOptions* options_handle, VWErrorString* err_str_container) noexcept
 try
 {
   auto* options = from_opaque(options_handle);
@@ -56,7 +56,7 @@ try
 }
 CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus VWOptionsSetString(VWOptions* options_handle, const char* option_name, const char* option_value,
+VW_DLL_PUBLIC VWStatus vw_options_set_string(VWOptions* options_handle, const char* option_name, const char* option_value,
     VWErrorString* err_str_container) noexcept
 try
 {
@@ -69,7 +69,7 @@ try
 }
 CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus VWOptionsSetInteger(
+VW_DLL_PUBLIC VWStatus vw_options_set_integer(
     VWOptions* options_handle, const char* option_name, int32_t option_value, VWErrorString* err_str_container) noexcept
 try
 {
@@ -81,7 +81,7 @@ try
 }
 CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus VWOptionsSetFloat(
+VW_DLL_PUBLIC VWStatus vw_options_set_float(
     VWOptions* options_handle, const char* option_name, float option_value, VWErrorString* err_str_container) noexcept
 try
 {
@@ -93,7 +93,7 @@ try
 }
 CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus VWOptionsSetBool(
+VW_DLL_PUBLIC VWStatus vw_options_set_bool(
     VWOptions* options_handle, const char* option_name, bool option_value, VWErrorString* err_str_container) noexcept
 try
 {
@@ -106,7 +106,7 @@ try
 }
 CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus VWOptionsListPushString(VWOptions* options_handle, const char* option_name,
+VW_DLL_PUBLIC VWStatus vw_options_list_push_string(VWOptions* options_handle, const char* option_name,
     const char* option_value, VWErrorString* err_str_container) noexcept
 try
 {
@@ -118,7 +118,7 @@ try
 }
 CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus VWOptionsListPushInteger(
+VW_DLL_PUBLIC VWStatus vw_options_list_push_integer(
     VWOptions* options_handle, const char* option_name, int32_t option_value, VWErrorString* err_str_container) noexcept
 try
 {
@@ -130,7 +130,7 @@ try
 }
 CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus VWOptionsListPushFloat(
+VW_DLL_PUBLIC VWStatus vw_options_list_push_float(
     VWOptions* options_handle, const char* option_name, float option_value, VWErrorString* err_str_container) noexcept
 try
 {
