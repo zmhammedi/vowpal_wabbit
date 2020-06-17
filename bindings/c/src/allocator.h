@@ -12,5 +12,5 @@ struct vw_allocator
   dealloc_func* _dealloc;
 };
 
-void* default_allocator(size_t num, size_t size) noexcept { return std::calloc(num, size); }
-void default_deallocator(void* ptr, size_t /*num*/) noexcept { return std::free(ptr); }
+inline void* default_allocator(size_t num, size_t size) noexcept { return std::calloc(num, size); }
+inline void default_deallocator(void* ptr, size_t /*num*/) noexcept { return std::free(ptr); }
