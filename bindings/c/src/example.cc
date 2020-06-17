@@ -4,6 +4,44 @@
 #include "vw/experimental/example.h"
 
 #include "example.h"
+#include "allocator.h"
+#include "error_handling.h"
+#include "interop_helper.h"
+
+VW_DLL_PUBLIC VWStatus vw_create_example(
+    VWExample** example_handle, VWAllocator* allocator_handle, VWErrorString* err_str_container) noexcept
+try
+{
+  ARG_NOT_NULL(example_handle, err_str_container);
+  ARG_NOT_NULL(allocator_handle, err_str_container);
+
+  auto* allocator = from_opaque(allocator_handle);
+  void* example_mem = allocator->_alloc(1, sizeof(example));
+  if (example_mem == nullptr)
+  {
+    SET_IF_EXISTS(err_str_container, "failed to allocate");
+    return VW_FAIL;
+  }
+
+  *example_handle = to_opaque(new (example_mem) example());
+  return VW_SUCCESS;
+}
+CATCH_RETURN(err_str_container)
+
+VW_DLL_PUBLIC VWStatus vw_destroy_example(
+    VWExample* example_handle, VWAllocator* allocator_handle, VWErrorString* err_str_container) noexcept
+try
+{
+  ARG_NOT_NULL(example_handle, err_str_container);
+  ARG_NOT_NULL(allocator_handle, err_str_container);
+
+  auto* allocator = from_opaque(allocator_handle);
+  auto* example = from_opaque(example_handle);
+  example->~example();
+  allocator->_dealloc(example, 1);
+  return VW_SUCCESS;
+}
+CATCH_RETURN(err_str_container)
 
 // VW_DLL_PUBLIC VWStatus example_get_feature_space_indices(
 //     const VWExample* c_example, const unsigned char** indices, int* length)

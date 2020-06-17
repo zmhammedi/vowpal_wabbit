@@ -14,7 +14,7 @@ extern "C"
   VW_DLL_PUBLIC VWStatus vw_create_example(
       VWExample** example_handle, VWAllocator* allocator, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_destroy_example(
-      VWExample** example_handle, VWAllocator* allocator, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+      VWExample* example_handle, VWAllocator* allocator, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   // Maybe deprecate this. Seems to be doing stuff that should be done in read/import_example
   VW_DLL_PUBLIC VWStatus vw_example_setup(

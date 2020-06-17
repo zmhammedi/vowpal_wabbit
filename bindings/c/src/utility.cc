@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "owned_string.h"
+#include "allocator.h"
 
 VW_DLL_PUBLIC VWErrorString* vw_create_error_string() noexcept
 {
@@ -30,18 +31,5 @@ VW_DLL_PUBLIC const char* vw_string_to_c_string(const VWString* vwString) noexce
   return ownedString->string_data.c_str();
 }
 
-using alloc_func = void*(size_t num, size_t size);
-using dealloc_func = void(void* ptr, size_t num);
-struct allocator
-{
-  alloc_func* _alloc;
-  dealloc_func* _dealloc;
-};
-
-void* default_allocator(size_t num, size_t size) noexcept { return std::calloc(num, size); }
-
-void default_deallocator(void* ptr, size_t /*num*/) noexcept { return std::free(ptr); }
-
-allocator global_alloc{default_allocator, default_deallocator};
-
+vw_allocator global_alloc{default_allocator, default_deallocator};
 VW_DLL_PUBLIC VWAllocator* vw_get_default_allocator() noexcept { return reinterpret_cast<VWAllocator*>(&global_alloc); }
