@@ -23,20 +23,21 @@ extern "C"
       const float** ft_values, int* length, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   // invalidates pointers
+  // Use at your own risk - ft_index must make sense
   VW_DLL_PUBLIC VWStatus vw_feature_space_push_hashed_feature(VWFeatureSpace* feature_space_handle,
       uint64_t ft_index, float ft_value, const char* audit_name, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   // invalidates pointers
-  VW_DLL_PUBLIC VWStatus vw_feature_space_push_anonymous_feature_float(VWFeatureSpace* feature_space_handle, 
+  VW_DLL_PUBLIC VWStatus vw_feature_space_push_anonymous_feature_float(VWFeatureSpace* feature_space_handle,
       const char* namespace_name, float ft_value, VWHasher* hasher, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   // invalidates pointers
-  VW_DLL_PUBLIC VWStatus vw_feature_space_push_feature_float(VWFeatureSpace* feature_space_handle, 
+  VW_DLL_PUBLIC VWStatus vw_feature_space_push_feature_float(VWFeatureSpace* feature_space_handle,
       const char* namespace_name, const char* feature_name, float ft_value, VWHasher* hasher,
       VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   // invalidates pointers
-  VW_DLL_PUBLIC VWStatus vw_feature_space_push_feature_string(VWFeatureSpace* feature_space_handle, 
+  VW_DLL_PUBLIC VWStatus vw_feature_space_push_feature_string(VWFeatureSpace* feature_space_handle,
       const char* namespace_name, const char* feature_name, const char* ft_value, VWHasher* hasher, bool chain_hash,
       VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
