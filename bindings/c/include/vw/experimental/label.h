@@ -71,7 +71,7 @@ extern "C"
   VW_DLL_PUBLIC VWStatus vw_cb_eval_label_get_vw_cb_label(
       VWCBEvalLabel* cb_eval_label_handle, VWCBLabel* cb_label, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_cb_eval_label_set_vw_cb_label(
-      VWCBEvalLabel* cb_eval_label_handle, VWCBLabel cb_label, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+      VWCBEvalLabel* cb_eval_label_handle, VWCBLabel* cb_label, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_cb_eval_label_get_action(
       VWCBEvalLabel* cb_eval_label_handle, uint32_t* action, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_cb_eval_label_set_action(
