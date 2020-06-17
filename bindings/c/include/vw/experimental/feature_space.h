@@ -16,10 +16,10 @@ extern "C"
   VW_DLL_PUBLIC VWStatus vw_destroy_feature_space(
       VWFeatureSpace* feature_space_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
-  VW_DLL_PUBLIC VWStatus vw_feature_space_copy(const VWFeatureSpace* dest_feature_space_handle,
-      VWFeatureSpace* src_feature_space_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus vw_feature_space_copy(VWFeatureSpace* dest_feature_space_handle,
+      const VWFeatureSpace* src_feature_space_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
-  VW_DLL_PUBLIC VWStatus vw_feature_space_get_features(VWFeatureSpace* feature_space_handle, const uint64_t** ft_indices,
+  VW_DLL_PUBLIC VWStatus vw_feature_space_get_features(const VWFeatureSpace* feature_space_handle, const uint64_t** ft_indices,
       const float** ft_values, int* length, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   // invalidates pointers
