@@ -11,20 +11,17 @@ extern "C"
 {
 #endif
 
-// TODO Split apart pool
-// TODO Allow for independent allocation
-
-  VW_DLL_PUBLIC VWStatus vw_workspace_get_pooled_example(
-      VWWorkspace* workspace_handle, VWExample** example_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus vw_workspace_return_pooled_example(
-      VWWorkspace* workspace_handle, VWExample** example_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus vw_create_example(
+      VWExample** example_handle, VWAllocator* allocator, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus vw_destroy_example(
+      VWExample** example_handle, VWAllocator* allocator, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   // Maybe deprecate this. Seems to be doing stuff that should be done in read/import_example
   VW_DLL_PUBLIC VWStatus vw_example_setup(
       VWWorkspace* workspace_handle, VWExample* example_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
-  VW_DLL_PUBLIC VWStatus vw_example_get_feature_space_indices(const VWExample* example_handle, const unsigned char** indices,
-      size_t* length, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus vw_example_get_feature_space_indices(const VWExample* example_handle,
+      const unsigned char** indices, size_t* length, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   // invalidates pointers
   VW_DLL_PUBLIC VWStatus vw_example_push_feature_space_index(
       VWExample* example_handle, unsigned char value, VWErrorString* err_str_container) VW_API_NOEXCEPT;
@@ -32,11 +29,11 @@ extern "C"
   VW_DLL_PUBLIC VWStatus vw_example_remove_feature_space_index(
       VWExample* example_handle, size_t index, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
-// TODO specify audit or not when you get
+  // TODO specify audit or not when you get
   VW_DLL_PUBLIC VWStatus vw_example_get_feature_space(const VWExample* example_handle, unsigned char index,
       VWFeatureSpace**, VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus vw_example_set_feature_space(VWExample* example_handle, unsigned char index, const VWFeatureSpace*,
-      VWErrorString* err_str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus vw_example_set_feature_space(VWExample* example_handle, unsigned char index,
+      const VWFeatureSpace*, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   VW_DLL_PUBLIC VWStatus vw_example_get_feature_offset(
       const VWExample* example_handle, int* feature_offset, VWErrorString* err_str_container) VW_API_NOEXCEPT;

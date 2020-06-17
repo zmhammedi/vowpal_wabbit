@@ -130,6 +130,11 @@ extern "C"
   struct VWExampleArray_tag;
   typedef struct VWExampleArray_tag VWExampleArray;
 
+  struct VWAllocator_tag;
+  typedef struct VWAllocator_tag VWAllocator;
+
+  typedef VWStatus(VWExampleFactoryFunc)(void*, VWExample**);
+
 #ifdef __cplusplus
 }
 #endif

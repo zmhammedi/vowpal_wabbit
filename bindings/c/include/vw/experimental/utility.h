@@ -19,6 +19,8 @@ extern "C"
   VW_DLL_PUBLIC void vw_destroy_string(VWString* str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC const char* vw_string_to_c_string(const VWString* str_container) VW_API_NOEXCEPT;
 
+  VW_DLL_PUBLIC VWAllocator* vw_get_default_allocator() VW_API_NOEXCEPT;
+
   // Saving
   VW_DLL_PUBLIC VWStatus vw_workspace_save_model(const VWWorkspace* workspace_handle, void* context, VWWriteFunc* writer,
       VWErrorString* err_str_container) VW_API_NOEXCEPT;
