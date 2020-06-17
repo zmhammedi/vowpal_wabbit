@@ -90,26 +90,6 @@ try
 }
 CATCH_RETURN(err_str_container)
 
-// Returns name of first incompatible feature.
-// TODO deprecate this...
-// Probably better to return an enum with enum->string mappings available?
-VW_DLL_PUBLIC VWStatus vw_workspace_are_features_compatible_legacy(const VWWorkspace* workspace_handle_one,
-    const VWWorkspace* workspace_handle_two, const char** incompatible_feature,
-    VWErrorString* err_str_container) noexcept
-try
-{
-  ARG_NOT_NULL(workspace_handle_one, err_str_container);
-  ARG_NOT_NULL(workspace_handle_two, err_str_container);
-
-  const auto* w1 = from_opaque(workspace_handle_one);
-  const auto* w2 = from_opaque(workspace_handle_two);
-
-  // TODO are_features_compatible should take const parameters
-  *incompatible_feature = VW::are_features_compatible(*const_cast<vw*>(w1), *const_cast<vw*>(w2));
-  return VW_SUCCESS;
-}
-CATCH_RETURN(err_str_container)
-
 VW_DLL_PUBLIC VWStatus vw_workspace_get_model_id(
     const VWWorkspace* workspace_handle, const char** model_id, VWErrorString* err_str_container) noexcept
 try
@@ -208,8 +188,8 @@ try
 }
 CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus vw_workspace_learn_multiline_legacy(VWWorkspace* workspace_handle, VWExample** example_handle_list,
-    size_t example_handle_list_length, VWErrorString* err_str_container) noexcept
+VW_DLL_PUBLIC VWStatus vw_workspace_learn_multiline_legacy(VWWorkspace* workspace_handle,
+    VWExample** example_handle_list, size_t example_handle_list_length, VWErrorString* err_str_container) noexcept
 try
 {
   ARG_NOT_NULL(workspace_handle, err_str_container);
@@ -235,8 +215,8 @@ try
 }
 CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus vw_workspace_predict_multiline_legacy(VWWorkspace* workspace_handle, VWExample* example_handle_list,
-    size_t example_handle_list_length, VWErrorString* err_str_container) noexcept
+VW_DLL_PUBLIC VWStatus vw_workspace_predict_multiline_legacy(VWWorkspace* workspace_handle,
+    VWExample* example_handle_list, size_t example_handle_list_length, VWErrorString* err_str_container) noexcept
 try
 {
   ARG_NOT_NULL(workspace_handle, err_str_container);
@@ -264,8 +244,8 @@ try
 }
 CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus vw_workspace_finish_example_multiline(VWWorkspace* workspace_handle, VWExample* example_handle_list,
-    size_t example_handle_list_length, VWErrorString* err_str_container) noexcept
+VW_DLL_PUBLIC VWStatus vw_workspace_finish_example_multiline(VWWorkspace* workspace_handle,
+    VWExample* example_handle_list, size_t example_handle_list_length, VWErrorString* err_str_container) noexcept
 try
 {
   ARG_NOT_NULL(workspace_handle, err_str_container);
