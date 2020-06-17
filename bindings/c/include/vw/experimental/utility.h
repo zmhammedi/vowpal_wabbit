@@ -11,17 +11,19 @@ extern "C"
 {
 #endif
 
-  VWErrorString* vw_create_error_string() VW_API_NOEXCEPT;
-  void vw_destroy_error_string(const VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  const char* vw_error_string_to_c_string(const VWErrorString* err_str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWErrorString* vw_create_error_string() VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC void vw_destroy_error_string(VWErrorString* err_str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC const char* vw_error_string_to_c_string(const VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
-  VWString* vw_create_string() VW_API_NOEXCEPT;
-  void vw_destroy_string(const VWString* str_container) VW_API_NOEXCEPT;
-  const char* vw_string_to_c_string(const VWString* str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWString* vw_create_string() VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC void vw_destroy_string(VWString* str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC const char* vw_string_to_c_string(const VWString* str_container) VW_API_NOEXCEPT;
 
   // Saving
   VW_DLL_PUBLIC VWStatus vw_workspace_save_model(const VWWorkspace* workspace_handle, void* context, VWWriteFunc* writer,
       VWErrorString* err_str_container) VW_API_NOEXCEPT;
+
+// TODO add invert hash, readable
 
   // Hashing
   // The one passed in options
@@ -55,13 +57,21 @@ extern "C"
   VW_DLL_PUBLIC VWStatus vw_workspace_get_num_weights(
       const VWWorkspace* workspace_handle, uint32_t*, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_workspace_get_parameter_width(
-      const VWWorkspace* workspace_handle, uint32_t*, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+      const VWWorkspace* workspace_handle, size_t*, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_workspace_get_weights_per_problem(
       const VWWorkspace* workspace_handle, uint32_t*, VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus vw_workspace_get_model_parameter(const VWWorkspace* workspace_handle, size_t index, float** weight,
+  VW_DLL_PUBLIC VWStatus vw_workspace_get_weight(const VWWorkspace* workspace_handle, size_t index, float** weight,
       size_t* width, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_workspace_set_weight(const VWWorkspace* workspace_handle, size_t index, const float* weight,
       size_t width, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+
+  // This checks whether these two workspaces produce equivalent example objects
+  // in the sense that passing an example parsed by one makes sense to one
+  // parsed by the other. This does not take into account labels or the
+  // reduction stack itself. It checks things like affix features and hasher.
+  VW_DLL_PUBLIC VWStatus vw_workspace_is_example_parsing_equivalent(const VWWorkspace* workspace_handle_one,
+      const VWWorkspace* workspace_handle_two, const char** incompatible_feature,
+      VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   VW_DLL_PUBLIC VWStatus vw_workspace_get_weight_iterator_begin(
       const VWWorkspace* workspace_handle, VWWeightIterator** iter, VWErrorString* err_str_container) VW_API_NOEXCEPT;

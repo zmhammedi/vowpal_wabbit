@@ -11,6 +11,9 @@ extern "C"
 {
 #endif
 
+// TODO Split apart pool
+// TODO Allow for independent allocation
+
   VW_DLL_PUBLIC VWStatus vw_workspace_get_pooled_example(
       VWWorkspace* workspace_handle, VWExample** example_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_workspace_return_pooled_example(
@@ -29,6 +32,7 @@ extern "C"
   VW_DLL_PUBLIC VWStatus vw_example_remove_feature_space_index(
       VWExample* example_handle, size_t index, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
+// TODO specify audit or not when you get
   VW_DLL_PUBLIC VWStatus vw_example_get_feature_space(const VWExample* example_handle, unsigned char index,
       VWFeatureSpace**, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_example_set_feature_space(VWExample* example_handle, unsigned char index, const VWFeatureSpace*,
