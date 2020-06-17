@@ -31,6 +31,7 @@ FROM_OPAQUE_FUNCS(VWOptions, VW::config::options_i);
 TO_FROM_OPAQUE_FUNCS(VWWorkspace, vw);
 TO_FROM_OPAQUE_FUNCS(VWExample, example);
 TO_FROM_OPAQUE_FUNCS(VWAllocator, vw_allocator);
+TO_FROM_OPAQUE_FUNCS(VWFeatureSpace, features);
 
 #define PRED_CASE(internal_type, c_type) \
   case internal_type:                    \

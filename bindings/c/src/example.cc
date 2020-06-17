@@ -56,15 +56,27 @@ VW_DLL_PUBLIC VWStatus vw_example_get_feature_space_indices(const VWExample* exa
     const unsigned char** indices, size_t* length, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(example_handle, err_str_container);
+  ARG_NOT_NULL(indices, err_str_container);
+  ARG_NOT_NULL(length, err_str_container);
+
+  const auto* example = from_opaque(example_handle);
+  *indices = &example->indices[0];
+  *length = example->indices.size();
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
+
 // invalidates pointers
 VW_DLL_PUBLIC VWStatus vw_example_push_feature_space_index(
     VWExample* example_handle, unsigned char value, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(example_handle, err_str_container);
+
+  auto* example = from_opaque(example_handle);
+  example->indices.push_back(value);
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -73,24 +85,32 @@ VW_DLL_PUBLIC VWStatus vw_example_remove_feature_space_index(
     VWExample* example_handle, size_t index, VWErrorString* err_str_container) noexcept
 try
 {
+  // Can't remove at index for v_array...
+  SET_IF_EXISTS(err_str_container, "vw_example_remove_feature_space_index is not implemented");
   return VW_NOT_IMPLEMENTED;
 }
 CATCH_RETURN(err_str_container)
 
 // TODO specify audit or not when you get
-VW_DLL_PUBLIC VWStatus vw_example_get_feature_space(
-    const VWExample* example_handle, unsigned char index, VWFeatureSpace**, VWErrorString* err_str_container) noexcept
+VW_DLL_PUBLIC VWStatus vw_example_get_feature_space(const VWExample* example_handle, unsigned char index,
+    VWFeatureSpace** feature_space_handle, VWErrorString* err_str_container) noexcept
 try
 {
   return VW_NOT_IMPLEMENTED;
 }
 CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus vw_example_set_feature_space(
-    VWExample* example_handle, unsigned char index, const VWFeatureSpace*, VWErrorString* err_str_container) noexcept
+VW_DLL_PUBLIC VWStatus vw_example_set_feature_space(VWExample* example_handle, unsigned char index,
+    const VWFeatureSpace* feature_space_handle, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(example_handle, err_str_container);
+  ARG_NOT_NULL(feature_space_handle, err_str_container);
+
+  auto* example = from_opaque(example_handle);
+  auto* fs = reinterpret_cast<const features*>(feature_space_handle);
+  example->feature_space[index].deep_copy_from(*fs);
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -98,7 +118,12 @@ VW_DLL_PUBLIC VWStatus vw_example_get_feature_offset(
     const VWExample* example_handle, int* feature_offset, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(example_handle, err_str_container);
+  ARG_NOT_NULL(feature_offset, err_str_container);
+
+  const auto* example = from_opaque(example_handle);
+  *feature_offset = example->ft_offset;
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -106,7 +131,11 @@ VW_DLL_PUBLIC VWStatus vw_example_set_feature_offset(
     VWExample* example_handle, int feature_offset, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(example_handle, err_str_container);
+
+  auto* example = from_opaque(example_handle);
+  example->ft_offset = feature_offset;
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -114,7 +143,12 @@ VW_DLL_PUBLIC VWStatus vw_example_get_tag(
     const VWExample* example_handle, const char** tag, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(example_handle, err_str_container);
+  ARG_NOT_NULL(tag, err_str_container);
+
+  const auto* example = from_opaque(example_handle);
+  *tag = &example->tag[0];
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -122,7 +156,13 @@ VW_DLL_PUBLIC VWStatus vw_example_set_tag(
     VWExample* example_handle, const char* tag, int length, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(example_handle, err_str_container);
+  ARG_NOT_NULL(tag, err_str_container);
+
+  auto* example = from_opaque(example_handle);
+  example->tag.clear();
+  push_many(example->tag, tag, length);
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -130,7 +170,12 @@ VW_DLL_PUBLIC VWStatus vw_example_get_weight(
     const VWExample* example_handle, float* weight, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(example_handle, err_str_container);
+  ARG_NOT_NULL(weight, err_str_container);
+
+  const auto* example = from_opaque(example_handle);
+  *weight = example->weight;
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -138,7 +183,11 @@ VW_DLL_PUBLIC VWStatus vw_example_set_weight(
     VWExample* example_handle, float weight, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(example_handle, err_str_container);
+
+  auto* example = from_opaque(example_handle);
+  example->weight = weight;
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -221,144 +270,3 @@ try
   return VW_NOT_IMPLEMENTED;
 }
 CATCH_RETURN(err_str_container)
-
-// VW_DLL_PUBLIC VWStatus example_get_feature_space_indices(
-//     const VWExample* c_example, const unsigned char** indices, int* length)
-// {
-//   const auto* ex = reinterpret_cast<const example*>(c_example);
-//   *indices = &ex->indices[0];
-//   *length = ex->indices.size();
-//   return VW_SUCCESS;
-// }
-
-// VW_DLL_PUBLIC VWStatus example_push_feature_space_index(VWExample* c_example, int value)
-// {
-//   auto* ex = reinterpret_cast<example*>(c_example);
-//   ex->indices.push_back(value);
-//   return VW_SUCCESS;
-// }
-
-// VW_DLL_PUBLIC VWStatus example_remove_feature_space_index(VWExample*, int index)
-// {
-//   // Can't remove at index for v_array...
-//   return VW_NOT_IMPLEMENTED;
-// }
-
-// VW_DLL_PUBLIC VWStatus example_get_feature_space_copy(
-//     const VWExample* c_example, int index, VWFeatureSpace* c_features)
-// {
-//   const auto* ex = reinterpret_cast<const example*>(c_example);
-//   auto* fs = reinterpret_cast<features*>(c_features);
-//   fs->deep_copy_from(ex->feature_space[index]);
-//   return VW_SUCCESS;
-// }
-
-// // VWStatus example_get_feature_space_reference(VWExample* ex, int index, VWFeatureSpace_ref** fs)
-// // {
-// //   auto* e = reinterpret_cast<example*>(ex);
-// //   *fs = reinterpret_cast<VWFeatureSpace_ref*>(&e->feature_space[index]);
-// //   return VW_SUCCESS;
-// // }
-
-// VW_DLL_PUBLIC VWStatus example_assign_feature_space(
-//     VWExample* c_example, int index, const VWFeatureSpace* c_features)
-// {
-//   auto* ex = reinterpret_cast<example*>(c_example);
-//   auto* fs = reinterpret_cast<const features*>(c_features);
-//   ex->feature_space[index].deep_copy_from(*fs);
-//   return VW_SUCCESS;
-// }
-
-// // VW_DLL_PUBLIC VWStatus feature_space_copy_from_ref(VWFeatureSpace_ref*, VWFeatureSpace**)
-// // {
-// //   return VW_NOT_IMPLEMENTED;
-// // }
-
-// VW_DLL_PUBLIC VWStatus feature_space_copy(const VWFeatureSpace* c_features_source, VWFeatureSpace* c_features_dest)
-// {
-//   const auto* fs_source = reinterpret_cast<const features*>(c_features_source);
-//   auto* fs_dest = reinterpret_cast<features*>(c_features_dest);
-//   fs_dest->deep_copy_from(*fs_source);
-//   return VW_SUCCESS;
-// }
-
-// VW_DLL_PUBLIC VWStatus allocate_feature_space(VWFeatureSpace** c_features)
-// {
-//   *c_features = reinterpret_cast<VWFeatureSpace*>(new features);
-//   return VW_SUCCESS;
-// }
-
-// VW_DLL_PUBLIC VWStatus deallocate_feature_space(VWFeatureSpace* c_features)
-// {
-//   delete reinterpret_cast<features*>(c_features);
-//   return VW_SUCCESS;
-// }
-
-// VW_DLL_PUBLIC VWStatus feature_space_get_features(
-//     VWFeatureSpace* c_features, uint64_t** ft_indices, float** ft_values, int* length)
-// {
-//   auto* fs = reinterpret_cast<features*>(c_features);
-//   *ft_indices = &fs->indicies[0];
-//   *ft_values = &fs->values[0];
-//   *length = fs->indicies.size();
-//   return VW_SUCCESS;
-// }
-
-// // invalidates pointers
-// VW_DLL_PUBLIC VWStatus feature_space_push_feature(VWFeatureSpace* c_features, uint64_t ft_index, float ft_value)
-// {
-//   auto* fs = reinterpret_cast<features*>(c_features);
-//   fs->indicies.push_back(ft_index);
-//   fs->values.push_back(ft_value);
-//   return VW_SUCCESS;
-// }
-
-// // invalidates pointers
-// VW_DLL_PUBLIC VWStatus feature_space_remove_feature(VWFeatureSpace*, int index)
-// {
-//   // Can't remove at an index...
-//   return VW_NOT_IMPLEMENTED;
-// }
-
-// VW_DLL_PUBLIC VWStatus example_get_feature_offset(const VWExample* c_example, int* feature_offset)
-// {
-//   const auto* ex = reinterpret_cast<const example*>(c_example);
-//   *feature_offset = ex->ft_offset;
-//   return VW_SUCCESS;
-// }
-
-// VW_DLL_PUBLIC VWStatus example_set_feature_offset(VWExample* c_example, int feature_offset)
-// {
-//   auto* ex = reinterpret_cast<example*>(c_example);
-//   ex->ft_offset = feature_offset;
-//   return VW_SUCCESS;
-// }
-
-// VW_DLL_PUBLIC VWStatus example_get_tag(const VWExample* c_example, const char** tag)
-// {
-//   const auto* ex = reinterpret_cast<const example*>(c_example);
-//   *tag = &ex->tag[0];
-//   return VW_SUCCESS;
-// }
-
-// VW_DLL_PUBLIC VWStatus example_set_tag(VWExample* c_example, const char* tag, int length)
-// {
-//   auto* ex = reinterpret_cast<example*>(c_example);
-//   ex->tag.clear();
-//   push_many(ex->tag, tag, length);
-//   return VW_SUCCESS;
-// }
-
-// VW_DLL_PUBLIC VWStatus example_get_weight(const VWExample* c_example, float* weight)
-// {
-//   const auto* ex = reinterpret_cast<const example*>(c_example);
-//   *weight = ex->weight;
-//   return VW_SUCCESS;
-// }
-
-// VW_DLL_PUBLIC VWStatus example_set_weight(VWExample* c_example, float weight)
-// {
-//   auto* ex = reinterpret_cast<example*>(c_example);
-//   ex->weight = weight;
-//   return VW_SUCCESS;
-// }

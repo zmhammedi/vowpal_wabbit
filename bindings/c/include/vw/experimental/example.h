@@ -31,9 +31,9 @@ extern "C"
 
   // TODO specify audit or not when you get
   VW_DLL_PUBLIC VWStatus vw_example_get_feature_space(const VWExample* example_handle, unsigned char index,
-      VWFeatureSpace**, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+      VWFeatureSpace** feature_space_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_example_set_feature_space(VWExample* example_handle, unsigned char index,
-      const VWFeatureSpace*, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+      const VWFeatureSpace* feature_space_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   VW_DLL_PUBLIC VWStatus vw_example_get_feature_offset(
       const VWExample* example_handle, int* feature_offset, VWErrorString* err_str_container) VW_API_NOEXCEPT;
