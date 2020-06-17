@@ -145,7 +145,7 @@ primitive_feature_space* export_example(vw& all, example* e, size_t& len);
 void releaseFeatureSpace(primitive_feature_space* features, size_t len);
 
 void save_predictor(vw& all, std::string reg_name);
-void save_predictor(vw& all, io_buf& buf);
+void save_predictor(vw& all, io_buf& buf, bool as_text = false);
 
 // inlines
 

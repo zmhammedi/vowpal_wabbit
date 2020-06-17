@@ -645,5 +645,5 @@ namespace VW
 {
 void save_predictor(vw& all, std::string reg_name) { dump_regressor(all, reg_name, false); }
 
-void save_predictor(vw& all, io_buf& buf) { dump_regressor(all, buf, false); }
+void save_predictor(vw& all, io_buf& buf, bool as_text = false) { dump_regressor(all, buf, as_text); }
 }  // namespace VW

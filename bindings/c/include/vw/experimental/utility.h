@@ -22,13 +22,13 @@ extern "C"
   VW_DLL_PUBLIC VWAllocator* vw_get_default_allocator() VW_API_NOEXCEPT;
 
   // Saving
-  VW_DLL_PUBLIC VWStatus vw_workspace_save_model(const VWWorkspace* workspace_handle, void* context,
+  VW_DLL_PUBLIC VWStatus vw_workspace_save_model(VWWorkspace* workspace_handle, void* context,
       VWWriteFunc* writer, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   // Will fail if workspace not setup to do this
-  VW_DLL_PUBLIC VWStatus vw_workspace_save_readable_model(const VWWorkspace* workspace_handle, void* context,
+  VW_DLL_PUBLIC VWStatus vw_workspace_save_readable_model(VWWorkspace* workspace_handle, void* context,
       VWWriteFunc* writer, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   // Will fail if workspace not setup to do this
-  VW_DLL_PUBLIC VWStatus vw_workspace_save_invert_hash_model(const VWWorkspace* workspace_handle, void* context,
+  VW_DLL_PUBLIC VWStatus vw_workspace_save_invert_hash_model(VWWorkspace* workspace_handle, void* context,
       VWWriteFunc* writer, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   // Hashing

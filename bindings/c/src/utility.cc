@@ -10,6 +10,8 @@
 #include "interop_helper.h"
 #include "owned_string.h"
 
+#include "c_io_adapter.h"
+
 VW_DLL_PUBLIC VWErrorString* vw_create_error_string() noexcept
 {
   return reinterpret_cast<VWErrorString*>(new owned_string());
@@ -38,23 +40,52 @@ VW_DLL_PUBLIC VWAllocator* vw_get_default_allocator() noexcept { return reinterp
 
 // Saving
 VW_DLL_PUBLIC VWStatus vw_workspace_save_model(
-    const VWWorkspace* workspace_handle, void* context, VWWriteFunc* writer, VWErrorString* err_str_container) noexcept
+    VWWorkspace* workspace_handle, void* context, VWWriteFunc* writer, VWErrorString* err_str_container) noexcept
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(writer, err_str_container);
+
+  auto* workspace = from_opaque(workspace_handle);
+  io_buf model_buffer;
+  model_buffer.add_file(VW::make_unique<c_writer>(context, writer));
+
+  VW::save_predictor(*workspace, model_buffer, false);
+
+  return VW_SUCCESS;
 }
 
 // Will fail if workspace not setup to do this
 VW_DLL_PUBLIC VWStatus vw_workspace_save_readable_model(
-    const VWWorkspace* workspace_handle, void* context, VWWriteFunc* writer, VWErrorString* err_str_container) noexcept
+    VWWorkspace* workspace_handle, void* context, VWWriteFunc* writer, VWErrorString* err_str_container) noexcept
 {
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(writer, err_str_container);
+  io_buf model_buffer;
+  model_buffer.add_file(VW::make_unique<c_writer>(context, writer));
+
+  auto* workspace = from_opaque(workspace_handle);
+  // Passing true causes the model to be outputted as text.
+  VW::save_predictor(*workspace, model_buffer, true /*as_text*/);
+
   return VW_NOT_IMPLEMENTED;
 }
 
 // Will fail if workspace not setup to do this
 VW_DLL_PUBLIC VWStatus vw_workspace_save_invert_hash_model(
-    const VWWorkspace* workspace_handle, void* context, VWWriteFunc* writer, VWErrorString* err_str_container) noexcept
+    VWWorkspace* workspace_handle, void* context, VWWriteFunc* writer, VWErrorString* err_str_container) noexcept
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(writer, err_str_container);
+  io_buf model_buffer;
+  model_buffer.add_file(VW::make_unique<c_writer>(context, writer));
+
+  // Passing true causes the model to be outputted as text. Additionally this flag causes the inverted hashes to also be output.
+  auto* workspace = from_opaque(workspace_handle);
+  const auto saved_print_invert = workspace->print_invert;
+  workspace->print_invert = true;
+  VW::save_predictor(*workspace, model_buffer, true /*as_text*/);
+  workspace->print_invert = saved_print_invert;
+  return VW_SUCCESS;
 }
 
 // The one passed in options
