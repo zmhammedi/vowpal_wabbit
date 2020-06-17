@@ -228,7 +228,6 @@ endif()
 
 add_subdirectory(explore)
 add_subdirectory(cluster)
-add_subdirectory(bindings)
 add_subdirectory(library)
 add_subdirectory(vowpalwabbit)
 
@@ -261,6 +260,8 @@ if(BUILD_TESTS)
     WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/big_tests)
   endif()
 endif()
+
+add_subdirectory(bindings)
 
 # TODO convert cs directory to cmake
 # TODO convert c_test directory to cmake
