@@ -67,15 +67,15 @@ try
 }
 CATCH_RETURN(err_str_container)
 
-VW_DLL_PUBLIC VWStatus vw_create_seeded_workspace(const VWWorkspace* existing_workspace_hadnle,
+VW_DLL_PUBLIC VWStatus vw_create_seeded_workspace(const VWWorkspace* existing_workspace_handle,
     VWOptions* extra_options_handle, VWTraceMessageFunc* trace_listener, void* trace_context,
     VWWorkspace** output_handle, VWErrorString* err_str_container) noexcept
 try
 {
-  ARG_NOT_NULL(existing_workspace_hadnle, err_str_container);
+  ARG_NOT_NULL(existing_workspace_handle, err_str_container);
   ARG_NOT_NULL(output_handle, err_str_container);
   // TODO seed_vw_model can take a const version but it needs to be implemented
-  auto* existing_vw = from_opaque(const_cast<VWWorkspace*>(existing_workspace_hadnle));
+  auto* existing_vw = from_opaque(const_cast<VWWorkspace*>(existing_workspace_handle));
 
   std::string extra_command_line = "";
   if (extra_options_handle != nullptr)
