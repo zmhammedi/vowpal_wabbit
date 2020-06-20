@@ -32,5 +32,6 @@ set(vw_c_impl_files
 add_library(vw_c_api ${vw_c_public_headers} ${vw_c_impl_files})
 target_include_directories(vw_c_api PUBLIC include/)
 target_link_libraries(vw_c_api VowpalWabbit::vw VowpalWabbit::io)
+target_compile_definitions(vw_c_api PRIVATE VWDLL_EXPORTS)F
 
 add_subdirectory(test)
