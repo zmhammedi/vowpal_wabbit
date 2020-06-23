@@ -155,7 +155,7 @@ try
   auto* hasher = from_opaque(hasher_handle);
 
   auto namespace_hash = hasher->_hash_func(namespace_name, strlen(namespace_name), hasher->_hash_seed);
-  auto feature_hash =  hasher->_hash_func(feature_name, strlen(feature_name), namespace_hash);
+  auto feature_hash = hasher->_hash_func(feature_name, strlen(feature_name), namespace_hash);
   // Should this operation occur here or when setup example is done?
   feature_hash = feature_hash & hasher->_parse_mask;
   feature_space->push_back(ft_value, feature_hash);
@@ -171,21 +171,43 @@ CATCH_RETURN(err_str_container)
 
 // invalidates pointers
 VW_DLL_PUBLIC VWStatus vw_feature_space_push_feature_string(VWFeatureSpace* feature_space_handle,
-    const char* namespace_name, const char* feature_name, const char* ft_value, VWHasher* hasher_handle, bool chain_hash,
-    VWErrorString* err_str_container) noexcept
+    const char* namespace_name, const char* feature_name, const char* ft_value, VWHasher* hasher_handle,
+    bool chain_hash, VWErrorString* err_str_container) noexcept
 try
 {
-  // ARG_NOT_NULL(feature_space_handle, err_str_container);
-  // ARG_NOT_NULL(namespace_name, err_str_container);
-  // ARG_NOT_NULL(hasher_handle, err_str_container);
-  // auto* feature_space = from_opaque(feature_space_handle);
-  // auto* hasher = from_opaque(hasher_handle);
+  ARG_NOT_NULL(feature_space_handle, err_str_container);
+  ARG_NOT_NULL(namespace_name, err_str_container);
+  ARG_NOT_NULL(hasher_handle, err_str_container);
+  auto* feature_space = from_opaque(feature_space_handle);
+  auto* hasher = from_opaque(hasher_handle);
 
-  // auto namespace_hash = hasher->_hash_func(namespace_name, strlen(namespace_name), hasher->_hash_seed);
-  // auto feature_hash =  hasher->_hash_func(feature_name, strlen(feature_name), namespace_hash);
+  auto namespace_hash = hasher->_hash_func(namespace_name, strlen(namespace_name), hasher->_hash_seed);
+  auto feature_name_hash = hasher->_hash_func(feature_name, strlen(feature_name), namespace_hash);
 
+  uint64_t hash = feature_name_hash;
+  if (chain_hash)
+  {
+    hash = hasher->_hash_func(ft_value, strlen(ft_value), feature_name_hash);
+  }
 
-  return VW_NOT_IMPLEMENTED;
+  hash &= hasher->_parse_mask;
+  feature_space->push_back(1.f, hash);
+
+  if (feature_space->audit)
+  {
+    if (chain_hash)
+    {
+      std::stringstream ss;
+      ss << feature_name << "^" << ft_value;
+      feature_space->space_names.push_back(audit_strings_ptr(new audit_strings(namespace_name, ss.str())));
+    }
+    else
+    {
+      feature_space->space_names.push_back(audit_strings_ptr(new audit_strings(namespace_name, feature_name)));
+    }
+  }
+
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -204,6 +226,22 @@ VW_DLL_PUBLIC VWStatus vw_feature_space_get_audit_string(VWFeatureSpace* feature
     const char** namespace_name, const char** feature_name, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(feature_space_handle, err_str_container);
+  ARG_NOT_NULL(namespace_name, err_str_container);
+  ARG_NOT_NULL(feature_name, err_str_container);
+
+  auto* feature_space = from_opaque(feature_space_handle);
+
+  if (index >= feature_space->space_names.size())
+  {
+    SET_IF_EXISTS(err_str_container, "Index out of bounds in vw_feature_space_get_audit_string");
+    return VW_INDEX_NOT_FOUND;
+  }
+
+  const auto& audit_string = feature_space->space_names[index];
+  *namespace_name = audit_string->first.c_str();
+  *feature_name = audit_string->second.c_str();
+
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
