@@ -30,9 +30,8 @@ std::string get_command_line(const VW::config::options_i* options)
   return serializer.str();
 }
 
-VW_DLL_PUBLIC VWStatus vw_create_workspace(VWOptions* options_handle, bool skip_model_load,
-    VWTraceMessageFunc trace_listener, void* trace_context, VWWorkspace** output_handle,
-    VWErrorString* err_str_container) noexcept
+VW_DLL_PUBLIC VWStatus vw_create_workspace(VWOptions* options_handle, VWTraceMessageFunc trace_listener,
+    void* trace_context, VWWorkspace** output_handle, VWErrorString* err_str_container) noexcept
 try
 {
   ARG_NOT_NULL(options_handle, err_str_container);
@@ -41,13 +40,13 @@ try
   auto* options = from_opaque(options_handle);
 
   // TODO let workspace understand error code based message tracer
-  *output_handle = to_opaque(VW::initialize(*options, nullptr, skip_model_load, nullptr, nullptr));
+  *output_handle = to_opaque(VW::initialize(*options, nullptr, false /*skip_model_load*/, nullptr, nullptr));
   return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
 VW_DLL_PUBLIC VWStatus vw_create_workspace_with_model(VWOptions* options_handle, void* context, VWReadFunc* read_func,
-    bool skip_model_load, VWTraceMessageFunc* trace_listener, void* trace_context, VWWorkspace** output_handle,
+    VWTraceMessageFunc* trace_listener, void* trace_context, VWWorkspace** output_handle,
     VWErrorString* err_str_container) noexcept
 try
 {
@@ -61,7 +60,7 @@ try
   model_buffer.add_file(VW::make_unique<c_reader>(context, read_func));
 
   // TODO let workspace understand error code based message tracer
-  *output_handle = to_opaque(VW::initialize(*options, &model_buffer, skip_model_load, nullptr, nullptr));
+  *output_handle = to_opaque(VW::initialize(*options, &model_buffer, false /*skip_model_load*/, nullptr, nullptr));
 
   return VW_SUCCESS;
 }
