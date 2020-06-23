@@ -79,7 +79,8 @@ VW_DLL_PUBLIC VWStatus vw_workspace_save_invert_hash_model(
   io_buf model_buffer;
   model_buffer.add_file(VW::make_unique<c_writer>(context, writer));
 
-  // Passing true causes the model to be outputted as text. Additionally this flag causes the inverted hashes to also be output.
+  // Passing true causes the model to be outputted as text. Additionally this flag causes the inverted hashes to also be
+  // output.
   auto* workspace = from_opaque(workspace_handle);
   const auto saved_print_invert = workspace->print_invert;
   workspace->print_invert = true;

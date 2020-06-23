@@ -252,6 +252,7 @@ struct features
   v_array<audit_strings_ptr> space_names;  // Optional for audit mode.
 
   float sum_feat_sq;
+  bool audit;
 
   typedef features_value_index_iterator iterator;
   typedef features_value_iterator iterator_value;
@@ -279,6 +280,7 @@ struct features
     indicies = v_init<feature_index>();
     space_names = v_init<audit_strings_ptr>();
     sum_feat_sq = 0.f;
+    audit = false;
   }
 
   ~features() {

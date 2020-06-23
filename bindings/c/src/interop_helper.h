@@ -8,6 +8,7 @@
 
 #include "owned_string.h"
 #include "allocator.h"
+#include "hasher.h"
 
 #include "vw.h"
 
@@ -32,6 +33,7 @@ TO_FROM_OPAQUE_FUNCS(VWWorkspace, vw);
 TO_FROM_OPAQUE_FUNCS(VWExample, example);
 TO_FROM_OPAQUE_FUNCS(VWAllocator, vw_allocator);
 TO_FROM_OPAQUE_FUNCS(VWFeatureSpace, features);
+TO_FROM_OPAQUE_FUNCS(VWHasher, vw_hasher);
 
 #define PRED_CASE(internal_type, c_type) \
   case internal_type:                    \
