@@ -128,13 +128,14 @@ extern "C"
   struct VWHasher_tag;
   typedef struct VWHasher_tag VWHasher;
 
-  struct VWExampleArray_tag;
-  typedef struct VWExampleArray_tag VWExampleArray;
+  struct VWExampleArrayHolder_tag;
+  typedef struct VWExampleArrayHolder_tag VWExampleArrayHolder;
 
   struct VWAllocator_tag;
   typedef struct VWAllocator_tag VWAllocator;
 
   typedef VWStatus(VWExampleFactoryFunc)(void*, VWExample**);
+  typedef VWStatus(VWExampleCleanupFunc)(void*, VWExample*);
 
 #ifdef __cplusplus
 }
