@@ -85,7 +85,7 @@ try
   if (feature_space->audit)
   {
     feature_space->space_names.push_back(
-      std::make_shared<audit_strings>(audit_namespace_name, audit_feature_name);
+      std::make_shared<audit_strings>(audit_namespace_name, audit_feature_name));
   }
 
   return VW_SUCCESS;
