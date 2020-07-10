@@ -29,9 +29,10 @@ extern "C"
   VW_DLL_PUBLIC VWStatus vw_example_remove_feature_space_index(
       VWExample* example_handle, size_t index, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
-  // TODO specify audit or not when you get
   VW_DLL_PUBLIC VWStatus vw_example_get_feature_space(const VWExample* example_handle, unsigned char index,
-      VWFeatureSpace** feature_space_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+      const VWFeatureSpace** feature_space_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus vw_example_get_feature_space_as_mut(VWExample* example_handle, unsigned char index,
+      VWFeatureSpace** feature_space_handle, bool audit, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_example_set_feature_space(VWExample* example_handle, unsigned char index,
       const VWFeatureSpace* feature_space_handle, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
@@ -51,8 +52,8 @@ extern "C"
       VWExample* example_handle, float weight, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   VW_DLL_PUBLIC VWStatus vw_example_get_label(
-      const VWExample* example_handle, VWLabel** label, VWErrorString* err_str_container) VW_API_NOEXCEPT;
-  VW_DLL_PUBLIC VWStatus vw_example_set_label(VWExample* example_handle, VWLabel* label, VWLabelType label_type,
+      VWExample* example_handle, VWLabel** label, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+  VW_DLL_PUBLIC VWStatus vw_example_set_label(VWExample* example_handle, const VWLabel* label, VWLabelType label_type,
       VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
   VW_DLL_PUBLIC VWStatus vw_example_get_prediction(

@@ -18,7 +18,7 @@ extern "C"
   VW_DLL_PUBLIC VWStatus vw_default_label(
       VWLabel* label_handle, VWLabelType label_type, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   // dest must already be allocated.
-  VW_DLL_PUBLIC VWStatus vw_copy_label(VWLabel* dest_label_handle, VWLabel* source_label_handle, VWLabelType label_type,
+  VW_DLL_PUBLIC VWStatus vw_copy_label(VWLabel* dest_label_handle, const VWLabel* source_label_handle, VWLabelType label_type,
       VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_parse_label(
       VWLabel* label_handle, const char* label_string, VWLabelType label_type, VWErrorString* err_str_container) VW_API_NOEXCEPT;

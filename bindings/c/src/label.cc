@@ -31,7 +31,7 @@ try
 CATCH_RETURN(err_str_container)
 
 // dest must already be allocated.
-VW_DLL_PUBLIC VWStatus vw_copy_label(VWLabel* dest_label_handle, VWLabel* source_label_handle, VWLabelType label_type,
+VW_DLL_PUBLIC VWStatus vw_copy_label(VWLabel* dest_label_handle, const VWLabel* source_label_handle, VWLabelType label_type,
     VWErrorString* err_str_container) noexcept
 try
 {

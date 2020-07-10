@@ -9,14 +9,24 @@
 #include "owned_string.h"
 #include "vw_exception.h"
 
-#define SET_IF_EXISTS(errorStringContainer, errorStringContent)                           \
-  do                                                                                      \
-  {                                                                                       \
-    if (errorStringContainer != nullptr)                                                  \
-    {                                                                                     \
+#define RETURN_IF_FAIL(result)        \
+  do                                  \
+  {                                   \
+    auto result__LINE__ = result;     \
+    if (result__LINE__ != VW_SUCCESS) \
+    {                                 \
+      return result__LINE__;          \
+    }                                 \
+  } while (0)
+
+#define SET_IF_EXISTS(errorStringContainer, errorStringContent)                        \
+  do                                                                                   \
+  {                                                                                    \
+    if (errorStringContainer != nullptr)                                               \
+    {                                                                                  \
       auto* errString__LINE__ = reinterpret_cast<owned_string*>(errorStringContainer); \
-      errString__LINE__->string_data = errorStringContent;                              \
-    }                                                                                     \
+      errString__LINE__->string_data = errorStringContent;                             \
+    }                                                                                  \
   } while (0)
 
 #define CATCH_RETURN(errorStringContainer)                   \
@@ -36,12 +46,12 @@
     return VW_FAIL;                                          \
   }
 
-#define ARG_NOT_NULL(arg, errorStringContainer)                           \
-do                                                                                      \
-  {                                                                                       \
-    if (arg == nullptr)                                                  \
-    {                                                                                     \
-      SET_IF_EXISTS(errorStringContainer, #arg " was null" ); \
-      return VW_INVALID_ARGUMENT;                              \
-    }                                                                                     \
+#define ARG_NOT_NULL(arg, errorStringContainer)              \
+  do                                                         \
+  {                                                          \
+    if (arg == nullptr)                                      \
+    {                                                        \
+      SET_IF_EXISTS(errorStringContainer, #arg " was null"); \
+      return VW_INVALID_ARGUMENT;                            \
+    }                                                        \
   } while (0)

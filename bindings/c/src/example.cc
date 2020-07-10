@@ -2,6 +2,7 @@
 // individual contributors. All rights reserved. Released under a BSD (revised)
 // license as described in the file LICENSE.
 #include "vw/experimental/example.h"
+#include "vw/experimental/label.h"
 
 #include "example.h"
 #include "allocator.h"
@@ -91,12 +92,32 @@ try
 }
 CATCH_RETURN(err_str_container)
 
-// TODO specify audit or not when you get
 VW_DLL_PUBLIC VWStatus vw_example_get_feature_space(const VWExample* example_handle, unsigned char index,
-    VWFeatureSpace** feature_space_handle, VWErrorString* err_str_container) noexcept
+    const VWFeatureSpace** feature_space_handle, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(example_handle, err_str_container);
+  ARG_NOT_NULL(feature_space_handle, err_str_container);
+
+  auto* example = from_opaque(example_handle);
+  *feature_space_handle = to_opaque(&example->feature_space[index]);
+  return VW_SUCCESS;
+}
+CATCH_RETURN(err_str_container)
+
+VW_DLL_PUBLIC VWStatus vw_example_get_feature_space_as_mut(VWExample* example_handle, unsigned char index,
+    VWFeatureSpace** feature_space_handle, bool audit, VWErrorString* err_str_container) noexcept
+try
+{
+  ARG_NOT_NULL(example_handle, err_str_container);
+  ARG_NOT_NULL(feature_space_handle, err_str_container);
+
+  auto* example = from_opaque(example_handle);
+  auto* fs = &example->feature_space[index];
+  fs->audit = audit;
+  *feature_space_handle = to_opaque(fs);
+
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -192,18 +213,28 @@ try
 CATCH_RETURN(err_str_container)
 
 VW_DLL_PUBLIC VWStatus vw_example_get_label(
-    const VWExample* example_handle, VWLabel** label, VWErrorString* err_str_container) noexcept
+    VWExample* example_handle, VWLabel** label, VWErrorString* err_str_container) noexcept
 try
 {
+  ARG_NOT_NULL(example_handle, err_str_container);
+  ARG_NOT_NULL(label, err_str_container);
+
+  auto* example = from_opaque(example_handle);
+  *label = reinterpret_cast<VWLabel*>(&example->l);
   return VW_NOT_IMPLEMENTED;
 }
 CATCH_RETURN(err_str_container)
 
 VW_DLL_PUBLIC VWStatus vw_example_set_label(
-    VWExample* example_handle, VWLabel* label, VWLabelType label_type, VWErrorString* err_str_container) noexcept
+    VWExample* example_handle, const VWLabel* label, VWLabelType label_type, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(example_handle, err_str_container);
+  ARG_NOT_NULL(label, err_str_container);
+  auto* example = from_opaque(example_handle);
+  auto* dest_label = reinterpret_cast<VWLabel*>(&example->l);
+  RETURN_IF_FAIL(vw_copy_label(dest_label, label, label_type, err_str_container));
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
