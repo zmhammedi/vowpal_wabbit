@@ -62,6 +62,7 @@
 #include "log_multi.h"
 #include "recall_tree.h"
 #include "memory_tree.h"
+#include "plt.h"
 #include "stagewise_poly.h"
 #include "active.h"
 #include "active_cover.h"
@@ -456,7 +457,7 @@ input_options parse_source(vw& all, options_i& options)
   }
   else if (positional_tokens.size() > 1)
   {
-    THROW("Only a single positional parameter is supported. This is the data argument.");
+    all.trace_message << "Warning: Multiple data files passed as positional parameters, only the first one will be read and the rest will be ignored." << endl;
   }
 
   if (parsed_options.daemon || options.was_supplied("pid_file") || (options.was_supplied("port") && !all.active))
@@ -723,7 +724,7 @@ void parse_feature_tweaks(options_i& options, vw& all, std::vector<std::string>&
   // prepare namespace interactions
   std::vector<std::vector<namespace_index>> expanded_interactions;
 
-  if ( ( ((!all.pairs.empty() || !all.triples.empty() || !all.interactions.empty()) && /*data was restored from old model file directly to v_array and will be overriden automatically*/
+  if ( ( (!all.interactions.empty() && /*data was restored from old model file directly to v_array and will be overriden automatically*/
           (options.was_supplied("quadratic") || options.was_supplied("cubic") || options.was_supplied("interactions")) ) )
        ||
        interactions_settings_doubled /*settings were restored from model file to file_options and overriden by params from command line*/)
@@ -733,10 +734,6 @@ void parse_feature_tweaks(options_i& options, vw& all, std::vector<std::string>&
                       << endl;
 
     // in case arrays were already filled in with values from old model file - reset them
-    if (!all.pairs.empty())
-      all.pairs.clear();
-    if (!all.triples.empty())
-      all.triples.clear();
     if (!all.interactions.empty())
       all.interactions.clear();
   }
@@ -793,7 +790,7 @@ void parse_feature_tweaks(options_i& options, vw& all, std::vector<std::string>&
   {
     if (!all.logger.quiet)
       all.trace_message << "creating features for following interactions: ";
-    
+
     for (auto i = interactions.begin(); i != interactions.end(); ++i)
     {
       *i = spoof_hex_encoded_namespaces(*i);
@@ -836,16 +833,6 @@ void parse_feature_tweaks(options_i& options, vw& all, std::vector<std::string>&
     }
 
     all.interactions = expanded_interactions;
-
-    // copy interactions of size 2 and 3 to old vectors for backward compatibility
-    for (const auto& i : expanded_interactions)
-    {
-      const size_t len = i.size();
-      if (len == 2)
-        all.pairs.push_back(i);
-      else if (len == 3)
-        all.triples.push_back(i);
-    }
   }
 
   for (size_t i = 0; i < 256; i++)
@@ -1280,6 +1267,7 @@ void parse_reductions(options_i& options, vw& all)
   all.reduction_stack.push(memory_tree_setup);
   all.reduction_stack.push(classweight_setup);
   all.reduction_stack.push(multilabel_oaa_setup);
+  all.reduction_stack.push(plt_setup);
 
   all.reduction_stack.push(cs_active_setup);
   all.reduction_stack.push(CSOAA::csoaa_setup);
