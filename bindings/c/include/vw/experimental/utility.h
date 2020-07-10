@@ -61,11 +61,11 @@ extern "C"
 
   // Weights
   VW_DLL_PUBLIC VWStatus vw_workspace_get_num_weights(
-      const VWWorkspace* workspace_handle, uint32_t*, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+      const VWWorkspace* workspace_handle, uint32_t* num_weights, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_workspace_get_parameter_width(
-      const VWWorkspace* workspace_handle, size_t*, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+      const VWWorkspace* workspace_handle, size_t* parameter_width, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_workspace_get_weights_per_problem(
-      const VWWorkspace* workspace_handle, uint32_t*, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+      const VWWorkspace* workspace_handle, uint32_t* weights_per_problem, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_workspace_get_weight(const VWWorkspace* workspace_handle, size_t index, float** weight,
       size_t* width, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_workspace_set_weight(const VWWorkspace* workspace_handle, size_t index, const float* weight,

@@ -504,7 +504,7 @@ struct vw
   std::string text_regressor_name;
   std::string inv_hash_regressor_name;
 
-  size_t length() { return ((size_t)1) << num_bits; };
+  size_t length() const { return ((size_t)1) << num_bits; };
 
   std::stack<VW::LEARNER::base_learner* (*)(VW::config::options_i&, vw&)> reduction_stack;
 

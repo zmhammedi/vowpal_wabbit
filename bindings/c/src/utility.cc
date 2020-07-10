@@ -11,6 +11,7 @@
 #include "owned_string.h"
 
 #include "c_io_adapter.h"
+#include "vw.h"
 
 VW_DLL_PUBLIC VWErrorString* vw_create_error_string() noexcept
 {
@@ -67,7 +68,7 @@ VW_DLL_PUBLIC VWStatus vw_workspace_save_readable_model(
   // Passing true causes the model to be outputted as text.
   VW::save_predictor(*workspace, model_buffer, true /*as_text*/);
 
-  return VW_NOT_IMPLEMENTED;
+  return VW_SUCCESS;
 }
 
 // Will fail if workspace not setup to do this
@@ -93,7 +94,11 @@ VW_DLL_PUBLIC VWStatus vw_workspace_save_invert_hash_model(
 VW_DLL_PUBLIC VWStatus vw_workspace_get_configured_audit(
     const VWWorkspace* workspace_handle, bool* audit, VWErrorString* err_str_container) noexcept
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(audit, err_str_container);
+  const auto* workspace = from_opaque(workspace_handle);
+  *audit = workspace->audit;
+  return VW_SUCCESS;
 }
 
 VW_DLL_PUBLIC VWStatus vw_workspace_get_configured_input_type(
@@ -117,7 +122,11 @@ VW_DLL_PUBLIC VWStatus vw_workspace_get_configured_hash_seed(
 VW_DLL_PUBLIC VWStatus vw_workspace_get_configured_num_bits(
     const VWWorkspace* workspace_handle, uint64_t* num_bits, VWErrorString* err_str_container) noexcept
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(num_bits, err_str_container);
+  const auto* workspace = from_opaque(workspace_handle);
+  *num_bits = workspace->num_bits;
+  return VW_SUCCESS;
 }
 
 VW_DLL_PUBLIC VWStatus vw_workspace_get_configured_hasher(
@@ -154,21 +163,33 @@ VW_DLL_PUBLIC VWStatus vw_workspace_apply_parse_mask(
 
 // Weights
 VW_DLL_PUBLIC VWStatus vw_workspace_get_num_weights(
-    const VWWorkspace* workspace_handle, uint32_t*, VWErrorString* err_str_container) noexcept
+    const VWWorkspace* workspace_handle, uint32_t* num_weights, VWErrorString* err_str_container) noexcept
 {
-  return VW_NOT_IMPLEMENTED;
-}
-
-VW_DLL_PUBLIC VWStatus vw_workspace_get_parameter_width(
-    const VWWorkspace* workspace_handle, size_t*, VWErrorString* err_str_container) noexcept
-{
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(num_weights, err_str_container);
+  const auto* workspace = from_opaque(workspace_handle);
+  *num_weights = VW::num_weights(*workspace);
+  return VW_SUCCESS;
 }
 
 VW_DLL_PUBLIC VWStatus vw_workspace_get_weights_per_problem(
-    const VWWorkspace* workspace_handle, uint32_t*, VWErrorString* err_str_container) noexcept
+    const VWWorkspace* workspace_handle, size_t* parameter_width, VWErrorString* err_str_container) noexcept
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(parameter_width, err_str_container);
+  const auto* workspace = from_opaque(workspace_handle);
+  *parameter_width = VW::get_stride(*workspace);
+  return VW_SUCCESS;
+}
+
+VW_DLL_PUBLIC VWStatus vw_workspace_get_weights_per_problem(
+    const VWWorkspace* workspace_handle, uint32_t* weights_per_problem, VWErrorString* err_str_container) noexcept
+{
+  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(weights_per_problem, err_str_container);
+  const auto* workspace = from_opaque(workspace_handle);
+  *weights_per_problem = workspace->wpp;
+  return VW_SUCCESS;
 }
 
 VW_DLL_PUBLIC VWStatus vw_workspace_get_weight(const VWWorkspace* workspace_handle, size_t index, float** weight,

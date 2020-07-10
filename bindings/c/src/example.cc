@@ -221,7 +221,7 @@ try
 
   auto* example = from_opaque(example_handle);
   *label = reinterpret_cast<VWLabel*>(&example->l);
-  return VW_NOT_IMPLEMENTED;
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -258,7 +258,11 @@ VW_DLL_PUBLIC VWStatus vw_example_get_partial_prediction(
     const VWExample* example_handle, float* partial_prediction, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(example_handle, err_str_container);
+  ARG_NOT_NULL(partial_prediction, err_str_container);
+  auto* example = from_opaque(example_handle);
+  *partial_prediction = example->partial_prediction;
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -266,7 +270,11 @@ VW_DLL_PUBLIC VWStatus vw_example_get_updated_prediction(
     const VWExample* example_handle, float* updated_prediction, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(example_handle, err_str_container);
+  ARG_NOT_NULL(updated_prediction, err_str_container);
+  auto* example = from_opaque(example_handle);
+  *updated_prediction = example->updated_prediction;
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -274,7 +282,11 @@ VW_DLL_PUBLIC VWStatus vw_example_get_loss(
     const VWExample* example_handle, float* loss, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(example_handle, err_str_container);
+  ARG_NOT_NULL(loss, err_str_container);
+  auto* example = from_opaque(example_handle);
+  *loss = example->loss;
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -282,7 +294,11 @@ VW_DLL_PUBLIC VWStatus vw_example_get_total_sum_feat_sq(
     const VWExample* example_handle, float* total_sum_feat_sq, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(example_handle, err_str_container);
+  ARG_NOT_NULL(total_sum_feat_sq, err_str_container);
+  auto* example = from_opaque(example_handle);
+  *total_sum_feat_sq = example->total_sum_feat_sq;
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -290,7 +306,11 @@ VW_DLL_PUBLIC VWStatus vw_example_get_test_only(
     const VWExample* example_handle, bool* test_only, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(example_handle, err_str_container);
+  ARG_NOT_NULL(test_only, err_str_container);
+  auto* example = from_opaque(example_handle);
+  *test_only = example->test_only;
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -298,6 +318,9 @@ VW_DLL_PUBLIC VWStatus vw_example_set_test_only(
     VWExample* example_handle, bool test_only, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(example_handle, err_str_container);
+  auto* example = from_opaque(example_handle);
+  example->test_only = test_only;
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)

@@ -194,9 +194,9 @@ inline void set_weight(vw& all, uint32_t index, uint32_t offset, float value)
   (&all.weights[((uint64_t)index) << all.weights.stride_shift()])[offset] = value;
 }
 
-inline uint32_t num_weights(vw& all) { return (uint32_t)all.length(); }
+inline uint32_t num_weights(const vw& all) { return (uint32_t)all.length(); }
 
-inline uint32_t get_stride(vw& all) { return all.weights.stride(); }
+inline uint32_t get_stride(const vw& all) { return all.weights.stride(); }
 
 inline void init_features(primitive_feature_space& fs, size_t features_count)
 {

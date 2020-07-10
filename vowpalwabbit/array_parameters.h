@@ -251,7 +251,7 @@ class parameters
       return dense_weights.stride_shift();
   }
 
-  inline uint32_t stride()
+  inline uint32_t stride() const
   {
     if (sparse)
       return sparse_weights.stride();
@@ -259,7 +259,7 @@ class parameters
       return dense_weights.stride();
   }
 
-  inline uint64_t mask()
+  inline uint64_t mask() const
   {
     if (sparse)
       return sparse_weights.mask();
@@ -267,7 +267,7 @@ class parameters
       return dense_weights.mask();
   }
 
-  inline uint64_t seeded()
+  inline uint64_t seeded() const
   {
     if (sparse)
       return sparse_weights.seeded();
