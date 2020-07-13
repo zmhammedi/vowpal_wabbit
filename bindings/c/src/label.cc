@@ -5,13 +5,64 @@
 #include "vw/experimental/label.h"
 
 #include "error_handling.h"
+#include "global_data.h"
 #include "interop_helper.h"
+#include "simple_label.h"
+#include "vw_exception.h"
+
+// Labels
+#include "label_parser.h"
+#include "cb.h"
+#include "cost_sensitive.h"
+#include "multiclass.h"
+#include "multilabel.h"
+#include "ccb_label.h"
+#include "slates_label.h"
+
+label_parser* get_label_parser_structure_for_type(label_type_t label_type)
+{
+  switch(label_type)
+  {
+  case label_type_t::simple:
+    return &simple_label;
+  break;
+  case label_type_t::cb:
+    return &CB::cb_label;
+  break;
+  case label_type_t::cb_eval:
+    return &CB_EVAL::cb_eval;
+  break;
+  case label_type_t::cs:
+    return &COST_SENSITIVE::cs_label;
+  break;
+  case label_type_t::multi:
+    return &MULTILABEL::multilabel;
+  break;
+  case label_type_t::mc:
+   return &MULTICLASS::mc_label;
+  break;
+  case label_type_t::ccb:
+    return &CCB::ccb_label_parser;
+  break;
+  case label_type_t::slates:
+    return &VW::slates::slates_label_parser;
+  break;
+  default:
+  THROW("Unknown label type");
+  }
+}
 
 VW_DLL_PUBLIC VWStatus vw_create_label(
     VWLabel** label_handle, VWLabelType label_type, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(label_handle, err_str_container);
+
+  auto* label = new polylabel;
+  auto* label_parser = get_label_parser_structure_for_type(c_to_internal_enum_label(label_type));
+  label_parser->default_label(label);
+  *label_handle = to_opaque(label);
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -19,7 +70,12 @@ VW_DLL_PUBLIC VWStatus vw_destroy_label(
     VWLabel* label_handle, VWLabelType label_type, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(label_handle, err_str_container);
+  auto* label = from_opaque(label_handle);
+  auto* label_parser = get_label_parser_structure_for_type(c_to_internal_enum_label(label_type));
+  label_parser->delete_label(label_handle);
+  delete label;
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -27,7 +83,11 @@ VW_DLL_PUBLIC VWStatus vw_default_label(
     VWLabel* label_handle, VWLabelType label_type, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(label_handle, err_str_container);
+  auto* label = from_opaque(label_handle);
+  auto* label_parser = get_label_parser_structure_for_type(c_to_internal_enum_label(label_type));
+  label_parser->default_label(label);
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -36,7 +96,15 @@ VW_DLL_PUBLIC VWStatus vw_copy_label(VWLabel* dest_label_handle, const VWLabel* 
     VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(dest_label_handle, err_str_container);
+  ARG_NOT_NULL(source_label_handle, err_str_container);
+
+  auto* dest_label = from_opaque(dest_label_handle);
+  const auto* source_label = from_opaque(source_label_handle);
+  auto* label_parser = get_label_parser_structure_for_type(c_to_internal_enum_label(label_type));
+  // TODO make copy_label take a const src param.
+  label_parser->copy_label(dest_label, const_cast<void*>(reinterpret_cast<const void*>(source_label)));
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -44,6 +112,14 @@ VW_DLL_PUBLIC VWStatus vw_parse_label(
     VWLabel* label_handle, const char* label_string, VWLabelType label_type, VWErrorString* err_str_container) noexcept
 try
 {
+  ARG_NOT_NULL(label_handle, err_str_container);
+  ARG_NOT_NULL(label_string, err_str_container);
+  auto* label = from_opaque(label_handle);
+  auto* label_parser = get_label_parser_structure_for_type(c_to_internal_enum_label(label_type));
+
+  // TODO - this can only be implemented when the parser and shared_data dependency is removed.
+  // label_parser->parse_label()
+
   return VW_NOT_IMPLEMENTED;
 }
 CATCH_RETURN(err_str_container)
