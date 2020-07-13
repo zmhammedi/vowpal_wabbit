@@ -10,11 +10,17 @@
 #include "allocator.h"
 #include "hasher.h"
 
+#include "example.h"
+
 #include "vw.h"
 
 #define FROM_OPAQUE_FUNCS(C_TYPE, CPP_TYPE)                                       \
   inline CPP_TYPE* from_opaque(C_TYPE* ptr) { return reinterpret_cast<CPP_TYPE*>(ptr); } \
   inline const CPP_TYPE* from_opaque(const C_TYPE* ptr) { return reinterpret_cast<const CPP_TYPE*>(ptr); }
+
+#define FROM_OPAQUE_LABEL_FUNCS(C_TYPE, CPP_TYPE, UNION_FIELD)                                       \
+  inline CPP_TYPE* from_opaque(C_TYPE* ptr) { return &reinterpret_cast<polylabel*>(ptr)->UNION_FIELD; } \
+  inline const CPP_TYPE* from_opaque(const C_TYPE* ptr) { return &reinterpret_cast<const polylabel*>(ptr)->UNION_FIELD; }
 
 #define TO_OPAQUE_FUNCS(C_TYPE, CPP_TYPE)                                     \
   inline C_TYPE* to_opaque(CPP_TYPE* ptr) { return reinterpret_cast<C_TYPE*>(ptr); } \
@@ -34,6 +40,16 @@ TO_FROM_OPAQUE_FUNCS(VWExample, example);
 TO_FROM_OPAQUE_FUNCS(VWAllocator, vw_allocator);
 TO_FROM_OPAQUE_FUNCS(VWFeatureSpace, features);
 TO_FROM_OPAQUE_FUNCS(VWHasher, vw_hasher);
+TO_FROM_OPAQUE_FUNCS(VWLabel, polylabel);
+
+FROM_OPAQUE_LABEL_FUNCS(VWSimpleLabel, label_data, simple);
+FROM_OPAQUE_LABEL_FUNCS(VWMulticlassLabel, MULTICLASS::label_t, multi);
+FROM_OPAQUE_LABEL_FUNCS(VWCSLabel, COST_SENSITIVE::label, cs);
+FROM_OPAQUE_LABEL_FUNCS(VWCBLabel, CB::label, cb);
+FROM_OPAQUE_LABEL_FUNCS(VWCCBLabel, CCB::label, conditional_contextual_bandit);
+FROM_OPAQUE_LABEL_FUNCS(VWSlatesLabel, VW::slates::label, slates);
+FROM_OPAQUE_LABEL_FUNCS(VWCBEvalLabel, CB_EVAL::label, cb_eval);
+FROM_OPAQUE_LABEL_FUNCS(VWMultilabelsLabel, MULTILABEL::labels, multilabels);
 
 #define PRED_CASE(internal_type, c_type) \
   case internal_type:                    \

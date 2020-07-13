@@ -5,6 +5,7 @@
 #include "vw/experimental/label.h"
 
 #include "error_handling.h"
+#include "interop_helper.h"
 
 VW_DLL_PUBLIC VWStatus vw_create_label(
     VWLabel** label_handle, VWLabelType label_type, VWErrorString* err_str_container) noexcept
@@ -51,7 +52,11 @@ VW_DLL_PUBLIC VWStatus vw_label_as_simple(
     VWLabel* label_handle, VWSimpleLabel** simple_label_handle, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(label_handle, err_str_container);
+  ARG_NOT_NULL(simple_label_handle, err_str_container);
+
+  *simple_label_handle = reinterpret_cast<VWSimpleLabel*>(label_handle);
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -59,7 +64,11 @@ VW_DLL_PUBLIC VWStatus vw_label_as_cb(
     VWLabel* label_handle, VWCBLabel** cb_label_handle, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(label_handle, err_str_container);
+  ARG_NOT_NULL(cb_label_handle, err_str_container);
+
+  *cb_label_handle = reinterpret_cast<VWCBLabel*>(label_handle);
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -67,7 +76,11 @@ VW_DLL_PUBLIC VWStatus vw_label_as_cb_eval(
     VWLabel* label_handle, VWCBEvalLabel** cb_eval_label_handle, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(label_handle, err_str_container);
+  ARG_NOT_NULL(cb_eval_label_handle, err_str_container);
+
+  *cb_eval_label_handle = reinterpret_cast<VWCBEvalLabel*>(label_handle);
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -75,7 +88,11 @@ VW_DLL_PUBLIC VWStatus vw_label_as_cs(
     VWLabel* label_handle, VWCSLabel** cs_label_handle, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(label_handle, err_str_container);
+  ARG_NOT_NULL(cs_label_handle, err_str_container);
+
+  *cs_label_handle = reinterpret_cast<VWCSLabel*>(label_handle);
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -83,7 +100,11 @@ VW_DLL_PUBLIC VWStatus vw_label_as_multilabels(
     VWLabel* label_handle, VWMultilabelsLabel** multilabels_label_handle, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(label_handle, err_str_container);
+  ARG_NOT_NULL(multilabels_label_handle, err_str_container);
+
+  *multilabels_label_handle = reinterpret_cast<VWMultilabelsLabel*>(label_handle);
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -91,7 +112,11 @@ VW_DLL_PUBLIC VWStatus vw_label_as_multiclass(
     VWLabel* label_handle, VWMulticlassLabel** multiclass_label_handle, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(label_handle, err_str_container);
+  ARG_NOT_NULL(multiclass_label_handle, err_str_container);
+
+  *multiclass_label_handle = reinterpret_cast<VWMulticlassLabel*>(label_handle);
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -99,7 +124,11 @@ VW_DLL_PUBLIC VWStatus vw_label_as_ccb(
     VWLabel* label_handle, VWCCBLabel** ccb_label_handle, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(label_handle, err_str_container);
+  ARG_NOT_NULL(ccb_label_handle, err_str_container);
+
+  *ccb_label_handle = reinterpret_cast<VWCCBLabel*>(label_handle);
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -107,16 +136,25 @@ VW_DLL_PUBLIC VWStatus vw_label_as_slates(
     VWLabel* label_handle, VWSlatesLabel** slates_label_handle, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(label_handle, err_str_container);
+  ARG_NOT_NULL(slates_label_handle, err_str_container);
+
+  *slates_label_handle = reinterpret_cast<VWSlatesLabel*>(label_handle);
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
 // TODO once initial and weight become part of example this should change.
 VW_DLL_PUBLIC VWStatus vw_simple_label_get_label(
-    VWSimpleLabel* simple_label_handle, float* label, VWErrorString* err_str_container) noexcept
+    const VWSimpleLabel* simple_label_handle, float* label, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(simple_label_handle, err_str_container);
+  ARG_NOT_NULL(label, err_str_container);
+
+  const auto* simple_label = from_opaque(simple_label_handle);
+  *label = simple_label->label;
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -124,15 +162,23 @@ VW_DLL_PUBLIC VWStatus vw_simple_label_set_label(
     VWSimpleLabel* simple_label_handle, float label, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(simple_label_handle, err_str_container);
+  auto* simple_label = from_opaque(simple_label_handle);
+  simple_label->label = label;
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
 VW_DLL_PUBLIC VWStatus vw_simple_label_get_weight(
-    VWSimpleLabel* simple_label_handle, float* weight, VWErrorString* err_str_container) noexcept
+    const VWSimpleLabel* simple_label_handle, float* weight, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(simple_label_handle, err_str_container);
+  ARG_NOT_NULL(weight, err_str_container);
+
+  const auto* simple_label = from_opaque(simple_label_handle);
+  *weight = simple_label->weight;
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -140,15 +186,23 @@ VW_DLL_PUBLIC VWStatus vw_simple_label_set_weight(
     VWSimpleLabel* simple_label_handle, float weight, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(simple_label_handle, err_str_container);
+  auto* simple_label = from_opaque(simple_label_handle);
+  simple_label->weight = weight;
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
 VW_DLL_PUBLIC VWStatus vw_simple_label_get_initial(
-    VWSimpleLabel* simple_label_handle, float* initial, VWErrorString* err_str_container) noexcept
+    const VWSimpleLabel* simple_label_handle, float* initial, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(simple_label_handle, err_str_container);
+  ARG_NOT_NULL(initial, err_str_container);
+
+  const auto* simple_label = from_opaque(simple_label_handle);
+  *initial = simple_label->initial;
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 
@@ -156,7 +210,10 @@ VW_DLL_PUBLIC VWStatus vw_simple_label_set_initial(
     VWSimpleLabel* simple_label_handle, float initial, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  ARG_NOT_NULL(simple_label_handle, err_str_container);
+  auto* simple_label = from_opaque(simple_label_handle);
+  simple_label->initial = initial;
+  return VW_SUCCESS;
 }
 CATCH_RETURN(err_str_container)
 

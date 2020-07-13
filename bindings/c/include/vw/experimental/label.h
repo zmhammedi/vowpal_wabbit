@@ -42,15 +42,15 @@ extern "C"
 
   // TODO once initial and weight become part of example this should change.
   VW_DLL_PUBLIC VWStatus vw_simple_label_get_label(
-      VWSimpleLabel* simple_label_handle, float* label, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+      const VWSimpleLabel* simple_label_handle, float* label, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_simple_label_set_label(
       VWSimpleLabel* simple_label_handle, float label, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_simple_label_get_weight(
-      VWSimpleLabel* simple_label_handle, float* weight, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+      const VWSimpleLabel* simple_label_handle, float* weight, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_simple_label_set_weight(
       VWSimpleLabel* simple_label_handle, float weight, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_simple_label_get_initial(
-      VWSimpleLabel* simple_label_handle, float* initial, VWErrorString* err_str_container) VW_API_NOEXCEPT;
+      const VWSimpleLabel* simple_label_handle, float* initial, VWErrorString* err_str_container) VW_API_NOEXCEPT;
   VW_DLL_PUBLIC VWStatus vw_simple_label_set_initial(
       VWSimpleLabel* simple_label_handle, float initial, VWErrorString* err_str_container) VW_API_NOEXCEPT;
 
