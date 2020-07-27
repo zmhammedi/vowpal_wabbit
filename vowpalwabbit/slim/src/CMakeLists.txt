@@ -3,7 +3,7 @@ set(VW_SLIM_SOURCES
   model_parser.cc
   opts.cc
   vw_slim_predict.cc
-  ../../../wasm/my_glue_wrapper.cpp
+  ../../../wasm/wasm_wrapper.cc
   ../../example_predict.cc
   ../../feature_group.cc)
 
