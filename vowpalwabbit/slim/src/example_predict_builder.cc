@@ -21,6 +21,11 @@ example_predict_builder::example_predict_builder(
   add_namespace(namespace_idx);
 }
 
+
+example_predict_builder::example_predict_builder(example_predict* ex, const std::string& ns_name)
+: example_predict_builder(ex, (char*)ns_name.c_str(), 18)
+{}
+
 void example_predict_builder::add_namespace(namespace_index feature_group)
 {
   _namespace_idx = feature_group;
