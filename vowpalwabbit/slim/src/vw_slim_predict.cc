@@ -4,11 +4,6 @@
 #include <iostream>
 #include <algorithm>
 
-int main()
-{
-  return 0;
-}
-
 namespace vw_slim
 {
 uint64_t ceil_log_2(uint64_t v)

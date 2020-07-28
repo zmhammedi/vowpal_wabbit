@@ -3,9 +3,8 @@ set(VW_SLIM_SOURCES
   model_parser.cc
   opts.cc
   vw_slim_predict.cc
-  ../../../wasm/wasm_wrapper.cc
-  ../../example_predict.cc
-  ../../feature_group.cc)
+  ../../feature_group.cc
+  ../../example_predict.cc)
 
 set(VW_SLIM_HEADERS
   ../include/example_predict_builder.h
@@ -14,12 +13,11 @@ set(VW_SLIM_HEADERS
   ../include/vw_slim_predict.h
   ../include/vw_slim_return_codes.h)
 
-add_executable(vwslim ${VW_SLIM_SOURCES} ${VW_SLIM_HEADERS})
-set_target_properties(vwslim PROPERTIES LINK_FLAGS "-s WASM=1 -s EXPORTED_FUNCTIONS='[_main]' --bind")
+add_library(vwslim ${VW_SLIM_SOURCES} ${VW_SLIM_HEADERS})
 
 target_include_directories(vwslim PUBLIC
-  ${CMAKE_CURRENT_SOURCE_DIR}/../include
-  ${CMAKE_CURRENT_SOURCE_DIR}/../../)
+  ${CMAKE_CURRENT_LIST_DIR}/../include
+  ${CMAKE_CURRENT_LIST_DIR}/../../)
 target_compile_definitions(vwslim PUBLIC EXPLORE_NOEXCEPT VW_NOEXCEPT)
 target_link_libraries(vwslim PUBLIC VowpalWabbit::explore)
 

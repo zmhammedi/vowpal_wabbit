@@ -1,9 +1,15 @@
-#include "../vowpalwabbit/example_predict.h"
-#include "../vowpalwabbit/array_parameters.h"
-#include "../vowpalwabbit/slim/include/example_predict_builder.h"
-#include "../vowpalwabbit/slim/include/vw_slim_predict.h"
+#include "example_predict.h"
+#include "array_parameters.h"
+
+#include "example_predict_builder.h"
+#include "vw_slim_predict.h"
 
 #include <emscripten/bind.h>
+
+int main()
+{
+  return 0;
+}
 
 using namespace emscripten;
 

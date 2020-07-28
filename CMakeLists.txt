@@ -266,6 +266,8 @@ if(BUILD_TESTS)
   endif()
 endif()
 
+add_subdirectory(wasm)
+
 # TODO convert cs directory to cmake
 # TODO convert c_test directory to cmake
 

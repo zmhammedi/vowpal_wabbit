@@ -7,3 +7,5 @@ set(Boost_POPULATED True)
 set(boost_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/boost)
 set(BOOST_SOURCE ${boost_SOURCE_DIR})
 add_subdirectory(boost-cmake)
+
+add_library(Boost::boost ALIAS boost_headers)
