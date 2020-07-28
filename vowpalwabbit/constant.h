@@ -1,8 +1,6 @@
-/*
-Copyright (c) by respective owners including Yahoo!, Microsoft, and
-individual contributors. All rights reserved.  Released under a BSD
-license as described in the file LICENSE.
- */
+// Copyright (c) by respective owners including Yahoo!, Microsoft, and
+// individual contributors. All rights reserved. Released under a BSD (revised)
+// license as described in the file LICENSE.
 #pragma once
 constexpr int quadratic_constant = 27942141;
 constexpr int cubic_constant = 21791;
@@ -36,3 +34,12 @@ constexpr unsigned char ccb_id_namespace = 140;
 typedef float weight;
 
 constexpr size_t NUM_NAMESPACES = 256;
+
+constexpr const char* CCB_LABEL = "ccb";
+constexpr const char* SLATES_LABEL = "slates";
+constexpr const char* SHARED_TYPE = "shared";
+constexpr const char* ACTION_TYPE = "action";
+constexpr const char* SLOT_TYPE = "slot";
+
+static constexpr uint32_t SHARED_EX_INDEX = 0;
+static constexpr uint32_t TOP_ACTION_INDEX = 0;

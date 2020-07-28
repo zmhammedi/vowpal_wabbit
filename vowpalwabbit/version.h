@@ -1,3 +1,6 @@
+// Copyright (c) by respective owners including Yahoo!, Microsoft, and
+// individual contributors. All rights reserved. Released under a BSD (revised)
+// license as described in the file LICENSE.
 #pragma once
 
 #include <cinttypes>
@@ -44,6 +47,6 @@ struct version_struct
   void from_string(const char* str);
 };
 
-const version_struct version(PACKAGE_VERSION);
-const std::string git_commit(COMMIT_VERSION);
+extern const version_struct version;
+extern const std::string git_commit;
 }  // namespace VW

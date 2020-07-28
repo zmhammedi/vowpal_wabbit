@@ -1,3 +1,7 @@
+// Copyright (c) by respective owners including Yahoo!, Microsoft, and
+// individual contributors. All rights reserved. Released under a BSD (revised)
+// license as described in the file LICENSE.
+
 #include "version.h"
 
 #include <cstdio>
@@ -113,4 +117,7 @@ void version_struct::from_string(const char* str)
   std::sscanf(str, "%d.%d.%d", &major, &minor, &rev);
 #endif
 }
+
+const version_struct version(PACKAGE_VERSION);
+const std::string git_commit(COMMIT_VERSION);
 }  // namespace VW

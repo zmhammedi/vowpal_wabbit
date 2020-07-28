@@ -1,12 +1,8 @@
-/*
-  Copyright (c) by respective owners including Yahoo!, Microsoft, and
-  individual contributors. All rights reserved.  Released under a BSD
-  license as described in the file LICENSE.
-*/
+// Copyright (c) by respective owners including Yahoo!, Microsoft, and
+// individual contributors. All rights reserved. Released under a BSD (revised)
+// license as described in the file LICENSE.
+
 #pragma once
-#ifdef __FreeBSD__
-#include <sys/socket.h>
-#endif
 
 #include "parse_regressor.h"
 #include "constant.h"
@@ -16,11 +12,11 @@
 
 namespace GD
 {
-LEARNER::base_learner* setup(VW::config::options_i& options, vw& all);
+VW::LEARNER::base_learner* setup(VW::config::options_i& options, vw& all);
 
 struct gd;
 
-float finalize_prediction(shared_data* sd, float ret);
+float finalize_prediction(shared_data* sd, vw_logger& logger, float ret);
 void print_audit_features(vw&, example& ec);
 void save_load_regressor(vw& all, io_buf& model_file, bool read, bool text);
 void save_load_online_state(vw& all, io_buf& model_file, bool read, bool text, double& total_weight,

@@ -1,17 +1,15 @@
-/*
-Copyright (c) by respective owners including Yahoo!, Microsoft, and
-individual contributors. All rights reserved.  Released under a BSD (revised)
-license as described in the file LICENSE.
- */
+// Copyright (c) by respective owners including Yahoo!, Microsoft, and
+// individual contributors. All rights reserved. Released under a BSD (revised)
+// license as described in the file LICENSE.
+
 /*
 This implements the allreduce function of MPI.  Code primarily by
 Alekh Agarwal and John Langford, with help Olivier Chapelle.
 */
 
 #include <iostream>
-#include <sys/timeb.h>
 #include <cmath>
-#include <stdint.h>
+#include <cstdint>
 #include "global_data.h"
 #include "vw_allreduce.h"
 

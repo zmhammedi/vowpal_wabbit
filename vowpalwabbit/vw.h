@@ -1,9 +1,23 @@
-/*
-Copyright (c) by respective owners including Yahoo!, Microsoft, and
-individual contributors. All rights reserved.  Released under a BSD
-license as described in the file LICENSE.
- */
+// Copyright (c) by respective owners including Yahoo!, Microsoft, and
+// individual contributors. All rights reserved. Released under a BSD (revised)
+// license as described in the file LICENSE.
 #pragma once
+
+/*! \mainpage
+ *
+ * For the primary interface see:
+ * - \link VW VW namespace documentation \endlink
+ *
+ * For other docs see:
+ * - [Project website](https://vowpalwabbit.org)
+ * - [Wiki](https://github.com/VowpalWabbit/vowpal_wabbit/wiki)
+ * - C++ build instructions:
+ *     - [Install dependencies](https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Dependencies)
+ *     - [Build](https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Building)
+ *     - [Install](https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Installing)
+ * - [Install other languages](https://vowpalwabbit.org/start.html)
+ * - [Tutorials](https://github.com/VowpalWabbit/vowpal_wabbit/wiki/Tutorial)
+ */
 
 #ifdef _WIN32
 #ifdef LEAKCHECK
@@ -20,6 +34,8 @@ license as described in the file LICENSE.
 #include "parse_example.h"
 
 #include "options.h"
+
+#include "compat.h"
 
 namespace VW
 {
@@ -122,7 +138,6 @@ void empty_example(vw& all, example& ec);
 void copy_example_data(bool audit, example*, example*, size_t, void (*copy_label)(void*, void*));
 void copy_example_metadata(bool audit, example*, example*);
 void copy_example_data(bool audit, example*, example*);  // metadata + features, don't copy the label
-void clear_example_data(example&);                       // don't clear the label
 void move_feature_namespace(example* dst, example* src, namespace_index c);
 
 // after export_example, must call releaseFeatureSpace to free native memory
@@ -137,41 +152,36 @@ void save_predictor(vw& all, io_buf& buf);
 // First create the hash of a namespace.
 inline uint64_t hash_space(vw& all, const std::string& s)
 {
-  substring ss;
-  ss.begin = (char*)s.c_str();
-  ss.end = ss.begin + s.length();
-  return all.p->hasher(ss, all.hash_seed);
+  return all.p->hasher(s.data(), s.length(), all.hash_seed);
 }
 inline uint64_t hash_space_static(const std::string& s, const std::string& hash)
 {
-  substring ss;
-  ss.begin = (char*)s.c_str();
-  ss.end = ss.begin + s.length();
-  return getHasher(hash)(ss, 0);
+  return getHasher(hash)(s.data(), s.length(), 0);
+}
+inline uint64_t hash_space_cstr(vw& all, const char* fstr)
+{
+  return all.p->hasher(fstr, strlen(fstr), all.hash_seed);
 }
 // Then use it as the seed for hashing features.
 inline uint64_t hash_feature(vw& all, const std::string& s, uint64_t u)
 {
-  substring ss;
-  ss.begin = (char*)s.c_str();
-  ss.end = ss.begin + s.length();
-  return all.p->hasher(ss, u) & all.parse_mask;
+  return all.p->hasher(s.data(), s.length(), u) & all.parse_mask;
 }
 inline uint64_t hash_feature_static(const std::string& s, uint64_t u, const std::string& h, uint32_t num_bits)
 {
-  substring ss;
-  ss.begin = (char*)s.c_str();
-  ss.end = ss.begin + s.length();
   size_t parse_mark = (1 << num_bits) - 1;
-  return getHasher(h)(ss, u) & parse_mark;
+  return getHasher(h)(s.data(), s.length(), u) & parse_mark;
 }
 
 inline uint64_t hash_feature_cstr(vw& all, char* fstr, uint64_t u)
 {
-  substring ss;
-  ss.begin = fstr;
-  ss.end = ss.begin + strlen(fstr);
-  return all.p->hasher(ss, u) & all.parse_mask;
+  return all.p->hasher(fstr, strlen(fstr), u) & all.parse_mask;
+}
+
+inline uint64_t chain_hash(vw& all, const std::string& name, const std::string& value, uint64_t u)
+{
+  // chain hash is hash(feature_value, hash(feature_name, namespace_hash)) & parse_mask
+  return all.p->hasher(value.data(), value.length(), all.p->hasher(name.data(), name.length(), u)) & all.parse_mask;
 }
 
 inline float get_weight(vw& all, uint32_t index, uint32_t offset)

@@ -1,3 +1,7 @@
+// Copyright (c) by respective owners including Yahoo!, Microsoft, and
+// individual contributors. All rights reserved. Released under a BSD (revised)
+// license as described in the file LICENSE.
+
 #include <unordered_map>
 #include "reductions.h"
 #include "correctedMath.h"
@@ -38,11 +42,6 @@ struct data
       expert_state;  // pair of weights on marginal and feature based predictors, one per marginal feature
 
   vw* all;
-
-  ~data()
-  {
-    for (size_t i = 0; i < 256; i++) temp[i].delete_v();
-  }
 };
 
 float get_adanormalhedge_weights(float R, float C)
@@ -197,7 +196,7 @@ void update_marginal(data& sm, example& ec)
 }
 
 template <bool is_learn>
-void predict_or_learn(data& sm, LEARNER::single_learner& base, example& ec)
+void predict_or_learn(data& sm, VW::LEARNER::single_learner& base, example& ec)
 {
   make_marginal<is_learn>(sm, ec);
   if (is_learn)
@@ -245,7 +244,7 @@ void save_load(data& sm, io_buf& io, bool read, bool text)
 {
   uint64_t stride_shift = sm.all->weights.stride_shift();
 
-  if (io.files.size() == 0)
+  if (io.num_files() == 0)
     return;
   std::stringstream msg;
   uint64_t total_size;
@@ -305,7 +304,12 @@ void save_load(data& sm, io_buf& io, bool read, bool text)
         msg << index << ":";
       }
       bin_text_read_write_fixed(io, (char*)&index, sizeof(index), "", read, msg, text);
-      float r1, c1, w1, r2, c2, w2;
+      float r1 = 0;
+      float c1 = 0;
+      float w1 = 0;
+      float r2 = 0;
+      float c2 = 0;
+      float w2 = 0;
       if (!read)
       {
         r1 = exp_iter->second.first.regret;
@@ -348,7 +352,7 @@ void save_load(data& sm, io_buf& io, bool read, bool text)
 
 using namespace MARGINAL;
 
-LEARNER::base_learner* marginal_setup(options_i& options, vw& all)
+VW::LEARNER::base_learner* marginal_setup(options_i& options, vw& all)
 {
   free_ptr<MARGINAL::data> d = scoped_calloc_or_throw<MARGINAL::data>();
   std::string marginal;
@@ -379,7 +383,7 @@ LEARNER::base_learner* marginal_setup(options_i& options, vw& all)
     if (marginal.find((char)u) != std::string::npos)
       d->id_features[u] = true;
 
-  LEARNER::learner<MARGINAL::data, example>& ret =
+  VW::LEARNER::learner<MARGINAL::data, example>& ret =
       init_learner(d, as_singleline(setup_base(options, all)), predict_or_learn<true>, predict_or_learn<false>);
   ret.set_save_load(save_load);
 

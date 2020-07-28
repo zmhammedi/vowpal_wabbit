@@ -1,8 +1,6 @@
-/*
-Copyright (c) by respective owners including Yahoo!, Microsoft, and
-individual contributors. All rights reserved.  Released under a BSD (revised)
-license as described in the file LICENSE.
- */
+// Copyright (c) by respective owners including Yahoo!, Microsoft, and
+// individual contributors. All rights reserved. Released under a BSD (revised)
+// license as described in the file LICENSE.
 #include "search_graph.h"
 #include "vw.h"
 #include "gd.h"
@@ -342,8 +340,10 @@ void add_edge_features(Search::search& sch, task_data& D, size_t n, multi_ex& ec
   ec[n]->num_features += ec[n]->feature_space[neighbor_namespace].size();
 
   vw& all = sch.get_vw_pointer_unsafe();
-  for (std::string& i : all.pairs)
+  for (auto& i : all.interactions)
   {
+    if(i.size() != 2)
+      continue;
     int i0 = (int)i[0];
     int i1 = (int)i[1];
     if ((i0 == (int)neighbor_namespace) || (i1 == (int)neighbor_namespace))

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+	<meta content="utf-8" http-equiv="encoding">
+	<head></head>
+	<body>
+		<script src="vwslim.js"></script>
+		<script>
+
+			Module['onRuntimeInitialized'] = onRuntimeInitialized;
+
+			function onRuntimeInitialized() {
+				let ex = Module.new_example_predict();
+				let ex_builder = new Module.example_predict_builder(ex, "test");
+				ex_builder.push_feature_string("test", 1.0);
+
+				let vw = new Module.vw_predict();
+				let action_list = new Module.action_list();
+
+				let res = vw.predict("test", null, action_list);
+				console.log(res);
+				let a = res.get_pdf();
+				for (var i = 0; i < a.size(); i++) {
+						console.log("Vector Value: ", a.get(i));
+				}
+				console.log(res.get_ranking());
+			}
+		</script>
+	</body>
+</html>
