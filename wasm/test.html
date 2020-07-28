@@ -1,31 +1,85 @@
 <!DOCTYPE html>
 <html>
-	<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
-	<meta content="utf-8" http-equiv="encoding">
-	<head></head>
-	<body>
-		<script src="vw-wasm.wasm.js"></script>
-		<script>
+<meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+<meta content="utf-8" http-equiv="encoding">
 
-			Module['onRuntimeInitialized'] = onRuntimeInitialized;
+<head></head>
 
-			function onRuntimeInitialized() {
-				let ex = Module.new_example_predict();
-				let ex_builder = new Module.example_predict_builder(ex, "test");
-				ex_builder.push_feature_string("test", 1.0);
+<body>
+	<script src="vw-wasm-full.wasm.js"></script>
+	<script>
 
-				let vw = new Module.vw_predict();
-				let action_list = new Module.action_list();
+		Module['onRuntimeInitialized'] = onRuntimeInitialized;
 
-				let res = vw.predict("test", null, action_list);
-				console.log(res);
-				let a = res.get_pdf();
-				console.log( a.size());
-				for (var i = 0; i < a.size(); i++) {
-						console.log("Vector Value: ", a.get(i));
-				}
-				console.log(res.get_ranking());
+		function vecToString(vec) {
+			let str = "{"
+			let delim = ""
+
+			for (var i = 0; i < vec.size(); i++) {
+				str += delim
+				str += vec.get(i)
+				delim = ","
 			}
-		</script>
-	</body>
+
+			return str + "}"
+		}
+
+		function makeExamples() {
+			let shared = Module.new_example();
+			let ex_builder = new Module.example_predict_builder(Module.get_inner_example_predict(shared), "test");
+			ex_builder.push_feature_string("test1", 1.0);
+
+			let ex1 = Module.new_example();
+			ex_builder = new Module.example_predict_builder(Module.get_inner_example_predict(ex1), "test");
+			ex_builder.push_feature_string("test2", 1.0);
+
+			let ex2 = Module.new_example();
+			ex_builder = new Module.example_predict_builder(Module.get_inner_example_predict(ex2), "test");
+			ex_builder.push_feature_string("test3", 1.0);
+
+			let action_list = new Module.action_list();
+			action_list.add_action(ex1);
+			action_list.add_action(ex2);
+
+			return { shared, action_list, actions: [ex1, ex2] }
+		}
+
+		function onRuntimeInitialized() {
+			let vw = new Module.vw_predict();
+
+			{
+				let { shared, action_list, actions } = makeExamples();
+				let res = vw.predict("test", shared, action_list);
+				console.log("pdf " + vecToString(res.get_pdf()));
+				console.log("ranking " + vecToString(res.get_ranking()));
+				Module.destroy_example(shared);
+				Module.destroy_example(actions[0]);
+				Module.destroy_example(actions[1]);
+			}
+
+			console.log("Do learn...")
+
+			for (let i = 0; i < 5; i++)
+			{
+				let { shared, action_list, actions } = makeExamples();
+				vw.learn("test", shared, action_list, 1, -1, 0.5);
+
+				Module.destroy_example(shared);
+				Module.destroy_example(actions[0]);
+				Module.destroy_example(actions[1]);
+			}
+
+			{
+				let { shared, action_list, actions } = makeExamples();
+				let res = vw.predict("test2", shared, action_list);
+				console.log("pdf " + vecToString(res.get_pdf()));
+				console.log("ranking " + vecToString(res.get_ranking()));
+				Module.destroy_example(shared);
+				Module.destroy_example(actions[0]);
+				Module.destroy_example(actions[1]);
+			}
+		}
+	</script>
+</body>
+
 </html>
