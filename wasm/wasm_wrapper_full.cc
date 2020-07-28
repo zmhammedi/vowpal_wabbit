@@ -32,11 +32,13 @@ struct vw_predict
     }
   }
 
-  vw_predict(const std::vector<char>& bytes)
+  vw_predict(size_t _bytes, int size)
   {
+    char* bytes = (char*)_bytes;
     io_buf io;
-    io.add_file(VW::io::create_buffer_view(bytes.data(), bytes.size()));
-    all = VW::initialize("", &io);
+    io.add_file(VW::io::create_buffer_view(bytes, size));
+    all = VW::initialize("--quiet --no_stdin --cb_sample ", &io);
+    free(bytes);
   }
   vw* all;
 };
@@ -130,6 +132,8 @@ multi_ex setup_examples(vw* all, example* shared, const action_list& actions)
 predict_results predict(vw_predict& vw_obj, const std::string& event_id, example* shared, const action_list& actions)
 {
   auto examples = setup_examples(vw_obj.all, shared, actions);
+  push_many(shared->tag, "seed=", 5);
+  push_many(shared->tag, event_id.data(), event_id.size());
   vw_obj.all->predict(examples);
   auto results = predict_results::from_action_scores(examples[0]->pred.a_s);
   vw_obj.all->finish_example(examples);
@@ -141,6 +145,8 @@ void learn(vw_predict& vw_obj, const std::string& event_id, example* shared, con
 {
   multi_ex examples;
   examples.push_back(shared);
+  push_many(shared->tag, "seed=", 5);
+  push_many(shared->tag, event_id.data(), event_id.size());
 
   vw_obj.all->p->lp.default_label(&shared->l);
   CB::label* ld = &shared->l.cb;
@@ -192,7 +198,7 @@ EMSCRIPTEN_BINDINGS(vw) {
 
   class_<vw_predict>("vw_predict")
     .constructor<>()
-    .constructor<const std::vector<char>&>()
+    .constructor<size_t, int>()
     .function("predict", &predict, allow_raw_pointers())
     .function("learn", &learn, allow_raw_pointers());
 
