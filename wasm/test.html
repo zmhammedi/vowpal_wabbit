@@ -4,7 +4,7 @@
 	<meta content="utf-8" http-equiv="encoding">
 	<head></head>
 	<body>
-		<script src="vwslim.js"></script>
+		<script src="vw-wasm.wasm.js"></script>
 		<script>
 
 			Module['onRuntimeInitialized'] = onRuntimeInitialized;
@@ -20,6 +20,7 @@
 				let res = vw.predict("test", null, action_list);
 				console.log(res);
 				let a = res.get_pdf();
+				console.log( a.size());
 				for (var i = 0; i < a.size(); i++) {
 						console.log("Vector Value: ", a.get(i));
 				}
