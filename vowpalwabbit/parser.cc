@@ -377,8 +377,10 @@ void enable_sources(vw& all, bool quiet, size_t passes, input_options& input_opt
     if (!input_options.foreground)
     {
       // FIXME switch to posix_spawn
-      if (!all.active && daemon(1, 1))
-        THROWERRNO("daemon");
+
+      // REMOVED FOR WASM
+      // if (!all.active && daemon(1, 1))
+      //   THROWERRNO("daemon");
     }
 
     // write pid file
