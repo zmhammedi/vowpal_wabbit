@@ -23,7 +23,7 @@ struct vw_predict
   vw_predict()
   {
     try{
-      all = VW::initialize("--quiet --cb_explore_adf --cb_sample --coin --epsilon 0.1 -b 12");
+      all = VW::initialize("--quiet --cb_explore_adf --cb_sample --coin --epsilon 0.1 -q ::");
     }
     catch(std::exception& e)
     {
