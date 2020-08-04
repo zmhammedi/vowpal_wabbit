@@ -8,6 +8,11 @@ cd emsdk
 source ./emsdk_env.sh
 ```
 
+## Prepare dependencies
+```
+./wasm/prepare.sh
+```
+
 ## Build
 Make sure Emscripten is activated.
 ```sh
@@ -15,7 +20,7 @@ Make sure Emscripten is activated.
 git submodule update --init --recursive
 mkdir wasm_build
 cd wasm_build
-emcmake cmake .. -DSTATIC_LINK_VW_JAVA=on -DVW_INSTALL=off -DBUILD_TESTS=off -DGIT_SUBMODULE=off -DBUILD_SLIM_VW=on
+emcmake cmake .. -DSTATIC_LINK_VW_JAVA=on -DVW_INSTALL=off -DBUILD_TESTS=off -DGIT_SUBMODULE=off
 make -j 4
 cd ../wasm
 python3 -m http.server

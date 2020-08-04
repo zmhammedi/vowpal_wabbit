@@ -1,0 +1,18 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index c44da98bb..861bf8f0d 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -179,9 +179,11 @@ if(STATIC_LINK_VW)
+   endif()
+ endif()
+
++add_subdirectory(external)
++
+ # Align and foreach are also required, for some reason they can't be specified as components though.
+-find_package(Boost REQUIRED COMPONENTS program_options system thread unit_test_framework)
+-find_package(ZLIB REQUIRED)
++# find_package(Boost REQUIRED COMPONENTS program_options system thread unit_test_framework)
++# find_package(ZLIB REQUIRED)
+
+ # This provides the variables such as CMAKE_INSTALL_LIBDIR for installation paths.
+ include(GNUInstallDirs)
