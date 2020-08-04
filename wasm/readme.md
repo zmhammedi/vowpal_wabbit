@@ -9,6 +9,7 @@ source ./emsdk_env.sh
 ```
 
 ## Prepare dependencies
+If the patch fails it must be manually applied.
 ```
 ./wasm/prepare.sh
 ```
@@ -20,7 +21,7 @@ Make sure Emscripten is activated.
 git submodule update --init --recursive
 mkdir wasm_build
 cd wasm_build
-emcmake cmake .. -DSTATIC_LINK_VW_JAVA=on -DVW_INSTALL=off -DBUILD_TESTS=off -DGIT_SUBMODULE=off
+emcmake cmake .. -DSTATIC_LINK_VW_JAVA=on -DVW_INSTALL=off -DBUILD_TESTS=off -DGIT_SUBMODULE=off -DBUILD_SLIM=On
 make -j 4
 cd ../wasm
 python3 -m http.server
