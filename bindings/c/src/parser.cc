@@ -10,14 +10,14 @@ VW_DLL_PUBLIC VWStatus vw_create_example_array_holder(VWExampleArrayHolder** exa
     VWExampleCleanupFunc* cleanup) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 CATCH_RETURN(err_str_container)
 VW_DLL_PUBLIC VWStatus vw_destroy_example_array_holder(
     VWExampleArrayHolder* example_array_holder_handle, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 CATCH_RETURN(err_str_container)
 
@@ -26,7 +26,7 @@ VW_DLL_PUBLIC VWStatus vw_run_parser_and_driver(
     VWWorkspace* workspace_handle, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 CATCH_RETURN(err_str_container)
 
@@ -36,6 +36,6 @@ VW_DLL_PUBLIC VWStatus vw_parse_example(VWWorkspace* workspace_handle, /*const*/
     size_t* num_examples_produced, VWExampleFactoryFunc* factory, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 CATCH_RETURN(err_str_container)

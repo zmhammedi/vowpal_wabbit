@@ -4,7 +4,7 @@
 #include "vw/experimental/vw.h"
 
 #define PRINT_IF_FAILED(result)                          \
-  if (result != VW_SUCCESS)                              \
+  if (result != VW_success)                              \
   {                                                      \
     printf("Failed\n");                                  \
     printf("%s\n", vw_error_string_to_c_string(errorString)); \

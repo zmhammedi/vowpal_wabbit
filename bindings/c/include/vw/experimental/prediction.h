@@ -3,7 +3,7 @@
 // license as described in the file LICENSE.
 #pragma once
 
-#include "exports.h"
+#include "vw/experimental/vwvis.h"
 #include "types.h"
 
 #ifdef __cplusplus

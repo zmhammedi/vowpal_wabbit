@@ -52,7 +52,7 @@ VW_DLL_PUBLIC VWStatus vw_workspace_save_model(
 
   VW::save_predictor(*workspace, model_buffer, false);
 
-  return VW_SUCCESS;
+  return VW_success;
 }
 
 // Will fail if workspace not setup to do this
@@ -68,7 +68,7 @@ VW_DLL_PUBLIC VWStatus vw_workspace_save_readable_model(
   // Passing true causes the model to be outputted as text.
   VW::save_predictor(*workspace, model_buffer, true /*as_text*/);
 
-  return VW_SUCCESS;
+  return VW_success;
 }
 
 // Will fail if workspace not setup to do this
@@ -87,7 +87,7 @@ VW_DLL_PUBLIC VWStatus vw_workspace_save_invert_hash_model(
   workspace->print_invert = true;
   VW::save_predictor(*workspace, model_buffer, true /*as_text*/);
   workspace->print_invert = saved_print_invert;
-  return VW_SUCCESS;
+  return VW_success;
 }
 
 // The one passed in options
@@ -98,25 +98,25 @@ VW_DLL_PUBLIC VWStatus vw_workspace_get_configured_audit(
   ARG_NOT_NULL(audit, err_str_container);
   const auto* workspace = from_opaque(workspace_handle);
   *audit = workspace->audit;
-  return VW_SUCCESS;
+  return VW_success;
 }
 
 VW_DLL_PUBLIC VWStatus vw_workspace_get_configured_input_type(
     const VWWorkspace* workspace_handle, VWInputType* input_type, VWErrorString* err_str_container) noexcept
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 
 VW_DLL_PUBLIC VWStatus vw_workspace_get_configured_hash_type(
     const VWWorkspace* workspace_handle, VWHashType* hash_type, VWErrorString* err_str_container) noexcept
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 
 VW_DLL_PUBLIC VWStatus vw_workspace_get_configured_hash_seed(
     const VWWorkspace* workspace_handle, uint64_t* hash_seed, VWErrorString* err_str_container) noexcept
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 
 VW_DLL_PUBLIC VWStatus vw_workspace_get_configured_num_bits(
@@ -126,39 +126,39 @@ VW_DLL_PUBLIC VWStatus vw_workspace_get_configured_num_bits(
   ARG_NOT_NULL(num_bits, err_str_container);
   const auto* workspace = from_opaque(workspace_handle);
   *num_bits = workspace->num_bits;
-  return VW_SUCCESS;
+  return VW_success;
 }
 
 VW_DLL_PUBLIC VWStatus vw_workspace_get_configured_hasher(
     const VWWorkspace* workspace_handle, VWHasher** hasher, VWErrorString* err_str_container) noexcept
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 
 VW_DLL_PUBLIC VWStatus vw_hash(const uint8_t* data, size_t length, uint64_t seed, VWHashType type, uint64_t*,
     VWErrorString* err_str_container) noexcept
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 
 // SPEEDY overloads for direct hashing against the type
 VW_DLL_PUBLIC VWStatus vw_hash_all(
     const uint8_t* data, size_t length, uint64_t seed, uint64_t*, VWErrorString* err_str_container) noexcept
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 
 VW_DLL_PUBLIC VWStatus vw_hash_string(
     const char* data, size_t length, uint64_t seed, uint64_t*, VWErrorString* err_str_container) noexcept
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 
 // Can also be done as: HASH & ((1 << num_bits) - 1)
 VW_DLL_PUBLIC VWStatus vw_workspace_apply_parse_mask(
     const VWWorkspace* workspace_handle, uint64_t hash, uint64_t*, VWErrorString* err_str_container) noexcept
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 
 // Weights
@@ -169,7 +169,7 @@ VW_DLL_PUBLIC VWStatus vw_workspace_get_num_weights(
   ARG_NOT_NULL(num_weights, err_str_container);
   const auto* workspace = from_opaque(workspace_handle);
   *num_weights = VW::num_weights(*workspace);
-  return VW_SUCCESS;
+  return VW_success;
 }
 
 VW_DLL_PUBLIC VWStatus vw_workspace_get_weights_per_problem(
@@ -179,7 +179,7 @@ VW_DLL_PUBLIC VWStatus vw_workspace_get_weights_per_problem(
   ARG_NOT_NULL(parameter_width, err_str_container);
   const auto* workspace = from_opaque(workspace_handle);
   *parameter_width = VW::get_stride(*workspace);
-  return VW_SUCCESS;
+  return VW_success;
 }
 
 VW_DLL_PUBLIC VWStatus vw_workspace_get_weights_per_problem(
@@ -189,19 +189,19 @@ VW_DLL_PUBLIC VWStatus vw_workspace_get_weights_per_problem(
   ARG_NOT_NULL(weights_per_problem, err_str_container);
   const auto* workspace = from_opaque(workspace_handle);
   *weights_per_problem = workspace->wpp;
-  return VW_SUCCESS;
+  return VW_success;
 }
 
 VW_DLL_PUBLIC VWStatus vw_workspace_get_weight(const VWWorkspace* workspace_handle, size_t index, float** weight,
     size_t* width, VWErrorString* err_str_container) noexcept
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 
 VW_DLL_PUBLIC VWStatus vw_workspace_set_weight(const VWWorkspace* workspace_handle, size_t index, const float* weight,
     size_t width, VWErrorString* err_str_container) noexcept
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 
 VW_DLL_PUBLIC VWStatus vw_workspace_is_example_parsing_equivalent(const VWWorkspace* workspace_handle_one,
@@ -217,30 +217,30 @@ try
 
   // TODO are_features_compatible should take const parameters
   *incompatible_feature = VW::are_features_compatible(*const_cast<vw*>(w1), *const_cast<vw*>(w2));
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
 VW_DLL_PUBLIC VWStatus vw_workspace_get_weight_iterator_begin(
     const VWWorkspace* workspace_handle, VWWeightIterator** iter, VWErrorString* err_str_container) noexcept
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 
 // Will fail if you're already at the end.
 VW_DLL_PUBLIC VWStatus vw_weight_iterator_advance(VWWeightIterator* iter, VWErrorString* err_str_container) noexcept
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 
 VW_DLL_PUBLIC VWStatus vw_weight_iterator_can_advance(
     const VWWeightIterator* iter, bool*, VWErrorString* err_str_container) noexcept
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 
 VW_DLL_PUBLIC VWStatus vw_weight_iterator_dereference(const VWWeightIterator* iter, size_t* index, float** weight,
     size_t* width, VWErrorString* err_str_container) noexcept
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }

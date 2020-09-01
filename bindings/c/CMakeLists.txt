@@ -1,6 +1,5 @@
 set(vw_c_public_headers
   include/vw/experimental/example.h
-  include/vw/experimental/exports.h
   include/vw/experimental/feature_space.h
   include/vw/experimental/label.h
   include/vw/experimental/options.h

@@ -41,7 +41,7 @@ try
 
   // TODO let workspace understand error code based message tracer
   *output_handle = to_opaque(VW::initialize(*options, nullptr, false /*skip_model_load*/, nullptr, nullptr));
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -62,7 +62,7 @@ try
   // TODO let workspace understand error code based message tracer
   *output_handle = to_opaque(VW::initialize(*options, &model_buffer, false /*skip_model_load*/, nullptr, nullptr));
 
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -85,7 +85,7 @@ try
 
   // TODO let workspace understand error code based message tracer
   *output_handle = to_opaque(VW::seed_vw_model(existing_vw, extra_command_line, nullptr, nullptr));
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -98,7 +98,7 @@ try
 
   const auto* workspace = from_opaque(workspace_handle);
   *model_id = workspace->id.c_str();
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -110,7 +110,7 @@ try
   ARG_NOT_NULL(model_id, err_str_container);
   auto* workspace = from_opaque(workspace_handle);
   workspace->id = model_id;
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -124,7 +124,7 @@ try
   const auto* workspace = from_opaque(workspace_handle);
   auto* owned_command_line = from_opaque(command_line);
   owned_command_line->string_data = get_command_line(workspace->options);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -135,7 +135,7 @@ try
   ARG_NOT_NULL(workspace_handle, err_str_container);
   auto* workspace = from_opaque(workspace_handle);
   VW::finish(*workspace, false /*delete_all*/);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -145,7 +145,7 @@ try
   ARG_NOT_NULL(workspace_handle, err_str_container);
   auto* workspace = from_opaque(workspace_handle);
   delete workspace;
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -157,7 +157,7 @@ try
   ARG_NOT_NULL(prediction_type, err_str_container);
   auto* workspace = from_opaque(workspace_handle);
   *prediction_type = internal_to_c_enum(workspace->l->pred_type);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -169,7 +169,7 @@ try
   ARG_NOT_NULL(label_type, err_str_container);
   auto* workspace = from_opaque(workspace_handle);
   *label_type = internal_to_c_enum(workspace->label_type);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -183,7 +183,7 @@ try
   auto* workspace = from_opaque(workspace_handle);
   auto* example = from_opaque(example_handle);
   workspace->learn(*example);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -197,7 +197,7 @@ try
   auto* example_list = reinterpret_cast<example**>(example_handle_list);
   std::vector<example*> example_vec(example_list, example_list + example_handle_list_length);
   workspace->learn(example_vec);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -210,7 +210,7 @@ try
   auto* workspace = from_opaque(workspace_handle);
   auto* example = from_opaque(example_handle);
   workspace->predict(*example);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -225,7 +225,7 @@ try
   std::vector<example*> example_vec(example_list, example_list + example_handle_list_length);
   workspace->predict(example_vec);
 
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -239,7 +239,7 @@ try
   auto* workspace = from_opaque(workspace_handle);
   auto* example = from_opaque(example_handle);
   workspace->finish_example(*example);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -253,7 +253,7 @@ try
   auto* example_list = reinterpret_cast<example**>(example_handle_list);
   std::vector<example*> example_vec(example_list, example_list + example_handle_list_length);
   workspace->finish_example(example_vec);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -266,7 +266,7 @@ try
   workspace->passes_complete++;
   workspace->p->in_pass_counter = 0;
   workspace->l->end_pass();
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -278,6 +278,6 @@ try
   ARG_NOT_NULL(search_handle, err_str_container);
   auto* workspace = from_opaque(workspace_handle);
   *search_handle = reinterpret_cast<VWSearch*>(workspace->searchstr);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)

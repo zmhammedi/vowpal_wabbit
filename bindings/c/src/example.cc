@@ -21,11 +21,11 @@ try
   if (example_mem == nullptr)
   {
     SET_IF_EXISTS(err_str_container, "failed to allocate");
-    return VW_FAIL;
+    return VW_unknown;
   }
 
   *example_handle = to_opaque(new (example_mem) example());
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -40,7 +40,7 @@ try
   auto* example = from_opaque(example_handle);
   example->~example();
   allocator->_dealloc(example, 1);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -49,7 +49,7 @@ VW_DLL_PUBLIC VWStatus vw_example_setup(
     VWWorkspace* workspace_handle, VWExample* example_handle, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 CATCH_RETURN(err_str_container)
 
@@ -64,7 +64,7 @@ try
   const auto* example = from_opaque(example_handle);
   *indices = &example->indices[0];
   *length = example->indices.size();
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -77,7 +77,7 @@ try
 
   auto* example = from_opaque(example_handle);
   example->indices.push_back(value);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -88,7 +88,7 @@ try
 {
   // Can't remove at index for v_array...
   SET_IF_EXISTS(err_str_container, "vw_example_remove_feature_space_index is not implemented");
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 CATCH_RETURN(err_str_container)
 
@@ -101,7 +101,7 @@ try
 
   auto* example = from_opaque(example_handle);
   *feature_space_handle = to_opaque(&example->feature_space[index]);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -117,7 +117,7 @@ try
   fs->audit = audit;
   *feature_space_handle = to_opaque(fs);
 
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -131,7 +131,7 @@ try
   auto* example = from_opaque(example_handle);
   auto* fs = reinterpret_cast<const features*>(feature_space_handle);
   example->feature_space[index].deep_copy_from(*fs);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -144,7 +144,7 @@ try
 
   const auto* example = from_opaque(example_handle);
   *feature_offset = example->ft_offset;
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -156,7 +156,7 @@ try
 
   auto* example = from_opaque(example_handle);
   example->ft_offset = feature_offset;
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -169,7 +169,7 @@ try
 
   const auto* example = from_opaque(example_handle);
   *tag = &example->tag[0];
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -183,7 +183,7 @@ try
   auto* example = from_opaque(example_handle);
   example->tag.clear();
   push_many(example->tag, tag, length);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -196,7 +196,7 @@ try
 
   const auto* example = from_opaque(example_handle);
   *weight = example->weight;
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -208,7 +208,7 @@ try
 
   auto* example = from_opaque(example_handle);
   example->weight = weight;
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -221,7 +221,7 @@ try
 
   auto* example = from_opaque(example_handle);
   *label = reinterpret_cast<VWLabel*>(&example->l);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -234,7 +234,7 @@ try
   auto* example = from_opaque(example_handle);
   auto* dest_label = reinterpret_cast<VWLabel*>(&example->l);
   RETURN_IF_FAIL(vw_copy_label(dest_label, label, label_type, err_str_container));
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -242,7 +242,7 @@ VW_DLL_PUBLIC VWStatus vw_example_get_prediction(
     const VWExample* example_handle, VWPrediction** prediction, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 CATCH_RETURN(err_str_container)
 
@@ -250,7 +250,7 @@ VW_DLL_PUBLIC VWStatus vw_example_set_prediction(VWExample* example_handle, VWPr
     VWPredictionType prediction_type, VWErrorString* err_str_container) noexcept
 try
 {
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 CATCH_RETURN(err_str_container)
 
@@ -262,7 +262,7 @@ try
   ARG_NOT_NULL(partial_prediction, err_str_container);
   auto* example = from_opaque(example_handle);
   *partial_prediction = example->partial_prediction;
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -274,7 +274,7 @@ try
   ARG_NOT_NULL(updated_prediction, err_str_container);
   auto* example = from_opaque(example_handle);
   *updated_prediction = example->updated_prediction;
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -286,7 +286,7 @@ try
   ARG_NOT_NULL(loss, err_str_container);
   auto* example = from_opaque(example_handle);
   *loss = example->loss;
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -298,7 +298,7 @@ try
   ARG_NOT_NULL(total_sum_feat_sq, err_str_container);
   auto* example = from_opaque(example_handle);
   *total_sum_feat_sq = example->total_sum_feat_sq;
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -310,7 +310,7 @@ try
   ARG_NOT_NULL(test_only, err_str_container);
   auto* example = from_opaque(example_handle);
   *test_only = example->test_only;
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -321,6 +321,6 @@ try
   ARG_NOT_NULL(example_handle, err_str_container);
   auto* example = from_opaque(example_handle);
   example->test_only = test_only;
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)

@@ -19,7 +19,7 @@ ssize_t c_reader::read(char* buffer, size_t num_bytes)
 
   size_t bytes_read = 0;
   auto result = _read_func(_context, buffer, num_bytes, &bytes_read);
-  if (result != VW_SUCCESS)
+  if (result != VW_success)
   {
     return -1;
   }
@@ -36,7 +36,7 @@ ssize_t c_writer::write(const char* buffer, size_t num_bytes)
   }
   size_t bytes_written = 0;
   auto result = _write_func(_context, buffer, num_bytes, &bytes_written);
-  if (result != VW_SUCCESS)
+  if (result != VW_success)
   {
     return -1;
   }

@@ -19,7 +19,7 @@ try
   auto* feature_space = new features();
   feature_space->audit = audit;
   *feature_space_handle = to_opaque(feature_space);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -29,7 +29,7 @@ try
 {
   ARG_NOT_NULL(feature_space_handle, err_str_container);
   delete from_opaque(feature_space_handle);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -43,7 +43,7 @@ try
   auto* dest_fs = from_opaque(dest_feature_space_handle);
   const auto* src_fs = from_opaque(src_feature_space_handle);
   dest_fs->deep_copy_from(*src_fs);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -60,7 +60,7 @@ try
   *ft_indices = &fs->indicies[0];
   *ft_values = &fs->values[0];
   *length = fs->indicies.size();
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -88,7 +88,7 @@ try
       std::make_shared<audit_strings>(audit_namespace_name, audit_feature_name));
   }
 
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -138,7 +138,7 @@ try
     feature_space->space_names.push_back(std::make_shared<audit_strings>(namespace_name, ""));
   }
 
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -165,7 +165,7 @@ try
     feature_space->space_names.push_back(std::make_shared<audit_strings>(namespace_name, feature_name));
   }
 
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -207,7 +207,7 @@ try
     }
   }
 
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -217,7 +217,7 @@ VW_DLL_PUBLIC VWStatus vw_feature_space_remove_feature(
 try
 {
   // Can't remove at an index...
-  return VW_NOT_IMPLEMENTED;
+  return VW_not_implemented;
 }
 CATCH_RETURN(err_str_container)
 
@@ -235,13 +235,13 @@ try
   if (index >= feature_space->space_names.size())
   {
     SET_IF_EXISTS(err_str_container, "Index out of bounds in vw_feature_space_get_audit_string");
-    return VW_INDEX_NOT_FOUND;
+    return VW_index_not_found;
   }
 
   const auto& audit_string = feature_space->space_names[index];
   *namespace_name = audit_string->first.c_str();
   *feature_name = audit_string->second.c_str();
 
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)

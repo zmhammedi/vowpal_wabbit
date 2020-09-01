@@ -13,7 +13,7 @@
   do                                  \
   {                                   \
     auto result__LINE__ = result;     \
-    if (result__LINE__ != VW_SUCCESS) \
+    if (result__LINE__ != VW_success) \
     {                                 \
       return result__LINE__;          \
     }                                 \
@@ -33,17 +33,17 @@
   catch (const VW::vw_exception& vwException)                \
   {                                                          \
     SET_IF_EXISTS(errorStringContainer, vwException.what()); \
-    return VW_FAIL;                                          \
+    return VW_unknown;                                          \
   }                                                          \
   catch (const std::exception& exception)                    \
   {                                                          \
     SET_IF_EXISTS(errorStringContainer, exception.what());   \
-    return VW_FAIL;                                          \
+    return VW_unknown;                                          \
   }                                                          \
   catch (...)                                                \
   {                                                          \
     SET_IF_EXISTS(errorStringContainer, "unknown failure");  \
-    return VW_FAIL;                                          \
+    return VW_unknown;                                          \
   }
 
 #define ARG_NOT_NULL(arg, errorStringContainer)              \
@@ -52,6 +52,6 @@
     if (arg == nullptr)                                      \
     {                                                        \
       SET_IF_EXISTS(errorStringContainer, #arg " was null"); \
-      return VW_INVALID_ARGUMENT;                            \
+      return VW_invalid_argument;                            \
     }                                                        \
   } while (0)

@@ -18,7 +18,7 @@ try
 {
   ARG_NOT_NULL(options_handle, err_str_container);
   *options_handle = reinterpret_cast<VWOptions*>(new VW::config::options_boost_po(std::vector<std::string>{}));
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -29,7 +29,7 @@ try
   ARG_NOT_NULL(options_handle, err_str_container);
   ARG_NOT_NULL(argv, err_str_container);
   *options_handle = reinterpret_cast<VWOptions*>(new VW::config::options_boost_po(argc, argv));
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -52,7 +52,7 @@ try
 {
   auto* options = from_opaque(options_handle);
   delete options;
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -65,7 +65,7 @@ try
 
   auto* options = from_opaque(options_handle);
   options->replace(option_name, option_value);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -77,7 +77,7 @@ try
 
   auto* options = from_opaque(options_handle);
   options->replace(option_name, std::to_string(option_value));
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -89,7 +89,7 @@ try
 
   auto* options = from_opaque(options_handle);
   options->replace(option_name, std::to_string(option_value));
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -102,7 +102,7 @@ try
   auto* options = from_opaque(options_handle);
   // TODO - check if passing true or false works
   options->replace(option_name, option_value ? "true" : "false");
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -114,7 +114,7 @@ try
   ARG_NOT_NULL(option_value, err_str_container);
   auto* options = from_opaque(options_handle);
   options->insert(option_name, option_value);
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -126,7 +126,7 @@ try
 
   auto* options = from_opaque(options_handle);
   options->insert(option_name, std::to_string(option_value));
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
 
@@ -138,6 +138,6 @@ try
 
   auto* options = from_opaque(options_handle);
   options->insert(option_name, std::to_string(option_value));
-  return VW_SUCCESS;
+  return VW_success;
 }
 CATCH_RETURN(err_str_container)
