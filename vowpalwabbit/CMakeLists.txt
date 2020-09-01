@@ -20,6 +20,7 @@ endif()
 add_library(vw_io STATIC io/io_adapter.h io/io_adapter.cc)
 add_library(VowpalWabbit::io ALIAS vw_io)
 target_link_libraries(vw_io PRIVATE ZLIB::ZLIB)
+add_library(VowpalWabbit::io ALIAS vw_io)
 
 set(vw_all_headers
   action_score.h
@@ -48,6 +49,7 @@ set(vw_all_headers
   cb_explore_adf_first.h
   cb_explore_adf_greedy.h
   cb_explore_adf_regcb.h
+  cb_explore_adf_squarecb.h
   cb_explore_adf_rnd.h
   cb_explore_adf_softmax.h
   cb_explore.h
@@ -193,6 +195,7 @@ set(vw_all_sources
   cb_explore_adf_first.cc
   cb_explore_adf_greedy.cc
   cb_explore_adf_regcb.cc
+  cb_explore_adf_squarecb.cc
   cb_explore_adf_rnd.cc
   cb_explore_adf_softmax.cc
   cb_explore.cc

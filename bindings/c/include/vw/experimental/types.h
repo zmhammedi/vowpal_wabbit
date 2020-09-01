@@ -1,4 +1,3 @@
-
 // Copyright (c) by respective owners including Yahoo!, Microsoft, and
 // individual contributors. All rights reserved. Released under a BSD (revised)
 // license as described in the file LICENSE.
@@ -17,11 +16,12 @@ extern "C"
 #endif
 
   typedef uint32_t VWStatus;
-  static const VWStatus VW_SUCCESS = 0;
-  static const VWStatus VW_FAIL = 1;
-  static const VWStatus VW_NOT_IMPLEMENTED = 2;
-  static const VWStatus VW_INVALID_ARGUMENT = 3;
-  static const VWStatus VW_INDEX_NOT_FOUND= 4;
+  static const VWStatus VW_success = 0;
+  // Generate all error codes based on the definitions provided in "error_data.h"
+  // This macro gets expanded for each individual error definition
+  #define ERROR_CODE_DEFINITION(code, name, message) static const VWStatus VW_##name = code;
+  #include "error_data.h"
+  #undef ERROR_CODE_DEFINITION
 
   typedef uint32_t VWLabelType;
   static const VWLabelType VW_LABEL_SIMPLE = 0;
