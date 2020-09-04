@@ -7,15 +7,15 @@
   if (result != VW_success)                              \
   {                                                      \
     printf("Failed\n");                                  \
-    printf("%s\n", vw_error_string_to_c_string(errorString)); \
-    vw_destroy_error_string(errorString); \
+    printf("%s\n", vw_error_info_get_message(errorString)); \
+    vw_destroy_error_info(errorString); \
     return 1;                                            \
   }
 
 int main()
 {
   VWOptions* options;
-  VWErrorString* errorString = vw_create_error_string();
+  VWErrorInfo* errorString = vw_create_error_info();
   const char* cmdline = "--quiet";
 
   PRINT_IF_FAILED(vw_create_options_from_command_line_cstring(cmdline, &options, errorString));
@@ -27,6 +27,6 @@ int main()
   PRINT_IF_FAILED(vw_create_example(&ex, a, errorString));
   PRINT_IF_FAILED(vw_destroy_example(ex, a, errorString));
 
-  vw_destroy_error_string(errorString);
+  vw_destroy_error_info(errorString);
   return 0;
 }

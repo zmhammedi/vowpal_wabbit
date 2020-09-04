@@ -31,11 +31,11 @@ std::string get_command_line(const VW::config::options_i* options)
 }
 
 VW_DLL_PUBLIC VWStatus vw_create_workspace(VWOptions* options_handle, VWTraceMessageFunc trace_listener,
-    void* trace_context, VWWorkspace** output_handle, VWErrorString* err_str_container) noexcept
+    void* trace_context, VWWorkspace** output_handle, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(options_handle, err_str_container);
-  ARG_NOT_NULL(output_handle, err_str_container);
+  ARG_NOT_NULL(options_handle, err_info_container);
+  ARG_NOT_NULL(output_handle, err_info_container);
 
   auto* options = from_opaque(options_handle);
 
@@ -43,16 +43,16 @@ try
   *output_handle = to_opaque(VW::initialize(*options, nullptr, false /*skip_model_load*/, nullptr, nullptr));
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 VW_DLL_PUBLIC VWStatus vw_create_workspace_with_model(VWOptions* options_handle, void* context, VWReadFunc* read_func,
     VWTraceMessageFunc* trace_listener, void* trace_context, VWWorkspace** output_handle,
-    VWErrorString* err_str_container) noexcept
+    VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(options_handle, err_str_container);
-  ARG_NOT_NULL(read_func, err_str_container);
-  ARG_NOT_NULL(output_handle, err_str_container);
+  ARG_NOT_NULL(options_handle, err_info_container);
+  ARG_NOT_NULL(read_func, err_info_container);
+  ARG_NOT_NULL(output_handle, err_info_container);
 
   auto* options = from_opaque(options_handle);
 
@@ -64,15 +64,15 @@ try
 
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 VW_DLL_PUBLIC VWStatus vw_create_seeded_workspace(const VWWorkspace* existing_workspace_handle,
     VWOptions* extra_options_handle, VWTraceMessageFunc* trace_listener, void* trace_context,
-    VWWorkspace** output_handle, VWErrorString* err_str_container) noexcept
+    VWWorkspace** output_handle, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(existing_workspace_handle, err_str_container);
-  ARG_NOT_NULL(output_handle, err_str_container);
+  ARG_NOT_NULL(existing_workspace_handle, err_info_container);
+  ARG_NOT_NULL(output_handle, err_info_container);
   // TODO seed_vw_model can take a const version but it needs to be implemented
   auto* existing_vw = from_opaque(const_cast<VWWorkspace*>(existing_workspace_handle));
 
@@ -87,139 +87,139 @@ try
   *output_handle = to_opaque(VW::seed_vw_model(existing_vw, extra_command_line, nullptr, nullptr));
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 VW_DLL_PUBLIC VWStatus vw_workspace_get_model_id(
-    const VWWorkspace* workspace_handle, const char** model_id, VWErrorString* err_str_container) noexcept
+    const VWWorkspace* workspace_handle, const char** model_id, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(workspace_handle, err_str_container);
-  ARG_NOT_NULL(model_id, err_str_container);
+  ARG_NOT_NULL(workspace_handle, err_info_container);
+  ARG_NOT_NULL(model_id, err_info_container);
 
   const auto* workspace = from_opaque(workspace_handle);
   *model_id = workspace->id.c_str();
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 VW_DLL_PUBLIC VWStatus vw_workspace_set_model_id(
-    VWWorkspace* workspace_handle, const char* model_id, VWErrorString* err_str_container) noexcept
+    VWWorkspace* workspace_handle, const char* model_id, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(workspace_handle, err_str_container);
-  ARG_NOT_NULL(model_id, err_str_container);
+  ARG_NOT_NULL(workspace_handle, err_info_container);
+  ARG_NOT_NULL(model_id, err_info_container);
   auto* workspace = from_opaque(workspace_handle);
   workspace->id = model_id;
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 VW_DLL_PUBLIC VWStatus vw_workspace_get_command_line(
-    const VWWorkspace* workspace_handle, VWString* command_line, VWErrorString* err_str_container) noexcept
+    const VWWorkspace* workspace_handle, VWString* command_line, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(workspace_handle, err_str_container);
-  ARG_NOT_NULL(command_line, err_str_container);
+  ARG_NOT_NULL(workspace_handle, err_info_container);
+  ARG_NOT_NULL(command_line, err_info_container);
 
   const auto* workspace = from_opaque(workspace_handle);
   auto* owned_command_line = from_opaque(command_line);
   owned_command_line->string_data = get_command_line(workspace->options);
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 // finish is now broken up into finish() and destroy_workspace().
-VW_DLL_PUBLIC VWStatus vw_workspace_finish(VWWorkspace* workspace_handle, VWErrorString* err_str_container) noexcept
+VW_DLL_PUBLIC VWStatus vw_workspace_finish(VWWorkspace* workspace_handle, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(workspace_handle, err_info_container);
   auto* workspace = from_opaque(workspace_handle);
   VW::finish(*workspace, false /*delete_all*/);
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
-VW_DLL_PUBLIC VWStatus vw_destroy_workspace(VWWorkspace* workspace_handle, VWErrorString* err_str_container) noexcept
+VW_DLL_PUBLIC VWStatus vw_destroy_workspace(VWWorkspace* workspace_handle, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(workspace_handle, err_info_container);
   auto* workspace = from_opaque(workspace_handle);
   delete workspace;
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 VW_DLL_PUBLIC VWStatus vw_workspace_get_prediction_type(
-    const VWWorkspace* workspace_handle, VWPredictionType* prediction_type, VWErrorString* err_str_container) noexcept
+    const VWWorkspace* workspace_handle, VWPredictionType* prediction_type, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(workspace_handle, err_str_container);
-  ARG_NOT_NULL(prediction_type, err_str_container);
+  ARG_NOT_NULL(workspace_handle, err_info_container);
+  ARG_NOT_NULL(prediction_type, err_info_container);
   auto* workspace = from_opaque(workspace_handle);
   *prediction_type = internal_to_c_enum(workspace->l->pred_type);
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 VW_DLL_PUBLIC VWStatus vw_workspace_get_label_type(
-    const VWWorkspace* workspace_handle, VWLabelType* label_type, VWErrorString* err_str_container) noexcept
+    const VWWorkspace* workspace_handle, VWLabelType* label_type, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(workspace_handle, err_str_container);
-  ARG_NOT_NULL(label_type, err_str_container);
+  ARG_NOT_NULL(workspace_handle, err_info_container);
+  ARG_NOT_NULL(label_type, err_info_container);
   auto* workspace = from_opaque(workspace_handle);
   *label_type = internal_to_c_enum(workspace->label_type);
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 // These are "Legacy" variants because predictions and labels are in the example object
 VW_DLL_PUBLIC VWStatus vw_workspace_learn_legacy(
-    VWWorkspace* workspace_handle, VWExample* example_handle, VWErrorString* err_str_container) noexcept
+    VWWorkspace* workspace_handle, VWExample* example_handle, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(workspace_handle, err_str_container);
-  ARG_NOT_NULL(example_handle, err_str_container);
+  ARG_NOT_NULL(workspace_handle, err_info_container);
+  ARG_NOT_NULL(example_handle, err_info_container);
   auto* workspace = from_opaque(workspace_handle);
   auto* example = from_opaque(example_handle);
   workspace->learn(*example);
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 VW_DLL_PUBLIC VWStatus vw_workspace_learn_multiline_legacy(VWWorkspace* workspace_handle,
-    VWExample** example_handle_list, size_t example_handle_list_length, VWErrorString* err_str_container) noexcept
+    VWExample** example_handle_list, size_t example_handle_list_length, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(workspace_handle, err_str_container);
-  ARG_NOT_NULL(example_handle_list, err_str_container);
+  ARG_NOT_NULL(workspace_handle, err_info_container);
+  ARG_NOT_NULL(example_handle_list, err_info_container);
   auto* workspace = from_opaque(workspace_handle);
   auto* example_list = reinterpret_cast<example**>(example_handle_list);
   std::vector<example*> example_vec(example_list, example_list + example_handle_list_length);
   workspace->learn(example_vec);
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 VW_DLL_PUBLIC VWStatus vw_workspace_predict_legacy(
-    VWWorkspace* workspace_handle, VWExample* example_handle, VWErrorString* err_str_container) noexcept
+    VWWorkspace* workspace_handle, VWExample* example_handle, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(workspace_handle, err_str_container);
-  ARG_NOT_NULL(example_handle, err_str_container);
+  ARG_NOT_NULL(workspace_handle, err_info_container);
+  ARG_NOT_NULL(example_handle, err_info_container);
   auto* workspace = from_opaque(workspace_handle);
   auto* example = from_opaque(example_handle);
   workspace->predict(*example);
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 VW_DLL_PUBLIC VWStatus vw_workspace_predict_multiline_legacy(VWWorkspace* workspace_handle,
-    VWExample* example_handle_list, size_t example_handle_list_length, VWErrorString* err_str_container) noexcept
+    VWExample* example_handle_list, size_t example_handle_list_length, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(workspace_handle, err_str_container);
-  ARG_NOT_NULL(example_handle_list, err_str_container);
+  ARG_NOT_NULL(workspace_handle, err_info_container);
+  ARG_NOT_NULL(example_handle_list, err_info_container);
   auto* workspace = from_opaque(workspace_handle);
   auto* example_list = reinterpret_cast<example**>(example_handle_list);
   std::vector<example*> example_vec(example_list, example_list + example_handle_list_length);
@@ -227,57 +227,57 @@ try
 
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 // finish one or more examples? How do we handle multi_ex?
 VW_DLL_PUBLIC VWStatus vw_workspace_finish_example(
-    VWWorkspace* workspace_handle, VWExample* example_handle, VWErrorString* err_str_container) noexcept
+    VWWorkspace* workspace_handle, VWExample* example_handle, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(workspace_handle, err_str_container);
-  ARG_NOT_NULL(example_handle, err_str_container);
+  ARG_NOT_NULL(workspace_handle, err_info_container);
+  ARG_NOT_NULL(example_handle, err_info_container);
   auto* workspace = from_opaque(workspace_handle);
   auto* example = from_opaque(example_handle);
   workspace->finish_example(*example);
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 VW_DLL_PUBLIC VWStatus vw_workspace_finish_example_multiline(VWWorkspace* workspace_handle,
-    VWExample* example_handle_list, size_t example_handle_list_length, VWErrorString* err_str_container) noexcept
+    VWExample* example_handle_list, size_t example_handle_list_length, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(workspace_handle, err_str_container);
-  ARG_NOT_NULL(example_handle_list, err_str_container);
+  ARG_NOT_NULL(workspace_handle, err_info_container);
+  ARG_NOT_NULL(example_handle_list, err_info_container);
   auto* workspace = from_opaque(workspace_handle);
   auto* example_list = reinterpret_cast<example**>(example_handle_list);
   std::vector<example*> example_vec(example_list, example_list + example_handle_list_length);
   workspace->finish_example(example_vec);
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 // End pass -> workspace.passes_complete++, in_pass_counter = 0; (something?)
-VW_DLL_PUBLIC VWStatus vw_workspace_end_pass(VWWorkspace* workspace_handle, VWErrorString* err_str_container) noexcept
+VW_DLL_PUBLIC VWStatus vw_workspace_end_pass(VWWorkspace* workspace_handle, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(workspace_handle, err_str_container);
+  ARG_NOT_NULL(workspace_handle, err_info_container);
   auto* workspace = from_opaque(workspace_handle);
   workspace->passes_complete++;
   workspace->p->in_pass_counter = 0;
   workspace->l->end_pass();
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 VW_DLL_PUBLIC VWStatus vw_workspace_get_search(
-    const VWWorkspace* workspace_handle, VWSearch** search_handle, VWErrorString* err_str_container) noexcept
+    const VWWorkspace* workspace_handle, VWSearch** search_handle, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(workspace_handle, err_str_container);
-  ARG_NOT_NULL(search_handle, err_str_container);
+  ARG_NOT_NULL(workspace_handle, err_info_container);
+  ARG_NOT_NULL(search_handle, err_info_container);
   auto* workspace = from_opaque(workspace_handle);
   *search_handle = reinterpret_cast<VWSearch*>(workspace->searchstr);
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)

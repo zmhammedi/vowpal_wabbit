@@ -30,8 +30,8 @@
   FROM_OPAQUE_FUNCS(C_TYPE, CPP_TYPE)          \
   TO_OPAQUE_FUNCS(C_TYPE, CPP_TYPE)
 
-// Does not support to_opaque because owned_string can be either VWErrorString* or VWString*
-FROM_OPAQUE_FUNCS(VWErrorString, owned_string);
+// Does not support to_opaque because owned_string can be either VWErrorInfo* or VWString*
+FROM_OPAQUE_FUNCS(VWErrorInfo, owned_string);
 FROM_OPAQUE_FUNCS(VWString, owned_string);
 FROM_OPAQUE_FUNCS(VWOptions, VW::config::options_i);
 

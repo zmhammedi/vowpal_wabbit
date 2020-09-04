@@ -6,36 +6,36 @@
 
 #include "error_handling.h"
 VW_DLL_PUBLIC VWStatus vw_create_example_array_holder(VWExampleArrayHolder** example_array_holder_handle,
-    VWErrorString* err_str_container, void* factory_context, VWExampleFactoryFunc* factory, void* cleanup_context,
+    VWErrorInfo* err_info_container, void* factory_context, VWExampleFactoryFunc* factory, void* cleanup_context,
     VWExampleCleanupFunc* cleanup) noexcept
 try
 {
   return VW_not_implemented;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 VW_DLL_PUBLIC VWStatus vw_destroy_example_array_holder(
-    VWExampleArrayHolder* example_array_holder_handle, VWErrorString* err_str_container) noexcept
+    VWExampleArrayHolder* example_array_holder_handle, VWErrorInfo* err_info_container) noexcept
 try
 {
   return VW_not_implemented;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 // Start the parser+driver loops
 VW_DLL_PUBLIC VWStatus vw_run_parser_and_driver(
-    VWWorkspace* workspace_handle, VWErrorString* err_str_container) noexcept
+    VWWorkspace* workspace_handle, VWErrorInfo* err_info_container) noexcept
 try
 {
   return VW_not_implemented;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 // Might return a multiline example in the case of the json parser
 VW_DLL_PUBLIC VWStatus vw_parse_example(VWWorkspace* workspace_handle, /*const*/ uint8_t* data, size_t length,
     VWInputType type, VWExampleArrayHolder* example_array_holder_handle, VWExample*** produced_examples,
-    size_t* num_examples_produced, VWExampleFactoryFunc* factory, VWErrorString* err_str_container) noexcept
+    size_t* num_examples_produced, VWExampleFactoryFunc* factory, VWErrorInfo* err_info_container) noexcept
 try
 {
   return VW_not_implemented;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)

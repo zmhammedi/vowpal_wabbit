@@ -58,7 +58,7 @@ extern "C"
   typedef struct VWWorkspace_tag VWWorkspace;
 
   struct VWErrorString_tag;
-  typedef struct VWErrorString_tag VWErrorString;
+  typedef struct VWErrorString_tag VWErrorInfo;
 
   struct VWString_tag;
   typedef struct VWString_tag VWString;

@@ -12,49 +12,49 @@
 #include "parse_primitives.h"
 
 VW_DLL_PUBLIC VWStatus vw_create_feature_space(
-    VWFeatureSpace** feature_space_handle, bool audit, VWErrorString* err_str_container) noexcept
+    VWFeatureSpace** feature_space_handle, bool audit, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(feature_space_handle, err_str_container);
+  ARG_NOT_NULL(feature_space_handle, err_info_container);
   auto* feature_space = new features();
   feature_space->audit = audit;
   *feature_space_handle = to_opaque(feature_space);
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 VW_DLL_PUBLIC VWStatus vw_destroy_feature_space(
-    VWFeatureSpace* feature_space_handle, VWErrorString* err_str_container) noexcept
+    VWFeatureSpace* feature_space_handle, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(feature_space_handle, err_str_container);
+  ARG_NOT_NULL(feature_space_handle, err_info_container);
   delete from_opaque(feature_space_handle);
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 VW_DLL_PUBLIC VWStatus vw_feature_space_copy(VWFeatureSpace* dest_feature_space_handle,
-    const VWFeatureSpace* src_feature_space_handle, VWErrorString* err_str_container) noexcept
+    const VWFeatureSpace* src_feature_space_handle, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(dest_feature_space_handle, err_str_container);
-  ARG_NOT_NULL(src_feature_space_handle, err_str_container);
+  ARG_NOT_NULL(dest_feature_space_handle, err_info_container);
+  ARG_NOT_NULL(src_feature_space_handle, err_info_container);
 
   auto* dest_fs = from_opaque(dest_feature_space_handle);
   const auto* src_fs = from_opaque(src_feature_space_handle);
   dest_fs->deep_copy_from(*src_fs);
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 VW_DLL_PUBLIC VWStatus vw_feature_space_get_features(const VWFeatureSpace* feature_space_handle,
-    const uint64_t** ft_indices, const float** ft_values, int* length, VWErrorString* err_str_container) noexcept
+    const uint64_t** ft_indices, const float** ft_values, int* length, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(feature_space_handle, err_str_container);
-  ARG_NOT_NULL(ft_indices, err_str_container);
-  ARG_NOT_NULL(ft_values, err_str_container);
-  ARG_NOT_NULL(length, err_str_container);
+  ARG_NOT_NULL(feature_space_handle, err_info_container);
+  ARG_NOT_NULL(ft_indices, err_info_container);
+  ARG_NOT_NULL(ft_values, err_info_container);
+  ARG_NOT_NULL(length, err_info_container);
 
   const auto* fs = from_opaque(feature_space_handle);
   *ft_indices = &fs->indicies[0];
@@ -62,22 +62,22 @@ try
   *length = fs->indicies.size();
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 // invalidates pointers
 // Use at your own risk - ft_index must make sense
 VW_DLL_PUBLIC VWStatus vw_feature_space_push_hashed_feature(VWFeatureSpace* feature_space_handle, uint64_t ft_index,
     float ft_value, const char* audit_namespace_name, const char* audit_feature_name,
-    VWErrorString* err_str_container) noexcept
+    VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(feature_space_handle, err_str_container);
+  ARG_NOT_NULL(feature_space_handle, err_info_container);
 
   auto* feature_space = from_opaque(feature_space_handle);
   if (feature_space->audit)
   {
-    ARG_NOT_NULL(audit_feature_name, err_str_container);
-    ARG_NOT_NULL(audit_namespace_name, err_str_container);
+    ARG_NOT_NULL(audit_feature_name, err_info_container);
+    ARG_NOT_NULL(audit_namespace_name, err_info_container);
   }
 
   feature_space->push_back(ft_value, ft_index);
@@ -90,7 +90,7 @@ try
 
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 int64_t find_next_available_anonymous_slot(const features& fs, uint64_t namespace_hash)
 {
@@ -120,12 +120,12 @@ int64_t find_next_available_anonymous_slot(const features& fs, uint64_t namespac
 
 // invalidates pointers
 VW_DLL_PUBLIC VWStatus vw_feature_space_push_anonymous_feature_float(VWFeatureSpace* feature_space_handle,
-    const char* namespace_name, float ft_value, VWHasher* hasher_handle, VWErrorString* err_str_container) noexcept
+    const char* namespace_name, float ft_value, VWHasher* hasher_handle, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(feature_space_handle, err_str_container);
-  ARG_NOT_NULL(namespace_name, err_str_container);
-  ARG_NOT_NULL(hasher_handle, err_str_container);
+  ARG_NOT_NULL(feature_space_handle, err_info_container);
+  ARG_NOT_NULL(namespace_name, err_info_container);
+  ARG_NOT_NULL(hasher_handle, err_info_container);
   auto* feature_space = from_opaque(feature_space_handle);
   auto* hasher = from_opaque(hasher_handle);
 
@@ -140,17 +140,17 @@ try
 
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 // invalidates pointers
 VW_DLL_PUBLIC VWStatus vw_feature_space_push_feature_float(VWFeatureSpace* feature_space_handle,
     const char* namespace_name, const char* feature_name, float ft_value, VWHasher* hasher_handle,
-    VWErrorString* err_str_container) noexcept
+    VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(feature_space_handle, err_str_container);
-  ARG_NOT_NULL(namespace_name, err_str_container);
-  ARG_NOT_NULL(hasher_handle, err_str_container);
+  ARG_NOT_NULL(feature_space_handle, err_info_container);
+  ARG_NOT_NULL(namespace_name, err_info_container);
+  ARG_NOT_NULL(hasher_handle, err_info_container);
   auto* feature_space = from_opaque(feature_space_handle);
   auto* hasher = from_opaque(hasher_handle);
 
@@ -167,17 +167,17 @@ try
 
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 // invalidates pointers
 VW_DLL_PUBLIC VWStatus vw_feature_space_push_feature_string(VWFeatureSpace* feature_space_handle,
     const char* namespace_name, const char* feature_name, const char* ft_value, VWHasher* hasher_handle,
-    bool chain_hash, VWErrorString* err_str_container) noexcept
+    bool chain_hash, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(feature_space_handle, err_str_container);
-  ARG_NOT_NULL(namespace_name, err_str_container);
-  ARG_NOT_NULL(hasher_handle, err_str_container);
+  ARG_NOT_NULL(feature_space_handle, err_info_container);
+  ARG_NOT_NULL(namespace_name, err_info_container);
+  ARG_NOT_NULL(hasher_handle, err_info_container);
   auto* feature_space = from_opaque(feature_space_handle);
   auto* hasher = from_opaque(hasher_handle);
 
@@ -209,32 +209,32 @@ try
 
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 // invalidates pointers
 VW_DLL_PUBLIC VWStatus vw_feature_space_remove_feature(
-    VWFeatureSpace* feature_space_handle, int index, VWErrorString* err_str_container) noexcept
+    VWFeatureSpace* feature_space_handle, int index, VWErrorInfo* err_info_container) noexcept
 try
 {
   // Can't remove at an index...
   return VW_not_implemented;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
 
 // Will return nullptr if not in audit mode.
 VW_DLL_PUBLIC VWStatus vw_feature_space_get_audit_string(VWFeatureSpace* feature_space_handle, size_t index,
-    const char** namespace_name, const char** feature_name, VWErrorString* err_str_container) noexcept
+    const char** namespace_name, const char** feature_name, VWErrorInfo* err_info_container) noexcept
 try
 {
-  ARG_NOT_NULL(feature_space_handle, err_str_container);
-  ARG_NOT_NULL(namespace_name, err_str_container);
-  ARG_NOT_NULL(feature_name, err_str_container);
+  ARG_NOT_NULL(feature_space_handle, err_info_container);
+  ARG_NOT_NULL(namespace_name, err_info_container);
+  ARG_NOT_NULL(feature_name, err_info_container);
 
   auto* feature_space = from_opaque(feature_space_handle);
 
   if (index >= feature_space->space_names.size())
   {
-    SET_IF_EXISTS(err_str_container, "Index out of bounds in vw_feature_space_get_audit_string");
+    SET_IF_EXISTS(err_info_container, "Index out of bounds in vw_feature_space_get_audit_string");
     return VW_index_not_found;
   }
 
@@ -244,4 +244,4 @@ try
 
   return VW_success;
 }
-CATCH_RETURN(err_str_container)
+CATCH_RETURN(err_info_container)
