@@ -19,9 +19,9 @@ extern "C"
   static const VWStatus VW_success = 0;
   // Generate all error codes based on the definitions provided in "error_data.h"
   // This macro gets expanded for each individual error definition
-  #define ERROR_CODE_DEFINITION(code, name, message) static const VWStatus VW_##name = code;
-  #include "error_data.h"
-  #undef ERROR_CODE_DEFINITION
+#define ERROR_CODE_DEFINITION(code, name, message) static const VWStatus VW_##name = code;
+#include "vw/experimental/error_data.h"
+#undef ERROR_CODE_DEFINITION
 
   typedef uint32_t VWLabelType;
   static const VWLabelType VW_LABEL_SIMPLE = 0;
