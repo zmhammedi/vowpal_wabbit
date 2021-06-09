@@ -1662,20 +1662,28 @@ void read_line_json(vw& all, v_array<example*>& examples, char* line, example_fa
   read_line_json_s<audit>(all, examples, line, strlen(line), example_factory, ex_factory_context, dedup_examples);
 }
 
-inline void apply_pdrop(vw& all, float pdrop, v_array<example*>& examples)
+inline bool apply_pdrop(vw& all, float pdrop, v_array<example*>& examples)
 {
+  if (pdrop == 1.)
+  {
+    logger::errlog_error("JSON parser error: examples with pdrop==1 are not supported");
+    return false;
+  }
+  // Event with certain pdrop had (1-pdrop) as probability to survive,
+  // so it is one of (1 / (1-pdrop)) events that we should learn on, and weight should be updated accordingly.
   if (all.example_parser->lbl_parser.label_type == label_type_t::cb)
   {
-    for (auto& e : examples) { e->l.cb.weight = 1 - pdrop; }
+    for (auto& e : examples) { e->l.cb.weight /= 1 - pdrop; }
   }
   else if (all.example_parser->lbl_parser.label_type == label_type_t::ccb)
   {
-    for (auto& e : examples) { e->l.conditional_contextual_bandit.weight = 1 - pdrop; }
+    for (auto& e : examples) { e->l.conditional_contextual_bandit.weight /= 1 - pdrop; }
   }
   if (all.example_parser->lbl_parser.label_type == label_type_t::slates)
   {
     // TODO
   }
+  return true;
 }
 
 template <bool audit>
