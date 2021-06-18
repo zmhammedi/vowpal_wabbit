@@ -177,15 +177,16 @@ void inner_freegrad_update_after_prediction(freegrad_update_data& d, float x, fl
   fabs_tilde_g = std::fabs(tilde_gradient);
     
   // Updating the hint sequence
+  h = d.ec_weight * fabs_tilde_g;
   if (h1 == 0){
-    w[H1] = fabs_tilde_g;
-    w[HT] = fabs_tilde_g;
+    w[H1] = h;
+    w[HT] = h;
     w[Vsum] += d.ec_weight * pow(fabs_tilde_g,2.f);
   }
-  else if (fabs_tilde_g > ht) {
+  else if (h > ht) {
     // Perform gradient clipping if necessary
-    clipped_gradient *= ht / fabs_tilde_g;
-    w[HT] = fabs_tilde_g;
+    clipped_gradient *= ht / h;
+    w[HT] = h;
   }
   d.squared_norm_clipped_grad += pow(clipped_gradient,2.f);
 
