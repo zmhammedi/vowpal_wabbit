@@ -18,9 +18,12 @@ namespace logger = VW::io::logger;
 #define W    0  // current parameter
 #define Gsum    1  // sum of gradients
 #define Vsum    2  // sum of squared gradients
+// TODO rearrange this and edit the description of B1 BT
 #define H1   3  // maximum absolute value of features
 #define HT   4  // maximum gradient
 #define S    5  // sum of radios \sum_s |x_s|/h_s  
+#define B1   6  // maximum absolute value of features
+#define BT   7  // maximum gradient
 
 struct freegrad_update_data
 {
@@ -66,8 +69,11 @@ void predict(freegrad& b, single_learner&, example& ec)
 void inner_freegrad_predict(freegrad_update_data& d, float x, float& wref)
 {
   float* w = &wref;
+  // TODO modify the description 
   float h1 = w[H1]; // will be set to the value of the first non-zero gradient w.r.t. the scalar feature x
   float ht = w[HT]; // maximum absolute value of the gradient w.r.t. scalar feature x 
+  float b1 = w[B1]; // will be set to the value of the first non-zero gradient w.r.t. the scalar feature x
+  float bt = w[BT]; // maximum absolute value of the gradient w.r.t. scalar feature x 
   float w_pred  = 0.0;   // weight for the feature x
   float G  = w[Gsum];  // sum of gradients w.r.t. scalar feature x
   float absG = std::fabs(G); 
@@ -76,8 +82,8 @@ void inner_freegrad_predict(freegrad_update_data& d, float x, float& wref)
     
   // Only predict a non-zero w_pred if a non-zero gradient has been observed
   // freegrad update Equation 9 in paper http://proceedings.mlr.press/v125/mhammedi20a/mhammedi20a.pdf
-  if (h1 > 0) 
-    w_pred  = -G * epsilon * (2. * V + ht * absG) * pow(h1, 2.f)/(2.*pow(V + ht * absG,2.f) * sqrtf(V)) * exp(pow(absG,2.f)/(2. * V + 2. * ht * absG));
+  if (h1 > 0 && b1 > 0) 
+    w_pred  = -G * epsilon * (2. * V + ht * bt * absG) * h1 * pow(b1, 2.f)/(2.*pow(V + ht * bt * absG,2.f) * sqrtf(V)) * exp(pow(absG,2.f)/(2. * V + 2. * ht * bt * absG));
 
   d.squared_norm_prediction += pow(w_pred,2.f);
   // This is the unprojected predict
@@ -117,8 +123,11 @@ void freegrad_predict(freegrad& FG, single_learner&, example& ec)
 
 void gradient_dot_w(freegrad_update_data& d, float x, float& wref) {
   float* w = &wref;
+  // TODO change the description
   float h1 = w[H1]; // will be set to the value of the first non-zero gradient w.r.t. the scalar feature x
   float ht = w[HT]; // maximum absolute value of the gradient w.r.t. scalar feature x 
+  float b1 = w[B1]; // will be set to the value of the first non-zero gradient w.r.t. the scalar feature x
+  float bt = w[BT]; // maximum absolute value of the gradient w.r.t. scalar feature x 
   float w_pred  = 0.0;   // weight for the feature x
   float G  = w[Gsum];  // sum of gradients w.r.t. scalar feature x
   float absG = std::fabs(G); 
@@ -127,8 +136,8 @@ void gradient_dot_w(freegrad_update_data& d, float x, float& wref) {
   float gradient = d.update * x;
     
   // Only predict a non-zero w_pred if a non-zero gradient has been observed
-  if (h1>0)
-    w_pred =  -G * epsilon * (2. * V + ht * absG) * pow(h1,2.f)/(2.*pow(V + ht * absG,2.f) * sqrtf(V))* exp(pow(absG,2.f)/(2 * V + 2. * ht * absG));
+  if (h1>0 && b1>0)
+    w_pred  = -G * epsilon * (2. * V + ht * bt * absG) * h1 * pow(b1, 2.f)/(2.*pow(V + ht * bt * absG,2.f) * sqrtf(V)) * exp(pow(absG,2.f)/(2. * V + 2. * ht * bt * absG));
 
   d.grad_dot_w += gradient * w_pred;
 }
@@ -140,13 +149,17 @@ void inner_freegrad_update_after_prediction(freegrad_update_data& d, float x, fl
   float tilde_gradient = gradient;
   float clipped_gradient;
   float fabs_g = std::fabs(gradient);
+  float fabs_x = std::fabs(x);
   float g_dot_w = d.grad_dot_w;
   float norm_w_pred =sqrtf(d.squared_norm_prediction); 
   float projection_radius;
   float fabs_tilde_g;
  
+  // TODO change the comment for b1 bt
   float h1 = w[H1]; // will be set to the value of the first non-zero gradient w.r.t. the scalar feature x
   float ht = w[HT]; // maximum absolute value of the gradient w.r.t. scalar feature x 
+  float b1 = w[B1]; // will be set to the value of the first non-zero gradient w.r.t. the scalar feature x
+  float bt = w[BT]; // maximum absolute value of the gradient w.r.t. scalar feature x 
   float w_pred = 0.0;   // weight for the feature x
   float G  = w[Gsum];  // sum of gradients w.r.t. scalar feature x
   float absG = std::fabs(G); 
@@ -155,7 +168,7 @@ void inner_freegrad_update_after_prediction(freegrad_update_data& d, float x, fl
   
   // Computing the freegrad prediction again (Eq.(9) and Line 7 of Alg. 2 in paper)
   if (h1>0)
-    w[W] =  -G * epsilon * (2. * V + ht * absG) * pow(h1, 2.f)/(2.*pow(V + ht * absG,2.f) * sqrtf(V))* exp(pow(absG,2.f)/(2 * V + 2. * ht * absG));
+    w[W]  = -G * epsilon * (2. * V + ht * bt * absG) * h1 * pow(b1, 2.f)/(2.*pow(V + ht * bt * absG,2.f) * sqrtf(V)) * exp(pow(absG,2.f)/(2. * V + 2. * ht * bt * absG));
   
   // Compute the tilted gradient: 
   // Cutkosky's varying constrains' reduction in 
@@ -179,14 +192,18 @@ void inner_freegrad_update_after_prediction(freegrad_update_data& d, float x, fl
     
   // Updating the hint sequence
   if (h1 == 0){
-    w[H1] = fabs_tilde_g;
-    w[HT] = fabs_tilde_g;
+    w[H1] = fabs_x;
+    w[B1] = fabs_g;
     w[Vsum] += pow(fabs_tilde_g,2.f);
   }
-  else if (fabs_tilde_g > ht) {
+  if (fabs_x > ht)
+    w[HT] = fabs_x;
+  if (fabs_g > bt)
+    w[BT] = fabs_g;
+
+  if (fabs_tilde_g > ht * bt) {
     // Perform gradient clipping if necessary
-    clipped_gradient *= ht / fabs_tilde_g;
-    w[HT] = fabs_tilde_g;
+    clipped_gradient *= ht * bt / fabs_tilde_g;
   }
   d.squared_norm_clipped_grad += pow(clipped_gradient,2.f);
 
@@ -354,8 +371,9 @@ base_learner* freegrad_setup(options_i& options, vw& all)
   else
     learn_ptr = learn_freegrad<false>;
     
+  // TODO edit this accordingly
   all.weights.stride_shift(3);  // NOTE: for more parameter storage
-  FG->freegrad_size = 6;
+  FG->freegrad_size = 8;
   bool learn_returns_prediction = true;
 
   if (!all.logger.quiet)
