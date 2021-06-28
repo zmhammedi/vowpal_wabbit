@@ -83,7 +83,7 @@ void inner_freegrad_predict(freegrad_update_data& d, float x, float& wref)
   // Only predict a non-zero w_pred if a non-zero gradient has been observed
   // freegrad update Equation 9 in paper http://proceedings.mlr.press/v125/mhammedi20a/mhammedi20a.pdf
   if (h1 > 0 && b1 > 0) 
-    w_pred  = -G * epsilon * (2. * V + ht * bt * absG) * h1 * pow(b1, 2.f)/(2.*pow(V + ht * bt * absG,2.f) * sqrtf(V)) * exp(pow(absG,2.f)/(2. * V + 2. * ht * bt * absG));
+    w_pred  = -G * epsilon * (2. * V + ht * bt * absG) * pow(h1,2.f) * pow(b1, 2.f)/(2.*pow(V + ht * bt * absG,2.f) * sqrtf(V)) * exp(pow(absG,2.f)/(2. * V + 2. * ht * bt * absG));
 
   d.squared_norm_prediction += pow(w_pred,2.f);
   // This is the unprojected predict
@@ -137,7 +137,7 @@ void gradient_dot_w(freegrad_update_data& d, float x, float& wref) {
     
   // Only predict a non-zero w_pred if a non-zero gradient has been observed
   if (h1>0 && b1>0)
-    w_pred  = -G * epsilon * (2. * V + ht * bt * absG) * h1 * pow(b1, 2.f)/(2.*pow(V + ht * bt * absG,2.f) * sqrtf(V)) * exp(pow(absG,2.f)/(2. * V + 2. * ht * bt * absG));
+    w_pred  = -G * epsilon * (2. * V + ht * bt * absG) * pow(h1,2.f) * pow(b1, 2.f)/(2.*pow(V + ht * bt * absG,2.f) * sqrtf(V)) * exp(pow(absG,2.f)/(2. * V + 2. * ht * bt * absG));
 
   d.grad_dot_w += gradient * w_pred;
 }
@@ -148,7 +148,7 @@ void inner_freegrad_update_after_prediction(freegrad_update_data& d, float x, fl
   float gradient = d.update * x;
   float tilde_gradient = gradient;
   float clipped_gradient;
-  float fabs_g = std::fabs(gradient);
+  float fabs_g = std::fabs(d.update);
   float fabs_x = std::fabs(x);
   float g_dot_w = d.grad_dot_w;
   float norm_w_pred =sqrtf(d.squared_norm_prediction); 
@@ -168,7 +168,7 @@ void inner_freegrad_update_after_prediction(freegrad_update_data& d, float x, fl
   
   // Computing the freegrad prediction again (Eq.(9) and Line 7 of Alg. 2 in paper)
   if (h1>0)
-    w[W]  = -G * epsilon * (2. * V + ht * bt * absG) * h1 * pow(b1, 2.f)/(2.*pow(V + ht * bt * absG,2.f) * sqrtf(V)) * exp(pow(absG,2.f)/(2. * V + 2. * ht * bt * absG));
+    w[W]  = -G * epsilon * (2. * V + ht * bt * absG) * pow(h1,2.f) * pow(b1, 2.f)/(2.*pow(V + ht * bt * absG,2.f) * sqrtf(V)) * exp(pow(absG,2.f)/(2. * V + 2. * ht * bt * absG));
   
   // Compute the tilted gradient: 
   // Cutkosky's varying constrains' reduction in 
@@ -183,7 +183,19 @@ void inner_freegrad_update_after_prediction(freegrad_update_data& d, float x, fl
     if(norm_w_pred > projection_radius && g_dot_w < 0) 
       tilde_gradient = gradient - (g_dot_w * w[W]) / pow(norm_w_pred,2.f);
   }
-    
+  
+  if (fabs_x > ht){
+    if (h1==0)
+      w[H1] = fabs_x;
+    w[HT] = fabs_x;
+  }
+
+  if (fabs_g > bt){
+    if (b1==0)
+      w[B1] = fabs_g; 
+    w[BT] = fabs_g;
+  }
+
   if (tilde_gradient==0) // Only do something if a non-zero gradient has been observed 
     return;
     
@@ -191,15 +203,8 @@ void inner_freegrad_update_after_prediction(freegrad_update_data& d, float x, fl
   fabs_tilde_g = std::fabs(tilde_gradient);
     
   // Updating the hint sequence
-  if (h1 == 0){
-    w[H1] = fabs_x;
-    w[B1] = fabs_g;
+  if (h1 * b1 == 0)
     w[Vsum] += pow(fabs_tilde_g,2.f);
-  }
-  if (fabs_x > ht)
-    w[HT] = fabs_x;
-  if (fabs_g > bt)
-    w[BT] = fabs_g;
 
   if (fabs_tilde_g > ht * bt) {
     // Perform gradient clipping if necessary
@@ -208,8 +213,9 @@ void inner_freegrad_update_after_prediction(freegrad_update_data& d, float x, fl
   d.squared_norm_clipped_grad += pow(clipped_gradient,2.f);
 
   // Check if restarts are enabled and whether the condition is satisfied
-  if (d.FG->restart && w[HT]/w[H1]>w[S]+2) {
+  if (d.FG->restart && w[BT] * w[HT]/(w[B1] * w[H1])>w[S]+2) {
       // Do a restart, but keep the lastest hint info
+      w[B1] = w[BT];
       w[H1] = w[HT];
       w[Gsum] = clipped_gradient;
       w[Vsum] = pow(clipped_gradient, 2.f);
@@ -220,7 +226,7 @@ void inner_freegrad_update_after_prediction(freegrad_update_data& d, float x, fl
       w[Vsum] += pow(clipped_gradient, 2.f);
   }
   if (ht>0)
-      w[S] += std::fabs(clipped_gradient)/ht;
+      w[S] += std::fabs(clipped_gradient)/(bt*ht);
 }
 
 
