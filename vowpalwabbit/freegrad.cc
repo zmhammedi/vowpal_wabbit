@@ -83,7 +83,7 @@ void inner_freegrad_predict(freegrad_update_data& d, float x, float& wref)
   // Only predict a non-zero w_pred if a non-zero gradient has been observed
   // freegrad update Equation 9 in paper http://proceedings.mlr.press/v125/mhammedi20a/mhammedi20a.pdf
   if (h1 > 0 && b1 > 0) 
-    w_pred  = -G * epsilon * (2. * V + ht * bt * absG) * pow(h1,2.f) * pow(b1, 2.f)/(2.*pow(V + ht * bt * absG,2.f) * sqrtf(V)) * exp(pow(absG,2.f)/(2. * V + 2. * ht * bt * absG));
+    w_pred  = -G * epsilon * (2. * V + ht * bt * absG) * h1 * pow(b1, 2.f)/(2.*pow(V + ht * bt * absG,2.f) * sqrtf(V)) * exp(pow(absG,2.f)/(2. * V + 2. * ht * bt * absG));
 
   d.squared_norm_prediction += pow(w_pred,2.f);
   // This is the unprojected predict
@@ -137,7 +137,7 @@ void gradient_dot_w(freegrad_update_data& d, float x, float& wref) {
     
   // Only predict a non-zero w_pred if a non-zero gradient has been observed
   if (h1>0 && b1>0)
-    w_pred  = -G * epsilon * (2. * V + ht * bt * absG) * pow(h1,2.f) * pow(b1, 2.f)/(2.*pow(V + ht * bt * absG,2.f) * sqrtf(V)) * exp(pow(absG,2.f)/(2. * V + 2. * ht * bt * absG));
+    w_pred  = -G * epsilon * (2. * V + ht * bt * absG) * h1 * pow(b1, 2.f)/(2.*pow(V + ht * bt * absG,2.f) * sqrtf(V)) * exp(pow(absG,2.f)/(2. * V + 2. * ht * bt * absG));
 
   d.grad_dot_w += gradient * w_pred;
 }
@@ -168,7 +168,7 @@ void inner_freegrad_update_after_prediction(freegrad_update_data& d, float x, fl
   
   // Computing the freegrad prediction again (Eq.(9) and Line 7 of Alg. 2 in paper)
   if (h1>0)
-    w[W]  = -G * epsilon * (2. * V + ht * bt * absG) * pow(h1,2.f) * pow(b1, 2.f)/(2.*pow(V + ht * bt * absG,2.f) * sqrtf(V)) * exp(pow(absG,2.f)/(2. * V + 2. * ht * bt * absG));
+    w[W]  = -G * epsilon * (2. * V + ht * bt * absG) * h1 * pow(b1, 2.f)/(2.*pow(V + ht * bt * absG,2.f) * sqrtf(V)) * exp(pow(absG,2.f)/(2. * V + 2. * ht * bt * absG));
   
   // Compute the tilted gradient: 
   // Cutkosky's varying constrains' reduction in 
@@ -213,7 +213,7 @@ void inner_freegrad_update_after_prediction(freegrad_update_data& d, float x, fl
   d.squared_norm_clipped_grad += pow(clipped_gradient,2.f);
 
   // Check if restarts are enabled and whether the condition is satisfied
-  if (d.FG->restart && w[BT] /w[B1]>w[S]+2) {
+  if (d.FG->restart && w[BT]/w[B1]>w[S]+2) {
       // Do a restart, but keep the lastest hint info
       w[B1] = w[BT];
       w[H1] = w[HT];
@@ -225,7 +225,8 @@ void inner_freegrad_update_after_prediction(freegrad_update_data& d, float x, fl
       w[Gsum] += clipped_gradient;
       w[Vsum] += pow(clipped_gradient, 2.f);
   }
-  if (ht>0)
+  // TODO change this
+  if (bt>0)
       w[S] += std::min(fabs_g,bt)/bt ;//std::fabs(clipped_gradient)/(bt*ht);
 }
 
@@ -341,9 +342,10 @@ base_learner* freegrad_setup(options_i& options, vw& all)
   float radius; 
 
   option_group_definition new_options("FreeGrad options");
-  // TODO remove the noweightinvariance option
+  // TODO remove the noweightinvariance option 
+  // TODO change the name of radius
   new_options.add(make_option("freegrad", FreeGrad).keep().help("Diagonal FreeGrad Algorithm")).add(make_option("restart", restart).help("Use the FreeRange restarts"))
-      .add(make_option("project", project).help("Project the outputs to adapt to both the lipschitz and comparator norm")).add(make_option("noweightinvariance", FG->noweightinvariance).help("No (importance) weight invariance")).add(make_option("fepsilon", FG->epsilon).default_value(1.f).help("Initial wealth"));
+      .add(make_option("project", project).help("Project the outputs to adapt to both the lipschitz and comparator norm")).add(make_option("noweightinvariance", FG->noweightinvariance).help("No (importance) weight invariance")).add(make_option("fepsilon", FG->epsilon).default_value(1.f).help("Initial wealth")).add(make_option("fradius", radius).default_value(1.f).help("Projection radius"));
 
   options.add_and_parse(new_options);
 
